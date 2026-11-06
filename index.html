@@ -4,137 +4,110 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Let's Prosper - Global Multisserviços & Logística</title>
-    <script src="https://jsdelivr.net"></script>
-    <link rel="stylesheet" href="https://cloudflare.com">
+    <!-- Correção de link de estilização estável -->
+    <link rel="stylesheet" href="https://jsdelivr.net">
     <style>
-        body { background-color: #0f172a; color: #f8fafc; }
-        input, select { background-color: #1e293b !important; border-color: #334155 !important; color: #ffffff !important; }
+        body { background-color: #0f172a; color: #f8fafc; font-family: sans-serif; padding: 20px; }
+        .bloco { bg-color: #1e293b; border: 1px solid #334155; padding: 15px; margin-bottom: 15px; border-radius: 8px; }
+        input, select, button { padding: 8px; margin: 4px 0; border-radius: 6px; }
+        button { cursor: pointer; background-color: #10b981; color: #000; font-weight: bold; border: none; }
+        .flex { display: flex; gap: 10px; }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-100 font-sans antialiased min-h-screen">
+<body>
 
-    <!-- BARRA DE NAVEGAÇÃO GLOBAL -->
-    <nav class="bg-slate-950 border-b border-slate-800 px-6 py-4 flex flex-wrap justify-between items-center sticky top-0 z-50">
-        <div class="flex items-center gap-3">
-            <div class="bg-emerald-500 text-slate-950 p-2 rounded-xl font-black text-xl shadow-lg tracking-wider">LP</div>
-            <span class="text-xl font-bold tracking-tight text-white">Let's <span class="text-emerald-400">Prosper</span></span>
+    <!-- BARRA GLOBAL -->
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155; padding-bottom:10px; margin-bottom:20px;">
+        <h2>Let's <span style="color:#10b981">Prosper</span> Global</h2>
+        <div>
+            <select id="selectIdioma" onchange="mudarIdiomaMoeda()">
+                <option value="pt">🇧🇷 Português</option>
+                <option value="en">🇺🇸 English</option>
+            </select>
+            <select id="selectMoeda" onchange="mudarIdiomaMoeda()">
+                <option value="BRL">BRL (R$)</option>
+                <option value="USD">USD ($)</option>
+                <option value="EUR">EUR (€)</option>
+            </select>
         </div>
+    </div>
+
+    <!-- CARTEIRA DIGITAL REFORÇADA -->
+    <div class="bloco" style="background:#020617;">
+        <h3 id="titCarteira">⚡ Carteira Digital Automatizada</h3>
+        <p><b id="lblSaldoDisp">Saldo Disponível (90%):</b> <span id="cardSaldo" style="font-size:18px; color:#fff; font-weight:bold;">R$ 450,00</span></p>
+        <p><b id="lblRetencaoAcum">Sua Taxa Retida (10%):</b> <span id="cardTaxaAcum" style="font-size:18px; color:#10b981; font-weight:bold;">R$ 50,00</span></p>
+    </div>
+
+    <!-- LOGÍSTICA MAPAS -->
+    <div class="bloco">
+        <h3 id="titLogistica">🗺️ Central de Logística Urbana (Google Maps)</h3>
+        <div class="flex">
+            <input type="text" id="partida" placeholder="Origem / Start" style="width:50%;">
+            <input type="text" id="destino" placeholder="Destino / Destination" style="width:50%;">
+        </div>
+        <button type="button" onclick="calcularRotaGlobal()" id="btnCalcular" style="margin-top:10px; width:100%;">Processar Rota e Reter 10%</button>
         
-        <!-- SELETOR DE IDIOMA E MOEDA GLOBAL -->
-        <div class="flex items-center gap-3 mt-2 sm:mt-0 flex-wrap">
-            <div class="flex bg-slate-900 border border-slate-800 rounded-xl p-1 gap-1 text-xs">
-                <select id="selectIdioma" onchange="mudarIdiomaMoeda()" class="bg-transparent border-0 text-white font-medium focus:outline-none p-1.5 cursor-pointer">
-                    <option value="pt">🇧🇷 Português (PT)</option>
-                    <option value="en">🇺🇸 English (EN)</option>
-                    <option value="es">🇪s Español (ES)</option>
-                </select>
-                <select id="selectMoeda" onchange="mudarIdiomaMoeda()" class="bg-transparent border-0 text-emerald-400 font-bold focus:outline-none p-1.5 cursor-pointer">
-                    <option value="BRL">BRL (R$)</option>
-                    <option value="USD">USD ($)</option>
-                    <option value="EUR">EUR (€)</option>
-                </select>
-            </div>
-            <span class="bg-slate-800 text-xs px-3 py-2 rounded-xl border border-slate-700 text-emerald-400 font-medium">
-                <i class="fa-solid fa-percent mr-1"></i> <span id="txtTaxaNav">Taxa: 10% Retida na Fonte</span>
-            </span>
+        <div id="reciboFinancas" style="margin-top:15px; display:none; background:#020617; padding:10px; border-radius:6px;">
+            <p><span id="lblReciboTotal">Total do Cliente:</span> <span id="valTotal" style="font-weight:bold; color:#fff;"></span></p>
+            <p><span id="lblReciboTaxa">Sua Taxa (10% Protegido):</span> <span id="valTaxa" style="font-weight:bold; color:#10b981;"></span></p>
         </div>
-    </nav>
+    </div>
 
-    <!-- CONTEÚDO PRINCIPAL EM GRID -->
-    <main class="max-w-7xl mx-auto p-4 md:p-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        <!-- COLUNA 1: CADASTRO COM SEGURANÇA INTERNACIONAIS -->
-        <div class="bg-slate-950 rounded-2xl border border-slate-800 p-6 shadow-xl h-fit">
-            <div class="flex items-center gap-3 mb-6 border-b border-slate-800 pb-4">
-                <div class="text-emerald-400 text-xl"><i class="fa-solid fa-shield-halved"></i></div>
-                <div>
-                    <h2 id="titCadastro" class="font-bold text-lg text-white">Portal de Entrada Seguro</h2>
-                    <p id="subCadastro" class="text-xs text-slate-400">Validação automatizada antifraude</p>
-                </div>
-            </div>
+    <script>
+        const dadosConversao = {
+            BRL: { simb: "R$ ", tx: 1 },
+            USD: { simb: "$ ", tx: 0.18 },
+            EUR: { simb: "€ ", tx: 0.17 }
+        };
 
-            <form id="formSeguro" class="space-y-4" onsubmit="processarCadastroGlobal(event)">
-                <div>
-                    <label id="lblPerfil" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Perfil de Atuação</label>
-                    <div class="grid grid-cols-2 gap-2">
-                        <button type="button" onclick="alternarDocumento('CPF')" class="flex items-center justify-center p-2.5 border-2 border-emerald-500 bg-emerald-500/10 text-emerald-400 rounded-xl text-xs font-bold w-full text-center cursor-pointer" id="btnAutonomo">
-                            Individual
-                        </button>
-                        <button type="button" onclick="alternarDocumento('CNPJ')" class="flex items-center justify-center p-2.5 border border-slate-800 bg-slate-900 text-slate-400 rounded-xl text-xs font-medium w-full text-center cursor-pointer" id="btnEmpresa">
-                            B2B / Business
-                        </button>
-                    </div>
-                </div>
+        const textos = {
+            pt: { titC: "⚡ Carteira Digital Automatizada", sal: "Saldo Disponível (90%):", tax: "Sua Taxa Retida (10%):", log: "🗺️ Central de Logística Urbana (Google Maps)", btn: "Processar Rota e Reter 10%", tCli: "Total do Cliente:", tTax: "Sua Taxa (10% Protegido):" },
+            en: { titC: "⚡ Automated Digital Wallet", sal: "Available Balance (90%):", tax: "Your Retained Fee (10%):", log: "🗺️ Urban Logistics Center (Google Maps)", btn: "Process Route & Retain 10%", tCli: "Customer Total:", tTax: "Your Fee (10% Secured):" }
+        };
 
-                <div>
-                    <label id="lblNome" class="block text-xs font-medium text-slate-300 mb-1">Nome Completo</label>
-                    <input type="text" id="nome" required class="w-full rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
-                </div>
+        function mudarIdiomaMoeda() {
+            const m = document.getElementById('selectMoeda').value;
+            const lang = document.getElementById('selectIdioma').value;
+            const s = dadosConversao[m].simb;
+            const f = dadosConversao[m].tx;
 
-                <div>
-                    <label id="lblDoc" class="block text-xs font-medium text-slate-300 mb-1">Documento de Identidade (CPF)</label>
-                    <input type="text" id="documento" required class="w-full rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
-                </div>
+            // Altera os valores fixos da carteira de forma direta e imutável pelas tags
+            document.getElementById('cardSaldo').innerText = s + (450 * f).toFixed(2);
+            document.getElementById('cardTaxaAcum').innerText = s + (50 * f).toFixed(2);
 
-                <div>
-                    <label id="lblSetor" class="block text-xs font-medium text-slate-300 mb-1">Setor de Atividade</label>
-                    <select id="setor" required class="w-full rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
-                        <option value="1" id="optSetor1">Mão de Obra (iWork)</option>
-                        <option value="2" id="optSetor2">Serviços Corporativos (B2B)</option>
-                        <option value="3" id="optSetor3">Logística e Fretes</option>
-                        <option value="4" id="optSetor4">Transporte de Passageiros (Uber)</option>
-                    </select>
-                </div>
+            // Altera os idiomas sem depender dos textos do HTML antigo
+            if(textos[lang]) {
+                document.getElementById('titCarteira').innerText = textos[lang].titC;
+                document.getElementById('lblSaldoDisp').innerText = textos[lang].sal;
+                document.getElementById('lblRetencaoAcum').innerText = textos[lang].tax;
+                document.getElementById('titLogistica').innerText = textos[lang].log;
+                document.getElementById('btnCalcular').innerText = textos[lang].btn;
+                document.getElementById('lblReciboTotal').innerText = textos[lang].tCli;
+                document.getElementById('lblReciboTaxa').innerText = textos[lang].tTax;
+            }
+        }
 
-                <button type="submit" id="btnEnviarCadastro" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-3 rounded-xl transition transform active:scale-95 flex items-center justify-center gap-2 mt-4 text-sm shadow-lg shadow-emerald-500/20 cursor-pointer">
-                    Finalizar Registro Global
-                </button>
-            </form>
-        </div>
+        function calcularRotaGlobal() {
+            const partida = document.getElementById('partida').value;
+            const destino = document.getElementById('destino').value;
+            if(!partida || !destino) { alert('Digite partida e destino.'); return; }
 
-        <!-- COLUNA 2 & 3: CENTRAL LOGÍSTICA GOOGLE MAPS & CARTEIRA DIGITAL AUTOMÁTICA -->
-        <div class="lg:col-span-2 space-y-6">
-            
-            <!-- CARTEIRA DIGITAL INTEGRADA DO MOTORISTA (AUTOMATIZADA SEM INTERMEDIÁRIOS) -->
-            <div class="bg-slate-950 rounded-2xl border border-slate-800 p-6 shadow-xl grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="md:col-span-3 border-b border-slate-800 pb-3 flex justify-between items-center">
-                    <h3 class="font-bold text-white flex items-center gap-2 text-base">
-                        <i class="fa-solid fa-wallet text-emerald-400"></i> <span id="titCarteira">Carteira Digital do Motorista</span>
-                    </h3>
-                    <span class="text-[10px] text-slate-400 bg-slate-900 border border-slate-800 px-2 py-1 rounded-md font-mono">ID: LP-84187</span>
-                </div>
-                
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
-                    <div id="lblSaldoDisp" class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Saldo Disponível (90%)</div>
-                    <div id="cardSaldo" class="text-xl font-black text-white mt-1">R$ 450,00</div>
-                    <button class="mt-3 text-[10px] w-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 font-bold py-1.5 rounded-lg border border-emerald-500/20 transition cursor-pointer" onclick="alert('Sistema Split: Transferência automatizada enviada para processamento bancário internacional.')">Payout / Sacar</button>
-                </div>
+            const m = document.getElementById('selectMoeda').value;
+            const s = dadosConversao[m].simb;
+            const f = dadosConversao[m].tx;
 
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
-                    <div id="lblRetencaoAcum" class="text-[10px] text-emerald-400 uppercase font-bold tracking-wider">Sua Taxa Retida (10%)</div>
-                    <div id="cardTaxaAcum" class="text-xl font-black text-emerald-400 mt-1">R$ 50,00</div>
-                    <div id="lblLucroLiquido" class="text-[9px] text-slate-500 mt-2 font-medium">Faturamento Líquido da Plataforma</div>
-                </div>
+            const baseBruta = (Math.random() * (80 - 30) + 30);
+            const total = baseBruta * f;
+            const taxa = total * 0.10;
 
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col justify-between">
-                    <div id="lblHistorico" class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-2">Última Corrida Segura</div>
-                    <div class="space-y-1">
-                        <div class="text-xs text-white font-medium flex justify-between"><span>Corrida #489</span> <span id="histTotal" class="font-bold">R$ 50,00</span></div>
-                        <div class="text-[10px] text-slate-500 flex justify-between"><span>Taxa LP (10%)</span> <span id="histTaxa" class="text-rose-400">- R$ 5,00</span></div>
-                    </div>
-                </div>
-            </div>
+            document.getElementById('valTotal').innerText = s + total.toFixed(2);
+            document.getElementById('valTaxa').innerText = s + taxa.toFixed(2);
+            document.getElementById('reciboFinancas').style.display = 'block';
+        }
 
-            <!-- CENTRAL DE LOGÍSTICA GOOGLE MAPS COM PROCESSAMENTO DE MOEDAS -->
-            <div class="bg-slate-950 rounded-2xl border border-slate-800 p-6 shadow-xl">
-                <div class="flex items-center gap-3 mb-4">
-                    <div class="text-emerald-400 text-xl"><i class="fa-solid fa-map-location-dot"></i></div>
-                    <div>
-                        <h3 id="titLogistica" class="font-bold text-white text-base">Central de Logística Urbana (Google Maps)</h3>
-                        <p id="subLogistica" class="text-xs text-slate-400">Rastreamento global e divisão robótica de valores</p>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <div>
-                        <label id="lblPartida" class="block text-xs font-medium text-slate-400 mb-1">Local de Partida</label>
+        // Executa a inicialização limpa
+        mudarIdiomaMoeda();
+    </script>
+</body>
+</html>
