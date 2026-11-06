@@ -26,7 +26,7 @@
     <div class="lp-header">
         <h4 style="margin: 0; font-weight: bold; color: #17a2b8;">LP Let's Prosper Global</h4>
         <span style="background-color: #1c2d3a; color: #28a745; border: 1px solid #28a745; padding: 8px 12px; border-radius: 4px; font-size: 0.85rem; font-weight: bold;">
-            Taxa do Administrador: 10% Retida na Fonte (Anti-Calote)
+            Taxa do Administrador: 10% Retida na Fonte Contratual
         </span>
     </div>
 
@@ -37,9 +37,9 @@
             <!-- Cadastro Oportunidades -->
             <div class="card-custom">
                 <h5 style="font-weight: bold; margin: 0 0 5px 0; font-size: 1.2rem;">Mão de Obra & Vagas</h5>
-                <p style="color: #8a99a6; font-size: 0.85rem; margin: 0 0 20px 0;">Anúncios estilo iWork com taxa de 10% retida automaticamente</p>
+                <p style="color: #8a99a6; font-size: 0.85rem; margin: 0 0 20px 0;">Anúncios com split automático de 10% para o administrador</p>
                 
-                <form id="form-oportunidade" onsubmit="event.preventDefault(); cadastrarNoMural();">
+                <form id="form-oportunidade">
                     <div class="form-group"><input type="text" id="cad-nome" class="form-control" placeholder="Seu Nome / Razão Social" required></div>
                     <div class="form-group"><input type="text" id="cad-servico" class="form-control" placeholder="Tipo de Serviço (Ex: Pintor, Carreto)" required></div>
                     <div class="form-group">
@@ -67,7 +67,7 @@
             </div>
         </div>
 
-        <!-- COLUNA DIREITA: Carteira Digital Zerada e Central de Logística -->
+        <!-- COLUNA DIREITA: Carteira Digital e Central de Logística -->
         <div>
             <!-- Carteira Digital Auditada -->
             <div class="card-custom">
@@ -82,7 +82,7 @@
                 </div>
             </div>
 
-            <!-- Central de Logística (Painel Passageiro) -->
+            <!-- Central de Logística (Onde o Passageiro Pede) -->
             <div class="card-custom">
                 <div style="margin-bottom: 15px;">
                     <h5 style="font-weight: bold; margin: 0 0 3px 0; font-size: 1.2rem;">Central de Logística Urbana Robótica (Painel Passageiro)</h5>
@@ -108,7 +108,7 @@
                     </div>
                 </div>
 
-                <button type="button" class="btn-primary" style="background-color: #28a745;" id="btn-chamar-motorista" onclick="chamarMotoristaEGravar();">Confirmar e Chamar Motorista</button>
+                <button type="button" id="btn-chamar" class="btn-primary" style="background-color: #28a745;">Confirmar e Chamar Motorista</button>
             </div>
 
             <!-- Radar do Motorista -->
@@ -123,7 +123,7 @@
 
     </div>
 
-    <!-- Script de Inteligência Operacional de Alta Performance -->
+    <!-- Script de Inteligência e Isolamento de Escopo -->
     <script>
         const matrizDistancias = {
             "natal": { "joao pessoa": 185, "recife": 295, "parnamirim": 15 },
@@ -136,8 +136,9 @@
         let precoAtualCalculado = 0;
 
         document.addEventListener("DOMContentLoaded", function() {
-            renderRadarMotorista();
-            renderMuralServicos();
+            // Remove dados antigos para limpar possíveis travamentos de versões passadas
+            localStorage.removeItem('tabela_corridas');
+            localStorage.removeItem('tabela_mural');
             
-            // Ouvintes de digitação em tempo real para cálculo preditivo instantâneo
+            // Ativa o monitoramento dinâmico por digitação
             document.getElementById('endereco-partida').addEventListener('input', calcularRotaTempoReal);
