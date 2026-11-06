@@ -3,156 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LP Let's Prosper - iWork Oportunidades Globais</title>
+    <title>LP Let's Prosper - iWork Platform</title>
     <style>
         body { background-color: #0b1116; color: #ffffff; font-family: system-ui, -apple-system, sans-serif; padding: 20px; margin: 0; }
-        .lp-header { background-color: #111c24; padding: 15px 20px; border-radius: 6px; margin-bottom: 25px; border: 1px solid #1c2d3a; display: flex; justify-content: space-between; align-items: center; }
-        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+        .lp-header { background-color: #111c24; padding: 15px 20px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #1c2d3a; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* Menu de Navegação Interativo */
+        .nav-tabs { display: flex; gap: 10px; background-color: #111c24; padding: 10px; border-radius: 6px; border: 1px solid #1c2d3a; margin-bottom: 25px; }
+        .nav-btn { background: none; border: none; color: #8a99a6; padding: 10px 20px; font-weight: bold; border-radius: 4px; cursor: pointer; font-size: 0.95rem; transition: all 0.2s; }
+        .nav-btn.active { background-color: #007bff; color: white; }
+        .nav-btn:hover:not(.active) { background-color: #1a2632; color: #fff; }
+        
+        .panel-content { display: none; }
+        .panel-content.active { display: block; }
+        
+        .grid-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 25px; }
         .card-custom { background-color: #111c24; border-radius: 6px; padding: 25px; border: 1px solid #1c2d3a; margin-bottom: 25px; box-sizing: border-box; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; color: #8a99a6; font-size: 0.85rem; margin-bottom: 5px; }
         .form-control, .form-select { width: 100%; background-color: #1a2632; border: 1px solid #2c3e50; color: #fff; padding: 12px; border-radius: 4px; box-sizing: border-box; font-size: 0.95rem; }
         .btn-primary { width: 100%; padding: 14px; background-color: #007bff; border: none; color: white; font-weight: bold; border-radius: 4px; cursor: pointer; font-size: 1rem; }
-        .btn-success { width: 100%; padding: 10px; background-color: #28a745; border: none; color: white; font-weight: bold; border-radius: 4px; cursor: pointer; margin-top: 10px; }
+        .btn-success { width: 100%; padding: 12px; background-color: #28a745; border: none; color: white; font-weight: bold; border-radius: 4px; cursor: pointer; margin-top: 10px; }
         .wallet-box { background-color: #0b1116; padding: 15px; border: 1px solid #2c3e50; border-radius: 4px; margin-bottom: 15px; }
-        .card-vaga { background-color: #1a2632; border: 1px solid #007bff; padding: 15px; border-radius: 4px; margin-top: 15px; }
-        @media (max-width: 992px) { .grid-container { grid-template-columns: 1fr; } }
+        .card-vaga { background-color: #1a2632; border: 1px solid #2c3e50; padding: 20px; border-radius: 4px; margin-bottom: 15px; }
+        
+        @media (max-width: 992px) { .grid-layout { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-    <!-- Topbar Global do iWork LP -->
+    <!-- Topbar Superior -->
     <div class="lp-header">
-        <h4 style="margin: 0; font-weight: bold; color: #17a2b8;">LP Let's Prosper - iWork Platform</h4>
+        <h4 style="margin: 0; font-weight: bold; color: #17a2b8;" id="plataforma-titulo">LP Let's Prosper - iWork Platform</h4>
         <span style="background-color: #1c2d3a; color: #28a745; border: 1px solid #28a745; padding: 8px 12px; border-radius: 4px; font-size: 0.85rem; font-weight: bold;">
-            Sua Comissão de Intermediação: 10% Retida na Fonte
+            Garantia Anti-Calote: 10% de Taxa Retida na Fonte
         </span>
     </div>
 
-    <div class="grid-container">
-        
-        <!-- COLUNA ESQUERDA: Cadastro de Oportunidades e Vagas por Empresas -->
-        <div>
-            <div class="card-custom">
-                <h5 style="font-weight: bold; margin: 0 0 5px 0; font-size: 1.2rem;">Painel de Publicação Corporativa</h5>
-                <p style="color: #8a99a6; font-size: 0.85rem; margin: 0 0 20px 0;">Abra vagas, contrate serviços B2B, B2P ou P2P e gerencie orçamentos</p>
-                
-                <form id="form-vaga" onsubmit="event.preventDefault(); publicarVagaNoMural();">
-                    <div class="form-group"><input type="text" id="vaga-empresa" class="form-control" placeholder="Nome da Empresa / Contratante" required></div>
-                    <div class="form-group"><input type="text" id="vaga-titulo" class="form-control" placeholder="Título da Oportunidade / Cargo (Ex: Vigilante, Desenvolvedor)" required></div>
-                    
-                    <div class="form-group">
-                        <label>Categoria da Oportunidade (iWork Model)</label>
-                        <select class="form-select" id="vaga-modalidade" required>
-                            <option value="" disabled selected>Selecione a categoria da relação comercial...</option>
-                            <option value="Serviço Pessoa para Pessoa (P2P)">Pessoa para Pessoa (P2P) - Freelancer Autónomo</option>
-                            <option value="Serviço Pessoa para Empresa (P2B)">Pessoa para Empresa (P2B) - Prestação de Serviço</option>
-                            <option value="Serviço Empresa para Pessoa (B2P)">Empresa para Pessoa (B2P) - Vaga Corporativa / CLT / PJ</option>
-                            <option value="Serviço Empresa para Empresa (B2B)">Empresa para Empresa (B2B) - Terceirização / Contrato</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group"><input type="number" class="form-control" id="vaga-orcamento" placeholder="Remuneração / Valor do Projeto (R$)" required></div>
-                    <button type="submit" class="btn-primary">Publicar Oportunidade no Radar</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- COLUNA DIREITA: Carteira de Taxas e Feed Real-Time de Empregos -->
-        <div>
-            <!-- Painel Administrativo de Split de Liquidação -->
-            <div class="card-custom">
-                <h5 style="font-weight: bold; margin: 0 0 20px 0; font-size: 1.2rem;">Sua Carteira de Intermediação (Split Ativo)</h5>
-                <div class="wallet-box">
-                    <span style="color: #8a99a6; font-size: 0.8rem; display: block; margin-bottom: 3px;">REPASSE PARA O PROFISSIONAL CONTRATADO (90%)</span>
-                    <h3 style="font-weight: bold; color: #ffffff; margin: 0; font-size: 1.6rem;" id="saldo-prestadores">R$ 0,00</h3>
-                </div>
-                <div class="wallet-box" style="margin-bottom: 0;">
-                    <span style="color: #8a99a6; font-size: 0.8rem; display: block; margin-bottom: 3px;">SUA ARRECADAÇÃO ADMINISTRATIVA LÍQUIDA (10%)</span>
-                    <h3 style="font-weight: bold; color: #28a745; margin: 0; font-size: 1.6rem;" id="saldo-admin">R$ 0,00</h3>
-                </div>
-            </div>
-
-            <!-- Feed Central de Oportunidades estilo iWork -->
-            <div class="card-custom" style="border-color: #007bff;">
-                <h5 style="font-weight: bold; margin: 0 0 5px 0; font-size: 1.2rem; color: #007bff;">Radar iWork - Vagas e Serviços Ativos</h5>
-                <p style="color: #8a99a6; font-size: 0.85rem; margin: 0 0 15px 0;">Oportunidades abertas disponíveis para aplicação profissional imediata</p>
-                <div id="container-radar-vagas">
-                    <p style="color: #8a99a6; font-style: italic; text-align: center; padding: 20px 0;">Buscando novas vagas e projetos no ecossistema...</p>
-                </div>
-            </div>
-        </div>
-
+    <!-- Abas de Controle de Perfil -->
+    <div class="nav-tabs">
+        <button class="nav-btn active" onclick="alternarPerfil('candidato', this)">Procurar Emprego / Vagas</button>
+        <button class="nav-btn" onclick="alternarPerfil('empresa', this)">Anunciar Vaga / Mão de Obra</button>
+        <button class="nav-btn" onclick="alternarPerfil('admin', this)" style="color: #ffc107;">Painel Administrador (Seu Controle)</button>
     </div>
 
-    <!-- Script de Persistência e Processamento Financeiro Sem Calotes -->
+    <!-- ========================================== -->
+    <!-- 1. INTERFACE DO CANDIDATO (PROCURAR EMPREGO)-->
+    <!-- ========================================== -->
+    <div id="painel-candidato" class="panel-content active">
+        <div class="card-custom" style="border-color: #007bff;">
+            <h5 style="font-weight: bold; margin: 0 0 5px 0; font-size: 1.2rem; color: #007bff;">Radar iWork - Oportunidades de Trabalho Disponíveis</h5>
+            <p style="color: #8a99a6; font-size: 0.85rem; margin: 0 0 20px 0;">Candidate-se a vagas de empresas e receba os pagamentos com segurança</p>
+            <div id="feed-vagas-candidato">
+                <!-- Injeção via JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 2. INTERFACE DA EMPRESA (PROCURAR MÃO DE OBRA)-->
+    <!-- ========================================== -->
+    <div id="painel-empresa" class="panel-content">
+        <div class="card-custom">
+            <h5 style="font-weight: bold; margin: 0 0 5px 0; font-size: 1.2rem;">Painel de Publicação de Vagas</h5>
+            <p style="color: #8a99a6; font-size: 0.85rem; margin: 0 0 20px 0;">Abra novos postos de trabalho e aloque orçamentos garantidos no ecossistema</p>
+            
+            <form id="form-vaga" onsubmit="event.preventDefault(); publicarVagaNoSistema();">
+                <div class="form-group"><input type="text" id="vaga-empresa" class="form-control" placeholder="Nome da sua Empresa ou Organização" required></div>
+                <div class="form-group"><input type="text" id="vaga-titulo" class="form-control" placeholder="Título do Cargo / Serviço Solicitado" required></div>
+                <div class="form-group">
+                    <label>Categoria Contratual</label>
+                    <select class="form-select" id="vaga-modalidade" required>
+                        <option value="" disabled selected>Selecione a relação contratual...</option>
+                        <option value="Serviço Pessoa para Pessoa (P2P)">Pessoa para Pessoa (P2P) - Autônomo / Freelancer</option>
+                        <option value="Serviço Pessoa para Empresa (P2B)">Pessoa para Empresa (P2B) - Prestador de Serviço</option>
+                        <option value="Serviço Empresa para Pessoa (B2P)">Empresa para Pessoa (B2P) - Contratação Corporativa (CLT/PJ)</option>
+                        <option value="Serviço Empresa para Empresa (B2B)">Empresa para Empresa (B2B) - Terceirização de Escopo</option>
+                    </select>
+                </div>
+                <div class="form-group"><input type="number" class="form-control" id="vaga-orcamento" placeholder="Orçamento Separado para o Projeto / Salário (R$)" required></div>
+                <button type="submit" class="btn-primary">Publicar Oportunidade no Feed</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 3. INTERFACE DO ADMINISTRADOR (SEU PAINEL) -->
+    <!-- ========================================== -->
+    <div id="painel-admin" class="panel-content">
+        <div class="grid-layout">
+            <!-- Carteiras Administrativas de Auditoria -->
+            <div class="card-custom" style="border-color: #ffc107;">
+                <h5 style="font-weight: bold; margin: 0 0 20px 0; font-size: 1.2rem; color: #ffc107;">Métricas Gerais de Arrecadação Fiscal</h5>
+                
+                <div class="wallet-box">
+                    <span style="color: #8a99a6; font-size: 0.8rem; display: block; margin-bottom: 3px;">VOLUME TOTAL BRUTO EM TRÂNSITO (100%)</span>
+                    <h3 style="font-weight: bold; color: #ffffff; margin: 0; font-size: 1.6rem;" id="adm-bruto">R$ 0,00</h3>
+                </div>
+                <div class="wallet-box">
+                    <span style="color: #8a99a6; font-size: 0.8rem; display: block; margin-bottom: 3px;">PROVISÃO PARA LIQUIDAÇÃO DE PRESTADORES (90%)</span>
+                    <h3 style="font-weight: bold; color: #007bff; margin: 0; font-size: 1.6rem;" id="adm-prestadores">R$ 0,00</h3>
+                </div>
+                <div class="wallet-box" style="margin-bottom: 0; border-color: #28a745;">
+                    <span style="color: #28a745; font-size: 0.8rem; display: block; margin-bottom: 3px;">SUA RECEITA LÍQUIDA ACUMULADA (10%)</span>
+                    <h3 style="font-weight: bold; color: #28a745; margin: 0; font-size: 1.6rem;" id="adm-liquido">R$ 0,00</h3>
+                </div>
+            </div>
+
+            <!-- Registro de Auditoria Contábil -->
+            <div class="card-custom">
+                <h5 style="font-weight: bold; margin: 0 0 10px 0; font-size: 1.2rem;">Log de Transações Bancárias</h5>
+                <p style="color: #8a99a6; font-size: 0.85rem; margin: 0 0 15px 0;">Histórico em tempo real de retenções automatizadas</p>
+                <div id="log-transacoes-admin" style="font-family: monospace; font-size: 0.85rem; color: #a2b4c2;">
+                    <p style="font-style: italic; color: #6c757d;">Nenhuma movimentação registrada na blockchain local...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inteligência Operacional dos Painéis -->
     <script>
-        let cofrePrestadores = 0.00;
-        let cofreAdminTaxas = 0.00;
+        // Inicialização de caixas numéricas puras de contabilidade
+        let faturamentoBruto = 0.00;
+        let provisaoPrestadores = 0.00;
+        let receitaAdminLiquida = 0.00;
 
         document.addEventListener("DOMContentLoaded", function() {
-            renderizarMuralVagas();
+            rebuildMuralVagas();
         });
 
-        function publicarVagaNoMural() {
+        // Mecanismo de troca de tela fluido
+        function alternarPerfil(perfil, botao) {
+            document.querySelectorAll('.panel-content').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            botao.classList.add('active');
+            document.getElementById(`painel-${perfil}`).classList.add('active');
+        }
+
+        // Função da Empresa: Cadastra e envia para o armazenamento persistente
+        function publicarVagaNoSistema() {
             const empresa = document.getElementById('vaga-empresa').value;
             const titulo = document.getElementById('vaga-titulo').value;
             const modalidade = document.getElementById('vaga-modalidade').value;
             const orcamento = parseFloat(document.getElementById('vaga-orcamento').value || 0);
 
-            const novaVaga = {
+            const novaOportunidade = {
                 id: Date.now(),
-                empresa: empresa,
-                titulo: titulo,
-                modalidade: modalidade,
-                orcamento: orcamento
-            };
-
-            let tabelaVagas = JSON.parse(localStorage.getItem("banco_iwork_vagas") || "[]");
-            tabelaVagas.push(novaVaga);
-            localStorage.setItem("banco_iwork_vagas", JSON.stringify(tabelaVagas));
-
-            renderizarMuralVagas();
-            alert("Oportunidade de Trabalho publicada e listada com sucesso no Radar iWork!");
-            document.getElementById('form-vaga').reset();
-        }
-
-        function renderizarMuralVagas() {
-            const container = document.getElementById("container-radar-vagas");
-            let tabelaVagas = JSON.parse(localStorage.getItem("banco_iwork_vagas") || "[]");
-
-            if(tabelaVagas.length === 0) {
-                container.innerHTML = '<p style="color: #8a99a6; font-style: italic; text-align: center; padding: 20px 0;">Nenhum projeto ou vaga disponível no momento...</p>';
-                return;
-            }
-
-            container.innerHTML = "";
-            tabelaVagas.forEach(vaga => {
-                const card = document.createElement("div");
-                card.className = "card-vaga";
-                card.innerHTML = `
-                    <div style="font-weight:bold; color:#007bff; margin-bottom:5px;">${vaga.modalidade}</div>
-                    <div class="small"><strong>Empresa/Contratante:</strong> ${vaga.empresa}</div>
-                    <div class="small"><strong>Vaga/Oportunidade:</strong> ${vaga.titulo}</div>
-                    <div class="small" style="margin-top:5px; color:#17a2b8; font-weight:bold; font-size:1.1rem;">Remuneração/Orçamento: R$ ${vaga.orcamento.toFixed(2).replace('.', ',')}</div>
-                    
-                    <!-- Simulação de fechamento e pagamento com split direto na fonte -->
-                    <button class="btn-success" onclick="liquidarContratacaoVaga(${vaga.id}, ${vaga.orcamento})">Candidatar-se & Fechar Contrato</button>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function liquidarContratacaoVaga(idVaga, valorTotal) {
-            // Executa a divisão matemática exata do split financeiro protegido contra calotes
-            const comissaoAdmin = valorTotal * 0.10;
-            const liquidoProfissional = valorTotal * 0.90;
-
-            cofrePrestadores += liquidoProfissional;
-            cofreAdminTaxas += comissaoAdmin;
-
-            // Atualiza os saldos em tempo real na interface
-            document.getElementById('saldo-prestadores').innerText = "R$ " + cofrePrestadores.toFixed(2).replace('.', ',');
-            document.getElementById('saldo-admin').innerText = "R$ " + cofreAdminTaxas.toFixed(2).replace('.', ',');
-
-            // Retira a vaga do painel público após o fechamento do contrato
