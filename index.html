@@ -13,10 +13,9 @@
     <nav class="bg-slate-950 border-b border-slate-800 px-6 py-4 flex flex-wrap justify-between items-center sticky top-0 z-50">
         <div class="flex items-center gap-3">
             <div class="bg-emerald-500 text-slate-950 p-2 rounded-xl font-black text-xl shadow-lg shadow-emerald-500/20 tracking-wider">LP</div>
-            <span class="text-xl font-bold tracking-tight text-white">Let's <span class="text-emerald-400">Prosper</span></span>
+            <span class="text-xl font-bold tracking-tight text-white">Let's <span class="text-emerald-400">Prosper</span> Global</span>
         </div>
         
-        <!-- SELETORES EM BOTÕES INTERATIVOS (IMUTÁVEIS) -->
         <div class="flex items-center gap-3 mt-2 sm:mt-0 flex-wrap">
             <div class="flex bg-slate-900 border border-slate-800 rounded-xl p-1 gap-1 text-xs">
                 <button type="button" onclick="mudarIdioma('pt')" id="lang_pt" class="px-2 py-1 rounded-lg bg-emerald-500 text-slate-950 font-bold transition">PT</button>
@@ -29,65 +28,91 @@
         </div>
     </nav>
 
-    <!-- CONTEÚDO PRINCIPAL -->
+    <!-- CONTEÚDO PRINCIPAL EM GRID -->
     <main class="max-w-7xl mx-auto p-4 md:p-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        <!-- PAINEL DE CADASTRO -->
-        <div class="bg-slate-950 rounded-2xl border border-slate-800 p-6 shadow-xl h-fit">
-            <div class="flex items-center gap-3 mb-6 border-b border-slate-800 pb-4">
-                <div class="text-emerald-400 text-xl"><i class="fa-solid fa-shield-halved"></i></div>
-                <div>
-                    <h2 id="lbl_titCadastro" class="font-bold text-lg text-white">Portal de Entrada Seguro</h2>
-                    <p id="lbl_subCadastro" class="text-xs text-slate-400">Validação automatizada antifraude</p>
-                </div>
-            </div>
-
-            <form class="space-y-4" onsubmit="event.preventDefault(); alert('Global Security Active');">
-                <div>
-                    <label id="lbl_perfil" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Perfil de Atuação</label>
-                    <div class="grid grid-cols-2 gap-2">
-                        <button type="button" onclick="alternarDoc('CPF')" id="btn_cpf" class="flex items-center justify-center p-2.5 border-2 border-emerald-500 bg-emerald-500/10 text-emerald-400 rounded-xl text-xs font-bold w-full text-center">Individual</button>
-                        <button type="button" onclick="alternarDoc('CNPJ')" id="btn_cnpj" class="flex items-center justify-center p-2.5 border border-slate-800 bg-slate-900 text-slate-400 rounded-xl text-xs font-medium w-full text-center">Business</button>
+        <!-- COLUNA ESQUERDA: MÃO DE OBRA E ANÚNCIOS (ESTILO IWORK) -->
+        <div class="bg-slate-950 rounded-2xl border border-slate-800 p-6 shadow-xl h-fit space-y-6">
+            <div>
+                <div class="flex items-center gap-3 mb-4 border-b border-slate-800 pb-3">
+                    <div class="text-blue-400 text-xl"><i class="fa-solid fa-hammer"></i></div>
+                    <div>
+                        <h2 id="lbl_titiWork" class="font-bold text-lg text-white">Mão de Obra & Vagas</h2>
+                        <p id="lbl_subiWork" class="text-xs text-slate-400">Anúncios estilo iWork com taxa de 10%</p>
                     </div>
                 </div>
-                <div>
-                    <label id="lbl_nome" class="block text-xs font-medium text-slate-300 mb-1">Nome Completo</label>
-                    <input type="text" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
-                </div>
-                <div>
-                    <label id="lbl_doc" class="block text-xs font-medium text-slate-300 mb-1">Documento de Identidade (CPF)</label>
-                    <input type="text" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
-                </div>
-                <button type="submit" id="lbl_btnReg" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-3 rounded-xl transition text-sm">Finalizar Registro Global</button>
-            </form>
+
+                <form onsubmit="event.preventDefault(); alert('Oferta publicada no feed global!');" class="space-y-3">
+                    <input type="text" id="vaga_titulo" placeholder="Ex: Eletricista Industrial, Motorista..." required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
+                    <select id="vaga_tipo" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
+                        <option value="contratar" id="opt_contratar">Quero Contratar Mão de Obra</option>
+                        <option value="oferecer" id="opt_oferecer">Quero Oferecer meus Serviços</option>
+                    </select>
+                    <input type="number" id="vaga_valor" placeholder="Valor da Diária / Projeto" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
+                    <button type="submit" id="lbl_btnVaga" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-xl text-xs transition">Publicar Oportunidade</button>
+                </form>
+            </div>
         </div>
 
-        <!-- PAINEL FINANCEIRO E MAPA -->
+        <!-- COLUNA CENTRAL E DIREITA: LOGÍSTICA MAPAS (UBER/CAMINHÃO) e HISTÓRICO -->
         <div class="lg:col-span-2 space-y-6">
             
-            <!-- CARTEIRA DIGITAL -->
-            <div class="bg-slate-950 rounded-2xl border border-slate-800 p-6 shadow-xl grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="md:col-span-2 border-b border-slate-800 pb-2">
-                    <h3 id="lbl_titCarteira" class="font-bold text-white text-base">Carteira Digital do Motorista</h3>
+            <!-- CARTEIRA DIGITAL + HISTÓRICO DETALHADO -->
+            <div class="bg-slate-950 rounded-2xl border border-slate-800 p-6 shadow-xl space-y-4">
+                <div class="border-b border-slate-800 pb-2 flex justify-between items-center">
+                    <h3 id="lbl_titCarteira" class="font-bold text-white text-base">Carteira Digital & Histórico Auditoria</h3>
+                    <span class="text-xs text-emerald-400 font-bold">Taxa Administrativa: 10%</span>
                 </div>
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
-                    <div id="lbl_saldoDisp" class="text-[10px] text-slate-400 uppercase font-bold">Saldo Disponível (90%)</div>
-                    <div id="val_saldo" class="text-xl font-black text-white mt-1">R$ 450,00</div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
+                        <div id="lbl_saldoDisp" class="text-[10px] text-slate-400 uppercase font-bold">Saldo Disponível Prestadores (90%)</div>
+                        <div id="val_saldo" class="text-xl font-black text-white mt-1">R$ 450,00</div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
+                        <div id="lbl_taxaAcum" class="text-[10px] text-emerald-400 uppercase font-bold">Sua Retenção Acumulada (10%)</div>
+                        <div id="val_taxaAcum" class="text-xl font-black text-emerald-400 mt-1">R$ 50,00</div>
+                    </div>
                 </div>
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
-                    <div id="lbl_taxaAcum" class="text-[10px] text-emerald-400 uppercase font-bold">Sua Taxa Retida (10%)</div>
-                    <div id="val_taxaAcum" class="text-xl font-black text-emerald-400 mt-1">R$ 50,00</div>
+
+                <!-- TABELA DE HISTÓRICO DE AUDITORIA ANTERIOR -->
+                <div class="overflow-x-auto pt-2">
+                    <table class="w-full text-left text-xs text-slate-300">
+                        <thead class="bg-slate-900 text-slate-400 text-[10px] uppercase border-b border-slate-800">
+                            <tr>
+                                <th class="p-2">ID</th>
+                                <th id="th_servico" class="p-2">Serviço/Setor</th>
+                                <th id="th_bruto" class="p-2">Bruto</th>
+                                <th id="th_taxa" class="p-2">Sua Taxa (10%)</th>
+                                <th class="p-2">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800" id="tabela_corpo">
+                            <!-- Injetado via Javascript baseado na moeda -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
-            <!-- CENTRAL LOGÍSTICA GOOGLE MAPS -->
+            <!-- CENTRAL LOGÍSTICA GOOGLE MAPS (PASSAGEIROS E CAMINHÕES) -->
             <div class="bg-slate-950 rounded-2xl border border-slate-800 p-6 shadow-xl">
-                <h3 id="lbl_titLogistica" class="font-bold text-white text-base mb-4">Central de Logística Urbana (Google Maps)</h3>
+                <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+                    <div>
+                        <h3 id="lbl_titLogistica" class="font-bold text-white text-base">Central de Logística Urbana (Google Maps)</h3>
+                        <p id="lbl_subLogistica" class="text-xs text-slate-400">Rastreamento global terrestre de frotas e pessoas</p>
+                    </div>
+                    
+                    <!-- SELETOR DE MODALIDADE: PASSAGEIROS OU CAMINHÕES/FRETES -->
+                    <div class="flex bg-slate-900 border border-slate-800 rounded-xl p-1 gap-1 text-[10px]">
+                        <button type="button" onclick="mudarModalidade('Uber')" id="mod_uber" class="px-2 py-1 rounded-lg bg-emerald-500 text-slate-950 font-bold"><i class="fa-solid fa-car mr-1"></i> Passageiros</button>
+                        <button type="button" onclick="mudarModalidade('Caminhao')" id="mod_caminhao" class="px-2 py-1 rounded-lg text-slate-400 font-medium"><i class="fa-solid fa-truck mr-1"></i> Frotas/Fretes</button>
+                    </div>
+                </div>
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <input type="text" id="partida" placeholder="Origem / Start" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none">
                     <input type="text" id="destino" placeholder="Destino / Destination" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none">
                 </div>
-                <button type="button" onclick="calcularRotaGlobal()" id="lbl_btnCalc" class="w-full bg-slate-900 border border-slate-700 hover:border-emerald-500 text-white font-medium py-2.5 rounded-xl text-xs mb-4">Processar Rota Segura e Calcular Taxa 10?</button>
+                <button type="button" onclick="calcularRotaGlobal()" id="lbl_btnCalc" class="w-full bg-slate-900 border border-slate-700 hover:border-emerald-500 text-white font-medium py-2.5 rounded-xl text-xs mb-4">Processar Rota Segura e Calcular Taxa 10%</button>
 
                 <div id="containerMapa" class="w-full h-64 rounded-xl overflow-hidden border border-slate-800 relative">
                     <iframe id="iframeMapa" class="w-full h-full border-0" src="https://google.com" allowfullscreen="" loading="lazy"></iframe>
@@ -99,7 +124,7 @@
                         <div id="valTotal" class="text-sm font-black text-white">0,00</div>
                     </div>
                     <div class="text-right">
-                        <div id="lbl_recTax" class="text-[10px] text-emerald-400 uppercase font-bold">Sua Retenção (10%)</div>
+                        <div id="lbl_recTax" class="text-[10px] text-emerald-400 uppercase font-bold">Sua Retenção (10% Protegido)</div>
                         <div id="valTaxa" class="text-sm font-black text-emerald-400">0,00</div>
                     </div>
                 </div>
@@ -109,25 +134,3 @@
 
     <script>
         let idiomaAtivo = 'pt';
-        let moedaAtiva = 'BRL';
-        let docAtivo = 'CPF';
-
-        const tabelas = {
-            BRL: { simb: "R$ ", fac: 1 },
-            USD: { simb: "$ ", fac: 0.18 }
-        };
-
-        const textos = {
-            pt: {
-                titC: "Portal de Entrada Seguro", subC: "Validação automatizada antifraude", perf: "Perfil de Atuação", nom: "Nome Completo", docC: "Documento de Identidade (CPF)", docE: "Registro Corporativo (CNPJ)", btnR: "Finalizar Registro Global",
-                titW: "Carteira Digital do Motorista", sal: "Saldo Disponível (90%)", tax: "Sua Taxa Retida (10%)", log: "Central de Logística Urbana (Google Maps)", btnM: "Processar Rota Segura e Calcular Taxa 10%", rCli: "Total pago pelo Cliente", rTax: "Sua Retenção (10%)"
-            },
-            en: {
-                titC: "Secure Onboarding Portal", subC: "Automated anti-fraud validation", perf: "Account Profile", nom: "Full Name", docC: "Identity Document (SSN / Tax ID)", docE: "Corporate Registration (EIN)", btnR: "Complete Global Registration",
-                titW: "Driver's Digital Wallet", sal: "Available Balance (90%)", tax: "Your Retained Fee (10%)", log: "Urban Logistics Center (Google Maps)", btnM: "Process Secure Route & Compute 10% Fee", rCli: "Total Paid by Customer", rTax: "Your Automated Retention (10%)"
-            }
-        };
-
-        function mudarIdioma(lang) {
-            idiomaAtivo = lang;
-            document.getElementById('lang_pt').className = lang === 'pt' ? "px-2 py-1 rounded-lg bg-emerald-500 text-slate-950 font-bold transition" : "px-2 py-1 rounded-lg text-slate-400 font-medium hover:text-white transition";
