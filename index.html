@@ -1,22 +1,172 @@
-create table vagas (
-  id uuid primary key default gen_random_uuid(),
-  servico text not null,
-  valor numeric(10,2) not null check (valor > 0),
-  prestador_nome text not null,
-  prestador_wallet_id text not null,
-  status text not null default 'aberta'
-);
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Let's Prosper - Sistema Automatizado</title>
+<style>
+:root{--bg:#0b0f17;--card:#111823;--line:#1f2b3b;--txt:#eaf0f7;--mut:#8a98ab;--blue:#0a6cff;--green:#22b34c;--teal:#14a3b8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:Segoe UI,Arial,sans-serif;padding:14px}
+header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:14px}
+header b{color:var(--teal)}
+.tag{border:1px solid var(--green);color:var(--green);padding:6px 12px;border-radius:4px;font-size:13px;font-weight:600}
+main{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:800px){main{grid-template-columns:1fr}}
+section{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px;margin-bottom:14px}
+h2{margin:0 0 4px;font-size:18px}
+small,.sub{color:var(--mut);font-size:12px}
+input,select{width:100%;padding:11px;margin-top:10px;background:#18212e;border:1px solid var(--line);border-radius:6px;color:var(--txt);font-size:14px}
+button{width:100%;margin-top:10px;padding:11px;border:0;border-radius:6px;background:var(--blue);color:#fff;font-weight:700;font-size:14px;cursor:pointer}
+button:hover{filter:brightness(1.1)}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--teal)}
+button.sec{background:#243246}button.sm{width:auto;margin:0;padding:7px 12px}
+button:disabled{opacity:.5;cursor:not-allowed}
+.box{background:#0a0f16;border:1px solid var(--line);border-radius:6px;padding:12px;margin-top:10px}
+.big{font-size:24px;font-weight:700}.g{color:var(--green)}
+.mural{border-color:var(--blue)}.mural h2{color:var(--blue)}
+.item{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#18212e;border-radius:6px;padding:10px;margin-top:10px}
+.item p{margin:2px 0 0}
+.badge{display:inline-block;background:var(--green);color:#fff;font-size:12px;font-weight:700;padding:4px 9px;border-radius:4px}
+.route{display:flex;justify-content:space-between;background:#0d1c24;border:1px solid var(--teal);border-radius:6px;padding:12px;margin-top:10px}
+.hist{max-height:170px;overflow:auto;font-size:13px;margin-top:10px}
+.hist div{padding:6px 0;border-bottom:1px solid var(--line)}
+.empty{text-align:center;color:var(--mut);font-style:italic;padding:14px}
+#msg{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:#243246;padding:10px 16px;border-radius:6px;display:none}
+</style>
+</head>
+<body>
+<header><b>LP Let's Prosper Global</b><span class="tag">Taxa do Administrador: 10% retida de forma automática</span></header>
 
-create table pagamentos (
-  id uuid primary key default gen_random_uuid(),
-  vaga_id uuid references vagas(id),
-  asaas_id text unique,
-  valor numeric(10,2),
-  taxa_plataforma numeric(10,2),
-  status text default 'pendente',
-  criado_em timestamptz default now()
-);
+<main>
+<div>
+  <section>
+    <h2>Mão de Obra &amp; Vagas (Modelo iWork)</h2>
+    <small>Anúncios com taxa de intermediação de 10% protegida</small>
+    <input id="nome" placeholder="Seu nome / Razão social">
+    <input id="servico" placeholder="Tipo de serviço ou cargo (ex: Eletricista)">
+    <select id="tipo">
+      <option value="">Selecione o tipo de relação comercial...</option>
+      <option>Serviço pontual (autônomo)</option>
+      <option>Contrato PJ</option>
+      <option>Vaga CLT</option>
+      <option>Projeto fechado</option>
+    </select>
+    <input id="valor" type="number" min="1" step="0.01" placeholder="Valor estimado do projeto (R$)">
+    <button id="btnPub">Publicar oportunidade</button>
+  </section>
 
-alter table vagas enable row level security;
-alter table pagamentos enable row level security;
-create policy "ler vagas abertas" on vagas for select using (status = 'aberta');
+  <section class="mural">
+    <h2>Mural de oportunidades ativas</h2>
+    <div id="mural"></div>
+  </section>
+</div>
+
+<div>
+  <section>
+    <h2>Carteira digital &amp; histórico de auditoria</h2>
+    <div class="box"><small>SALDO DISPONÍVEL PRESTADORES (90%)</small><div class="big" id="saldo">R$ 0,00</div></div>
+    <div class="box"><small>SUA RETENÇÃO ACUMULADA (10%)</small><div class="big g" id="ret">R$ 0,00</div></div>
+    <div class="hist" id="hist"></div>
+    <button class="sec" id="btnReset">Apagar todos os dados deste navegador</button>
+  </section>
+
+  <section>
+    <h2>Central de logística urbana</h2>
+    <span class="badge">Passageiros (R$ 2/km)</span>
+    <input id="origem" placeholder="Endereço de partida (ex: Natal, RN)">
+    <input id="destino" placeholder="Endereço de destino (ex: João Pessoa, PB)">
+    <button id="btnRota">Calcular rota</button>
+    <div class="route"><div><small>Distância</small><div class="big" style="color:var(--teal)" id="km">0.0 km</div></div>
+    <div style="text-align:right"><small>Preço da rota</small><div class="big g" id="preco">R$ 0,00</div></div></div>
+    <button id="btnCorrida" class="sec" disabled>Solicitar corrida</button>
+  </section>
+</div>
+</main>
+<div id="msg" role="status"></div>
+
+<script>
+const TAXA = 0.10, PRECO_KM = 2;
+const KEY = 'lp_dados_v1';
+const brl = n => n.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+let db = {vagas:[], saldo:0, retencao:0, hist:[]};
+try { db = Object.assign(db, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch(e){}
+const salvar = () => { try { localStorage.setItem(KEY, JSON.stringify(db)); } catch(e){} };
+
+function aviso(t){ const m=$('msg'); m.textContent=t; m.style.display='block'; clearTimeout(m._t); m._t=setTimeout(()=>m.style.display='none',3000); }
+
+function registrar(descricao, total){
+  const taxa = +(total*TAXA).toFixed(2), prest = +(total-taxa).toFixed(2);
+  db.saldo += prest; db.retencao += taxa;
+  db.hist.unshift(`${new Date().toLocaleString('pt-BR')} — ${descricao}: ${brl(total)} (prestador ${brl(prest)} | taxa ${brl(taxa)})`);
+  salvar(); render();
+}
+
+function render(){
+  $('saldo').textContent = brl(db.saldo);
+  $('ret').textContent = brl(db.retencao);
+  $('hist').innerHTML = db.hist.slice(0,50).map(h=>`<div>${esc(h)}</div>`).join('') || '<div class="empty">Nenhuma transação ainda.</div>';
+  $('mural').innerHTML = db.vagas.length ? db.vagas.map(v=>`
+    <div class="item"><div><b>${esc(v.servico)}</b><p class="sub">${esc(v.nome)} · ${esc(v.tipo)}</p>
+    <p>${brl(v.valor)} <span class="sub">(taxa ${brl(v.valor*TAXA)})</span></p></div>
+    <button class="sm" data-id="${v.id}">Contratar</button></div>`).join('')
+    : '<div class="empty">Nenhuma oportunidade listada no momento...</div>';
+}
+
+$('btnPub').onclick = () => {
+  const nome=$('nome').value.trim(), servico=$('servico').value.trim(), tipo=$('tipo').value, valor=parseFloat($('valor').value);
+  if(!nome||!servico||!tipo||!(valor>0)) return aviso('Preencha todos os campos com um valor maior que zero.');
+  db.vagas.unshift({id:Date.now(),nome,servico,tipo,valor}); salvar(); render();
+  ['nome','servico','valor'].forEach(i=>$(i).value=''); $('tipo').value='';
+  aviso('Oportunidade publicada.');
+};
+
+$('mural').onclick = e => {
+  const id = e.target.dataset && e.target.dataset.id; if(!id) return;
+  const v = db.vagas.find(x=>String(x.id)===id); if(!v) return;
+  if(!confirm(`Contratar "${v.servico}" por ${brl(v.valor)}?\n(Simulação: o pagamento real exige gateway.)`)) return;
+  registrar(`Contratação: ${v.servico}`, v.valor);
+  db.vagas = db.vagas.filter(x=>x.id!==v.id); salvar(); render();
+  aviso('Contratação registrada. 10% retidos.');
+};
+
+$('btnReset').onclick = () => {
+  if(!confirm('Apagar todos os dados salvos neste navegador?')) return;
+  db={vagas:[],saldo:0,retencao:0,hist:[]}; salvar(); render();
+};
+
+/* Logística: geocodificação (Nominatim) + rota por estrada (OSRM), gratuitos */
+let rotaAtual = null;
+async function geocode(q){
+  const r = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=br&q='+encodeURIComponent(q));
+  const j = await r.json();
+  if(!j.length) throw new Error('Endereço não encontrado: '+q);
+  return {lat:j[0].lat, lon:j[0].lon};
+}
+$('btnRota').onclick = async () => {
+  const o=$('origem').value.trim(), d=$('destino').value.trim();
+  if(!o||!d) return aviso('Informe partida e destino.');
+  $('btnRota').textContent='Calculando...'; $('btnRota').disabled=true;
+  try{
+    const [a,b] = [await geocode(o), await geocode(d)];
+    const r = await fetch(`https://router.project-osrm.org/route/v1/driving/${a.lon},${a.lat};${b.lon},${b.lat}?overview=false`);
+    const j = await r.json();
+    if(!j.routes||!j.routes.length) throw new Error('Rota não encontrada.');
+    const km = j.routes[0].distance/1000, preco = +(km*PRECO_KM).toFixed(2);
+    $('km').textContent = km.toFixed(1)+' km'; $('preco').textContent = brl(preco);
+    rotaAtual = {o,d,km,preco}; $('btnCorrida').disabled=false;
+  }catch(err){ aviso(err.message||'Erro ao calcular a rota.'); }
+  $('btnRota').textContent='Calcular rota'; $('btnRota').disabled=false;
+};
+$('btnCorrida').onclick = () => {
+  if(!rotaAtual) return;
+  registrar(`Corrida ${rotaAtual.o} → ${rotaAtual.d} (${rotaAtual.km.toFixed(1)} km)`, rotaAtual.preco);
+  aviso('Corrida solicitada. 10% retidos.'); rotaAtual=null; $('btnCorrida').disabled=true;
+};
+
+render();
+</script>
+</body>
+</html>
