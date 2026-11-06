@@ -1,142 +1,131 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Let's Prosper - Sistema Automatizado de Transporte</title>
-    <style>
-        body { background-color: #0f172a; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; padding: 20px; margin: 0; }
-        nav { background-color: #020617; border-bottom: 1px solid #334155; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
-        .logo { font-size: 20px; font-weight: bold; color: #ffffff; }
-        .logo span { color: #10b981; }
-        .grid-principal { max-w: 1200px; margin: 30px auto; display: grid; grid-template-columns: 1fr; gap: 30px; }
-        @media (min-width: 992px) { .grid-principal { grid-template-columns: 1fr 2fr; } }
-        .bloco-card { background-color: #020617; border: 1px solid #1e293b; padding: 24px; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); position: relative; }
-        .subbloco { background-color: #0f172a; border: 1px solid #1e293b; padding: 15px; border-radius: 12px; margin-top: 15px; }
-        .titulo-secao { font-size: 16px; font-weight: bold; margin-top: 0; margin-bottom: 10px; border-bottom: 1px solid #1e293b; padding-bottom: 8px; color: #ffffff; }
-        .subtitulo { font-size: 12px; color: #94a3b8; margin: -5px 0 15px 0; }
-        input, select, button { width: 100%; box-sizing: border-box; padding: 10px 14px; margin-bottom: 12px; border-radius: 10px; background-color: #1e293b; border: 1px solid #334155; color: #ffffff; font-size: 13px; }
-        input:focus, select:focus { outline: none; border-color: #10b981; }
-        button { cursor: pointer; border: none; font-weight: bold; transition: all 0.2s; }
-        .btn-principal { background-color: #10b981; color: #020617; }
-        .btn-principal:hover { background-color: #059669; }
-        .btn-chamar { background-color: #2563eb; color: #ffffff; margin-top: 15px; }
-        .btn-chamar:hover { background-color: #1d4ed8; }
-        .btn-secundario { background-color: #2563eb; color: #ffffff; }
-        .flex-botoes { display: flex; gap: 8px; margin-bottom: 15px; }
-        .flex-botoes button { margin-bottom: 0; padding: 6px 12px; background-color: #1e293b; border: 1px solid #334155; color: #94a3b8; width: auto; }
-        .flex-botoes button.ativo { background-color: #10b981; color: #020617; font-weight: bold; border-color: #10b981; }
-        .alerta-robo { background: #1e1b4b; border: 2px solid #6366f1; border-radius: 12px; padding: 15px; margin-top: 15px; display: none; }
-        .status-motorista { display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 8px 12px; border-radius: 8px; margin-top: 8px; border: 1px solid #312e81; font-size: 12px; }
-        .pulse { display: inline-block; width: 8px; height: 8px; background: #10b981; border-radius: 50%; margin-right: 5px; animation: blink 1s infinite; }
-        @keyframes blink { 0% { opacity: 0.2; } 50% { opacity: 1; } 100% { opacity: 0.2; } }
-    </style>
-</head>
-<body>
-
-    <!-- BARRA DE NAVEGAÇÃO -->
-    <nav>
-        <div class="logo">LP <span>Let's Prosper</span> Global</div>
-        <div style="font-size: 12px; background-color: #1e293b; border: 1px solid #334155; padding: 6px 14px; border-radius: 10px; font-weight: bold; color: #10b981;">
-            Taxa do Administrador: 10% Retida de Forma Automática
+<div class="card-logistica">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <div>
+            <h3>Central de Logística Urbana Robótica</h3>
+            <small>Cálculo automático de KM e disparo automático para motoristas</small>
         </div>
-    </nav>
-
-    <div class="grid-principal">
-        
-        <!-- COLUNA ESQUERDA: MÃO DE OBRA (ESTILO IWORK) -->
-        <div class="bloco-card">
-            <div class="titulo-secao">Mão de Obra & Vagas</div>
-            <div class="subtitulo">Anúncios estilo iWork com taxa de 10%</div>
-            <form onsubmit="event.preventDefault(); alert('Oportunidade publicada no painel local!');">
-                <input type="text" placeholder="Seu Nome / Razão Social" required>
-                <input type="text" placeholder="Tipo de Serviço (Ex: Pintor, Carreto)" required>
-                <select>
-                    <option value="contratar">Quero Contratar Mão de Obra</option>
-                    <option value="oferecer">Quero Oferecer meus Serviços</option>
-                </select>
-                <input type="number" placeholder="Valor Estimado (R$)" required>
-                <button type="submit" class="btn-secundario">Publicar Oportunidade</button>
-            </form>
-        </div>
-
-        <!-- COLUNA DIREITA -->
-        <div style="display: flex; flex-direction: column; gap: 30px;">
-            
-            <div class="bloco-card">
-                <div class="titulo-secao">Carteira Digital & Histórico Auditoria</div>
-                <div class="grid-carteira">
-                    <div class="subbloco">
-                        <div style="font-size: 10px; color: #94a3b8; font-weight: bold; text-transform: uppercase;">Saldo Disponível Prestadores (90%)</div>
-                        <div style="font-size: 24px; font-weight: 900; margin-top: 5px; color: #ffffff;">R$ 450,00</div>
-                    </div>
-                    <div class="subbloco">
-                        <div style="font-size: 10px; color: #10b981; font-weight: bold; text-transform: uppercase;">Sua Retenção Acumulada (10%)</div>
-                        <div style="font-size: 24px; font-weight: 900; color: #10b981; margin-top: 5px;">R$ 50,00</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CENTRAL LOGÍSTICA -->
-            <div class="bloco-card">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
-                    <div>
-                        <div class="titulo-secao" style="margin-bottom:0; border-bottom:0; padding-bottom:0;">Central de Logística Urbana Robótica</div>
-                        <div class="subtitulo" style="margin-top:4px; margin-bottom:0;">Cálculo automático de KM e disparo automático para motoristas</div>
-                    </div>
-                    <div class="flex-botoes" style="margin-bottom:0;">
-                        <button type="button" onclick="window.mudarModalidade('Uber')" id="mod_uber" class="ativo">Passageiros (R$2/km)</button>
-                        <button type="button" onclick="window.mudarModalidade('Caminhao')" id="mod_caminhao">Frotas/Fretes</button>
-                    </div>
-                </div>
-
-                <div style="display: flex; flex-direction: column; gap: 5px;">
-                    <input type="text" id="partida" placeholder="Endereço de Partida (Ex: Natal)">
-                    <input type="text" id="destino" placeholder="Endereço de Destino (Ex: João Pessoa)">
-                </div>
-                
-                <!-- BOTÃO BLINDADO - EXECUTA DIRETAMENTE SEM DEPENDER DE FUNÇÃO EXTERNA -->
-                <button type="button" onclick="window.roboCalcularDistanciaAutomatica();" class="btn-principal">🤖 Calcular Rota e Taxas Automaticamente</button>
-
-                <div id="reciboFinancas" style="display: none; flex-direction: column; background-color: #020617; border: 1px solid rgba(16,185,129,0.3); padding: 15px; border-radius: 12px; margin-top: 15px;">
-                    <div style="display: flex; justify-content: space-between; width: 100%; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 8px;">
-                        <div style="font-size: 11px; color: #38bdf8; font-weight: bold;">Distância Calculada pelo Robô:</div>
-                        <div id="txt_distanciaCalculada" style="font-size: 12px; font-weight: bold; color: #fff;">0 KM</div>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; width: 100%;">
-                        <div>
-                            <div style="font-size: 10px; color: #94a3b8; font-weight: bold; text-transform: uppercase;">Total cobrado do Cliente</div>
-                            <div id="valTotal" style="font-size: 16px; font-weight: 900; color: #ffffff;">R$ 0,00</div>
-                        </div>
-                        <div style="text-align: right;">
-                            <div style="font-size: 10px; color: #10b981; font-weight: bold; text-transform: uppercase;">Sua Margem (10% Retido)</div>
-                            <div id="valTaxa" style="font-size: 16px; font-weight: 900; color: #10b981;">R$ 0,00</div>
-                        </div>
-                    </div>
-                    
-                    <button type="button" onclick="window.dispararAlertaRoboMotoristas();" class="btn-chamar">
-                        ⚡ Confirmar Viagem e Disparar Alerta para Motoristas
-                    </button>
-                </div>
-
-                <div id="painelRoboMotoristas" class="alerta-robo">
-                    <div style="font-size: 12px; font-weight: bold; color: #6366f1; border-bottom: 1px solid #312e81; padding-bottom: 5px; margin-bottom: 10px; display: flex; justify-content: space-between;">
-                        <span>📡 ROBÔ DE TRANSMISSÃO LET'S PROPER</span>
-                        <span style="color: #a5b4fc;" id="txt_cronometro">Buscando...</span>
-                    </div>
-                    <div style="font-size: 11px; color: #94a3b8; margin-bottom: 10px;" id="txt_statusAlerta">Disparando sinal de viagem para frotas ativas no raio do território...</div>
-                    <div id="lista_motoristas"></div>
-                </div>
-            </div>
+        <div>
+            <span class="badge bg-success text-white px-3 py-2" id="btn-passageiros">Passageiros (R$2/km)</span>
+            <span class="badge bg-secondary text-white px-3 py-2 ms-2" id="btn-frotas" style="opacity: 0.6; cursor: pointer;">Frotas/Fretes</span>
         </div>
     </div>
+    
+    <div class="card-body mt-3">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label text-muted small">Endereço de Partida</label>
+                <input type="text" id="endereco-partida" class="form-control bg-dark text-white border-secondary" placeholder="Digite o local de início (Ex: Natal)">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label text-muted small">Endereço de Destino</label>
+                <input type="text" id="endereco-destino" class="form-control bg-dark text-white border-secondary" placeholder="Digite o destino final (Ex: João Pessoa)">
+            </div>
+        </div>
+        
+        <!-- Painel de resumo da rota calculado em tempo real -->
+        <div id="resumo-rota" class="mt-4 p-3 rounded bg-black-50 text-white border border-secondary" style="display: none; background-color: rgba(0,0,0,0.2);">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <p class="mb-1 text-muted small">Distância Calculada</p>
+                    <h5 class="mb-0 text-info" id="txt-distancia">0.0 km</h5>
+                </div>
+                <div>
+                    <p class="mb-1 text-muted small">Valor da Corrida</p>
+                    <h4 class="mb-0 text-success" id="txt-preco-total">R$ 0,00</h4>
+                </div>
+            </div>
+        </div>
 
-    <script>
-        window.modalidadeAtiva = 'Uber';
+        <button type="button" id="btn-solicitar-rota" class="btn btn-primary w-100 mt-3 fw-bold py-2">
+            Confirmar e Chamar Motorista
+        </button>
+    </div>
+</div>
 
-        window.mudarModalidade = function(mod) {
-            window.modalidadeAtiva = mod;
-            document.getElementById('mod_uber').className = mod === 'Uber' ? "ativo" : "";
-            document.getElementById('mod_caminhao').className = mod === 'Caminhao' ? "ativo" : "";
-        };
+// Variáveis Globais de Controle da Aplicação
+let autocompletePartida, autocompleteDestino;
+let directionsService, directionsRenderer;
+let distanciaKm = 0;
+let precoCorrida = 0;
+const TARIFA_POR_KM = 2.00;
 
+// Inicialização disparada pelo callback do script do Google Maps
+function initLogistica() {
+    directionsService = new google.maps.DirectionsService();
+    
+    // Configura o Autocomplete para sugerir locais com foco no Brasil
+    const options = {
+        componentRestrictions: { country: "br" },
+        fields: ["address_components", "geometry", "icon", "name"]
+    };
+
+    const inputPartida = document.getElementById('endereco-partida');
+    const inputDestino = document.getElementById('endereco-destino');
+
+    autocompletePartida = new google.maps.places.Autocomplete(inputPartida, options);
+    autocompleteDestino = new google.maps.places.Autocomplete(inputDestino, options);
+
+    // Escuta as mudanças de seleção para recalcular dinamicamente
+    autocompletePartida.addListener('place_changed', calcularRotaTempoReal);
+    autocompleteDestino.addListener('place_changed', calcularRotaTempoReal);
+}
+
+// Executa o cálculo de rota dinâmica (Padrão de eficiência Uber/99)
+function calcularRotaTempoReal() {
+    const partidaText = document.getElementById('endereco-partida').value;
+    const destinoText = document.getElementById('endereco-destino').value;
+
+    // Só calcula se ambos os pontos estiverem digitados/selecionados
+    if (!partidaText || !destinoText) return;
+
+    directionsService.route({
+        origin: partidaText,
+        destination: destinoText,
+        travelMode: google.maps.TravelMode.DRIVING // Baseado em tráfego de vias terrestres
+    }, function(response, status) {
+        if (status === 'OK') {
+            // Extrai a distância em metros da primeira rota gerada
+            const distanciaMetros = response.routes[0].legs[0].distance.value;
+            distanciaKm = distanciaMetros / 1000;
+            
+            // Lógica financeira matemática do ecossistema LP
+            precoCorrida = distanciaKm * TARIFA_POR_KM;
+
+            // Atualiza os elementos visuais na tela em tempo real
+            document.getElementById('txt-distancia').innerText = `${distanciaKm.toFixed(1)} km`;
+            document.getElementById('txt-preco-total').innerText = `R$ ${precoCorrida.toFixed(2).replace('.', ',')}`;
+            document.getElementById('resumo-rota').style.display = 'block';
+        } else {
+            console.error('Falha na requisição de rota devido a: ' + status);
+        }
+    });
+}
+
+// Processa a confirmação do pedido, atualiza carteira digital e simula split
+document.getElementById('btn-solicitar-rota').addEventListener('click', function() {
+    if (precoCorrida === 0) {
+        alert("Por favor, selecione uma rota válida primeiro.");
+        return;
+    }
+
+    // Cálculo da divisão da taxa automatizada de 10%
+    const taxaAdministrador = precoCorrida * 0.10;
+    const repassePrestador = precoCorrida * 0.90;
+
+    // Simulação da atualização dos saldos na Carteira Digital da Interface
+    // Captura os saldos atuais limpos de formatação
+    let saldoAtualPrestadores = parseFloat(document.getElementById('saldo-prestadores-num')?.innerText || "450.00");
+    let retencaoAtualAdmin = parseFloat(document.getElementById('retencao-admin-num')?.innerText || "50.00");
+
+    let novoSaldoPrestadores = saldoAtualPrestadores + repassePrestador;
+    let novaRetencaoAdmin = retencaoAtualAdmin + taxaAdministrador;
+
+    // Atualiza a árvore do DOM (Valores estáticos do painel superior)
+    // Nota: Garanta que sua carteira digital tenha IDs ou classes fáceis de injetar dinamicamente como abaixo
+    const containerSaldo = document.querySelector('h2:contains("R$")') || document.getElementById('carteira-saldo');
+    
+    alert(`Rota Confirmada com Sucesso!\nDistância: ${distanciaKm.toFixed(1)} km\nValor Total: R$ ${precoCorrida.toFixed(2)}\nTaxa Admin (10%): R$ ${taxaAdministrador.toFixed(2)} retida automaticamente.`);
+});
+
+<!-- Script do Google Maps com bibliotecas de lugares e rotas -->
+<script src="https://googleapis.com" async defer></script>
