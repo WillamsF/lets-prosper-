@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Let's Prosper - Marketplace de Multisserviços</title>
+    <title>Let's Prosper - Global Multisserviços & Logística</title>
     <script src="https://jsdelivr.net"></script>
     <link rel="stylesheet" href="https://cloudflare.com">
     <style>
@@ -13,131 +13,128 @@
 </head>
 <body class="bg-slate-900 text-slate-100 font-sans antialiased min-h-screen">
 
-    <!-- BARRA DE NAVEGAÇÃO -->
+    <!-- BARRA DE NAVEGAÇÃO GLOBAL -->
     <nav class="bg-slate-950 border-b border-slate-800 px-6 py-4 flex flex-wrap justify-between items-center sticky top-0 z-50">
         <div class="flex items-center gap-3">
-            <div class="bg-emerald-500 text-slate-950 p-2 rounded-xl font-black text-xl shadow-lg shadow-emerald-500/20 tracking-wider">LP</div>
+            <div class="bg-emerald-500 text-slate-950 p-2 rounded-xl font-black text-xl shadow-lg tracking-wider">LP</div>
             <span class="text-xl font-bold tracking-tight text-white">Let's <span class="text-emerald-400">Prosper</span></span>
         </div>
-        <div class="flex items-center gap-4 mt-2 sm:mt-0">
-            <span class="bg-slate-800 text-xs px-3 py-1.5 rounded-full border border-slate-700 text-emerald-400 font-medium">
-                <i class="fa-solid fa-percent mr-1"></i> Taxa do Site: 10% Retida na Fonte
+        
+        <!-- SELETOR DE IDIOMA E MOEDA GLOBAL -->
+        <div class="flex items-center gap-3 mt-2 sm:mt-0 flex-wrap">
+            <div class="flex bg-slate-900 border border-slate-800 rounded-xl p-1 gap-1 text-xs">
+                <select id="selectIdioma" onchange="mudarIdiomaMoeda()" class="bg-transparent border-0 text-white font-medium focus:outline-none p-1.5 cursor-pointer">
+                    <option value="pt">🇧🇷 Português (PT)</option>
+                    <option value="en">🇺🇸 English (EN)</option>
+                    <option value="es">🇪s Español (ES)</option>
+                </select>
+                <select id="selectMoeda" onchange="mudarIdiomaMoeda()" class="bg-transparent border-0 text-emerald-400 font-bold focus:outline-none p-1.5 cursor-pointer">
+                    <option value="BRL">BRL (R$)</option>
+                    <option value="USD">USD ($)</option>
+                    <option value="EUR">EUR (€)</option>
+                </select>
+            </div>
+            <span class="bg-slate-800 text-xs px-3 py-2 rounded-xl border border-slate-700 text-emerald-400 font-medium">
+                <i class="fa-solid fa-percent mr-1"></i> <span id="txtTaxaNav">Taxa: 10% Retida na Fonte</span>
             </span>
-            <div class="text-xs text-slate-400">Painel Administrativo: <span class="text-white font-bold">WilliamsF</span></div>
         </div>
     </nav>
 
-    <!-- CONTEÚDO PRINCIPAL -->
+    <!-- CONTEÚDO PRINCIPAL EM GRID -->
     <main class="max-w-7xl mx-auto p-4 md:p-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        <!-- COLUNA ESQUERDA: CADASTRO COM SEGURANÇA MÁXIMA -->
+        <!-- COLUNA 1: CADASTRO COM SEGURANÇA INTERNACIONAIS -->
         <div class="bg-slate-950 rounded-2xl border border-slate-800 p-6 shadow-xl h-fit">
             <div class="flex items-center gap-3 mb-6 border-b border-slate-800 pb-4">
                 <div class="text-emerald-400 text-xl"><i class="fa-solid fa-shield-halved"></i></div>
                 <div>
-                    <h2 class="font-bold text-lg text-white">Portal de Entrada Seguro</h2>
-                    <p class="text-xs text-slate-400">Validação antifraude de novos usuários</p>
+                    <h2 id="titCadastro" class="font-bold text-lg text-white">Portal de Entrada Seguro</h2>
+                    <p id="subCadastro" class="text-xs text-slate-400">Validação automatizada antifraude</p>
                 </div>
             </div>
 
-            <form id="formSeguro" class="space-y-4" onsubmit="processarCadastro(event)">
+            <form id="formSeguro" class="space-y-4" onsubmit="processarCadastroGlobal(event)">
                 <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Perfil de Atuação</label>
+                    <label id="lblPerfil" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Perfil de Atuação</label>
                     <div class="grid grid-cols-2 gap-2">
-                        <button type="button" onclick="alternarSeguranca('CPF')" class="flex items-center justify-center p-2.5 border-2 border-emerald-500 bg-emerald-500/10 text-emerald-400 rounded-xl text-xs font-bold w-full text-center cursor-pointer" id="btnAutonomo">
-                            <i class="fa-solid fa-user mr-1.5"></i> Profissional / CPF
+                        <button type="button" onclick="alternarDocumento('CPF')" class="flex items-center justify-center p-2.5 border-2 border-emerald-500 bg-emerald-500/10 text-emerald-400 rounded-xl text-xs font-bold w-full text-center cursor-pointer" id="btnAutonomo">
+                            Individual
                         </button>
-                        <button type="button" onclick="alternarSeguranca('CNPJ')" class="flex items-center justify-center p-2.5 border border-slate-800 bg-slate-900 text-slate-400 rounded-xl text-xs font-medium w-full text-center cursor-pointer" id="btnEmpresa">
-                            <i class="fa-solid fa-building mr-1.5"></i> Empresa / B2B
+                        <button type="button" onclick="alternarDocumento('CNPJ')" class="flex items-center justify-center p-2.5 border border-slate-800 bg-slate-900 text-slate-400 rounded-xl text-xs font-medium w-full text-center cursor-pointer" id="btnEmpresa">
+                            B2B / Business
                         </button>
                     </div>
                 </div>
 
                 <div>
                     <label id="lblNome" class="block text-xs font-medium text-slate-300 mb-1">Nome Completo</label>
-                    <input type="text" id="nome" required placeholder="Digite seu nome completo" class="w-full rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
+                    <input type="text" id="nome" required class="w-full rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
                 </div>
 
                 <div>
-                    <label id="lblDoc" class="block text-xs font-medium text-slate-300 mb-1">CPF Obrigatório</label>
-                    <input type="text" id="documento" required placeholder="000.000.000-00" class="w-full rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
+                    <label id="lblDoc" class="block text-xs font-medium text-slate-300 mb-1">Documento de Identidade (CPF)</label>
+                    <input type="text" id="documento" required class="w-full rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-medium text-slate-300 mb-1">Setor principal de atividade</label>
+                    <label id="lblSetor" class="block text-xs font-medium text-slate-300 mb-1">Setor de Atividade</label>
                     <select id="setor" required class="w-full rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
-                        <option value="Mão de Obra Operacional">Mão de Obra (Estilo iWork)</option>
-                        <option value="Serviços Corporativos B2B">Serviços Corporativos (B2B)</option>
-                        <option value="Transporte de Cargas Terrestre">Transporte de Cargas (Frete)</option>
-                        <option value="Transporte de Passageiros">Transporte de Passageiros (Estilo Uber)</option>
+                        <option value="1" id="optSetor1">Mão de Obra (iWork)</option>
+                        <option value="2" id="optSetor2">Serviços Corporativos (B2B)</option>
+                        <option value="3" id="optSetor3">Logística e Fretes</option>
+                        <option value="4" id="optSetor4">Transporte de Passageiros (Uber)</option>
                     </select>
                 </div>
 
-                <div>
-                    <label class="block text-xs font-medium text-slate-300 mb-1">WhatsApp de Contato</label>
-                    <input type="tel" id="whats" required placeholder="(00) 90000-0000" class="w-full rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
-                </div>
-
-                <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-3 rounded-xl transition transform active:scale-95 flex items-center justify-center gap-2 mt-4 text-sm shadow-lg shadow-emerald-500/20 cursor-pointer">
-                    <i class="fa-solid fa-user-check"></i> Validar e Ativar Cadastro
+                <button type="submit" id="btnEnviarCadastro" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-3 rounded-xl transition transform active:scale-95 flex items-center justify-center gap-2 mt-4 text-sm shadow-lg shadow-emerald-500/20 cursor-pointer">
+                    Finalizar Registro Global
                 </button>
             </form>
         </div>
 
-        <!-- COLUNA CENTRAL E DIREITA -->
+        <!-- COLUNA 2 & 3: CENTRAL LOGÍSTICA GOOGLE MAPS & CARTEIRA DIGITAL AUTOMÁTICA -->
         <div class="lg:col-span-2 space-y-6">
-            <div class="bg-slate-950 rounded-2xl border border-slate-800 p-6 shadow-xl">
-                <h3 class="font-bold text-white mb-4 flex items-center gap-2 text-base">
-                    <i class="fa-solid fa-layer-group text-emerald-400"></i> Vitrine de Oportunidades Monetizadas
-                </h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 text-center">
-                        <div class="text-blue-400 text-xl mb-1"><i class="fa-solid fa-hammer"></i></div>
-                        <div class="text-xs font-bold text-white">Mão de Obra (iWork)</div>
-                        <div class="text-[10px] text-slate-400 mt-1">10% retidos na diária</div>
-                    </div>
-                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 text-center">
-                        <div class="text-purple-400 text-xl mb-1"><i class="fa-solid fa-handshake"></i></div>
-                        <div class="text-xs font-bold text-white">Parcerias B2B</div>
-                        <div class="text-[10px] text-slate-400 mt-1">Taxa sobre contratos</div>
-                    </div>
-                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 text-center">
-                        <div class="text-amber-400 text-xl mb-1"><i class="fa-solid fa-truck-ramp-box"></i></div>
-                        <div class="text-xs font-bold text-white">Fretes e Mobilidade</div>
-                        <div class="text-[10px] text-slate-400 mt-1">Split seguro retido</div>
+            
+            <!-- CARTEIRA DIGITAL INTEGRADA DO MOTORISTA (AUTOMATIZADA SEM INTERMEDIÁRIOS) -->
+            <div class="bg-slate-950 rounded-2xl border border-slate-800 p-6 shadow-xl grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="md:col-span-3 border-b border-slate-800 pb-3 flex justify-between items-center">
+                    <h3 class="font-bold text-white flex items-center gap-2 text-base">
+                        <i class="fa-solid fa-wallet text-emerald-400"></i> <span id="titCarteira">Carteira Digital do Motorista</span>
+                    </h3>
+                    <span class="text-[10px] text-slate-400 bg-slate-900 border border-slate-800 px-2 py-1 rounded-md font-mono">ID: LP-84187</span>
+                </div>
+                
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
+                    <div id="lblSaldoDisp" class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Saldo Disponível (90%)</div>
+                    <div id="cardSaldo" class="text-xl font-black text-white mt-1">R$ 450,00</div>
+                    <button class="mt-3 text-[10px] w-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 font-bold py-1.5 rounded-lg border border-emerald-500/20 transition cursor-pointer" onclick="alert('Sistema Split: Transferência automatizada enviada para processamento bancário internacional.')">Payout / Sacar</button>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
+                    <div id="lblRetencaoAcum" class="text-[10px] text-emerald-400 uppercase font-bold tracking-wider">Sua Taxa Retida (10%)</div>
+                    <div id="cardTaxaAcum" class="text-xl font-black text-emerald-400 mt-1">R$ 50,00</div>
+                    <div id="lblLucroLiquido" class="text-[9px] text-slate-500 mt-2 font-medium">Faturamento Líquido da Plataforma</div>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col justify-between">
+                    <div id="lblHistorico" class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-2">Última Corrida Segura</div>
+                    <div class="space-y-1">
+                        <div class="text-xs text-white font-medium flex justify-between"><span>Corrida #489</span> <span id="histTotal" class="font-bold">R$ 50,00</span></div>
+                        <div class="text-[10px] text-slate-500 flex justify-between"><span>Taxa LP (10%)</span> <span id="histTaxa" class="text-rose-400">- R$ 5,00</span></div>
                     </div>
                 </div>
             </div>
 
-            <!-- MÓDULO DO GOOGLE MAPS -->
+            <!-- CENTRAL DE LOGÍSTICA GOOGLE MAPS COM PROCESSAMENTO DE MOEDAS -->
             <div class="bg-slate-950 rounded-2xl border border-slate-800 p-6 shadow-xl">
                 <div class="flex items-center gap-3 mb-4">
-                    <div class="text-emerald-400 text-xl"><i class="fa-solid fa-route"></i></div>
+                    <div class="text-emerald-400 text-xl"><i class="fa-solid fa-map-location-dot"></i></div>
                     <div>
-                        <h3 class="font-bold text-white text-base">Central de Logística e Cargas</h3>
-                        <p class="text-xs text-slate-400">Cálculo de corrida baseado no Google Maps sem calotes</p>
+                        <h3 id="titLogistica" class="font-bold text-white text-base">Central de Logística Urbana (Google Maps)</h3>
+                        <p id="subLogistica" class="text-xs text-slate-400">Rastreamento global e divisão robótica de valores</p>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div>
-                        <label class="block text-xs font-medium text-slate-400 mb-1">Local de Partida</label>
-                        <input type="text" id="partida" placeholder="Ex: Av. Paulista, 1000" class="w-full rounded-xl px-4 py-2.5 text-xs">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-slate-400 mb-1">Destino Final</label>
-                        <input type="text" id="destino" placeholder="Ex: Aeroporto de Guarulhos" class="w-full rounded-xl px-4 py-2.5 text-xs">
-                    </div>
-                </div>
-
-                <button type="button" onclick="calcularRota()" class="w-full bg-slate-900 border border-slate-700 hover:border-emerald-500 text-white font-medium py-2.5 rounded-xl transition text-xs flex items-center justify-center gap-2 mb-4 cursor-pointer">
-                    <i class="fa-solid fa-calculator"></i> Processar Rota Segura e Calcular Taxa 10%
-                </button>
-
-                <div id="statusMapa" class="border border-dashed border-slate-800 rounded-xl p-8 text-center bg-slate-900/50">
-                    <div class="text-slate-500 text-3xl mb-2"><i class="fa-solid fa-map-location-dot"></i></div>
-                    <p class="text-xs text-slate-400">Aguardando inserção de rota para simular trajeto do Google Maps</p>
-                </div>
-
-                <div id="reciboFinancas" class="hidden w-full bg-slate-900 border border-emerald-500/30 p-4 rounded-xl mt-4 flex justify-between items-center">
-                    <div class="text-left">
+                        <label id="lblPartida" class="block text-xs font-medium text-slate-400 mb-1">Local de Partida</label>
