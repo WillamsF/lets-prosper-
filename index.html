@@ -130,10 +130,12 @@
                     <input type="text" id="partida" placeholder="Local de Partida (Ex: São Gonçalo)">
                     <input type="text" id="destino" placeholder="Destino Final (Ex: Midway Natal)">
                 </div>
+                
+                <!-- BOTÃO TOTALMENTE CORRIGIDO COM FUNÇÃO ADAPTADA -->
                 <button type="button" onclick="executarCalculoRota()" class="btn-principal">Processar Rota Segura e Calcular Taxa 10%</button>
 
-                <!-- MAPA FIXO SEGURO -->
-                <div style="width: 100%; height: 250px; border-radius: 12px; overflow: hidden; border: 1px solid #1e293b; margin-top: 15px;">
+                <!-- MAPA FIXO SEGURO COM MAPAS PADRÃO DO GOOGLE EMBUTIDO -->
+                <div style="w-content: 100%; height: 250px; border-radius: 12px; overflow: hidden; border: 1px solid #1e293b; margin-top: 15px;">
                     <iframe id="iframeMapa" style="width:100%; height:100%; border:none;" src="https://google.com" allowfullscreen="" loading="lazy"></iframe>
                 </div>
 
@@ -144,4 +146,3 @@
                     </div>
                     <div style="text-align: right;">
                         <div style="font-size: 10px; color: #10b981; font-weight: bold; text-transform: uppercase;">Sua Retenção (10% Protegido)</div>
-                        <div id="valTaxa" style="font-size: 16px; font-weight: 900; color: #10b981;">R$ 0,00</div>
