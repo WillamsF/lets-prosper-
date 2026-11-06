@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Let's Prosper - Global Multisserviços & Logística</title>
+    <title>Let's Prosper - Sistema de Transporte & Serviços</title>
     <style>
         body { background-color: #0f172a; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; padding: 20px; margin: 0; }
         nav { background-color: #020617; border-bottom: 1px solid #334155; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
@@ -20,33 +20,31 @@
         button { cursor: pointer; border: none; font-weight: bold; transition: all 0.2s; }
         .btn-principal { background-color: #10b981; color: #020617; }
         .btn-principal:hover { background-color: #059669; }
-        .btn-gps { background-color: #1e293b; color: #38bdf8; border: 1px solid #38bdf8; margin-bottom: 12px; }
-        .btn-gps:hover { background-color: rgba(56, 189, 248, 0.1); }
-        .btn-chamar { background-color: #3b82f6; color: #ffffff; margin-top: 15px; }
-        .btn-chamar:hover { background-color: #2563eb; }
+        .btn-chamar { background-color: #2563eb; color: #ffffff; margin-top: 15px; }
+        .btn-chamar:hover { background-color: #1d4ed8; }
         .btn-secundario { background-color: #2563eb; color: #ffffff; }
         .flex-botoes { display: flex; gap: 8px; margin-bottom: 15px; }
         .flex-botoes button { margin-bottom: 0; padding: 6px 12px; background-color: #1e293b; border: 1px solid #334155; color: #94a3b8; width: auto; }
         .flex-botoes button.ativo { background-color: #10b981; color: #020617; font-weight: bold; border-color: #10b981; }
     </style>
-</head>
+</nav>
 <body>
 
     <!-- BARRA DE NAVEGAÇÃO -->
     <nav>
         <div class="logo">LP <span>Let's Prosper</span> Global</div>
         <div style="font-size: 12px; background-color: #1e293b; border: 1px solid #334155; padding: 6px 14px; border-radius: 10px; font-weight: bold; color: #10b981;">
-            Moeda Ativa: BRL (R$)
+            Taxa Administrativa: 10% aplicada no pagamento
         </div>
     </nav>
 
     <div class="grid-principal">
         
-        <!-- COLUNA ESQUERDA: MÃO DE OBRA -->
+        <!-- COLUNA ESQUERDA: MÃO DE OBRA (ESTILO IWORK) -->
         <div class="bloco-card">
             <div class="titulo-secao">Mão de Obra & Vagas</div>
             <div class="subtitulo">Anúncios estilo iWork com taxa de 10%</div>
-            <form onsubmit="event.preventDefault(); alert('Serviço publicado com sucesso!');">
+            <form onsubmit="event.preventDefault(); alert('Oportunidade publicada no painel local!');">
                 <input type="text" id="vaga_nome" placeholder="Seu Nome / Razão Social" required>
                 <input type="text" id="vaga_titulo" placeholder="Tipo de Serviço (Ex: Pintor, Carreto)" required>
                 <select id="vaga_opcao">
@@ -58,7 +56,7 @@
             </form>
         </div>
 
-        <!-- COLUNA DIREITA: LOGÍSTICA DE MAPAS -->
+        <!-- COLUNA DIREITA: CARTEIRA E CENTRAL DE PREÇOS -->
         <div style="display: flex; flex-direction: column; gap: 30px;">
             
             <!-- CARTEIRA DIGITAL -->
@@ -76,51 +74,43 @@
                 </div>
             </div>
 
-            <!-- LOGÍSTICA DE MAPAS OPENSTREETMAP (100% LIVRE E SEGURO) -->
+            <!-- CENTRAL DE LOGÍSTICA BASEADA EM KM -->
             <div class="bloco-card">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
                     <div>
-                        <div class="titulo-secao" style="margin-bottom:0; border-bottom:0; padding-bottom:0;">Central de Logística Urbana</div>
-                        <div class="subtitulo" style="margin-top:4px; margin-bottom:0;">Rastreamento terrestre de frotas e pessoas</div>
+                        <div class="titulo-secao" style="margin-bottom:0; border-bottom:0; padding-bottom:0;">Central de Logística Urbana e Cargas</div>
+                        <div class="subtitulo" style="margin-top:4px; margin-bottom:0;">Cálculo de tarifas preciso por distância</div>
                     </div>
+                    <!-- MODALIDADE -->
                     <div class="flex-botoes" style="margin-bottom:0;">
-                        <button type="button" onclick="mudarModalidade('Uber')" id="mod_uber" class="ativo">Passageiros</button>
-                        <button type="button" onclick="mudarModalidade('Caminhao')" id="mod_caminhao">Frotas/Fretes</button>
+                        <button type="button" onclick="mudarModalidade('Uber')" id="mod_uber" class="ativo">Passageiros (R$2/km)</button>
+                        <button type="button" onclick="mudarModalidade('Caminhao')" id="mod_caminhao">Frotas/Fretes (Tarifa Carga)</button>
                     </div>
                 </div>
-
-                <!-- ATIVAR LOCALIZAÇÃO TOTALMENTE REFORMULADA -->
-                <button type="button" onclick="ativarLocalizacaoNatal()" class="btn-gps">
-                    📍 Ativar Minha Localização Atual (Natal/RN)
-                </button>
 
                 <div style="display: flex; flex-direction: column; gap: 5px;">
-                    <input type="text" id="partida" placeholder="Digite o Endereço de Partida">
-                    <input type="text" id="destino" placeholder="Digite o Endereço de Destino Final">
+                    <input type="text" id="partida" placeholder="Endereço de Partida (Ex: São Gonçalo)">
+                    <input type="text" id="destino" placeholder="Endereço de Destino (Ex: Centro, Natal)">
+                    <input type="number" id="distancia_km" placeholder="Distância estimada da viagem em Quilômetros (KM)" min="1" required>
                 </div>
                 
-                <button type="button" onclick="gerarTrajetoEValores()" class="btn-principal">Calcular Rota e Taxa do Site (10% Retido)</button>
+                <button type="button" onclick="calcularTarifaKm()" class="btn-principal">Processar Valores e Aplicar Taxa (10%)</button>
 
-                <!-- MAPA MUNDIAL PÚBLICO INTEGRADO DA OPENSTREETMAP (BLINDADO E À PROVA DE ERROS) -->
-                <div style="width:100%; height:260px; border-radius:12px; overflow:hidden; border:1px solid #334155; margin-top:15px;">
-                    <iframe id="iframeMapa" style="width:100%; height:100%; border:none;" src="https://openstreetmap.org" allowfullscreen=""></iframe>
-                </div>
-
-                <!-- RECIBO DE CONFIRMAÇÃO DO SERVIÇO -->
+                <!-- RECIBO E SOLICITAÇÃO REAL VIA WEB -->
                 <div id="reciboFinancas" style="display: none; flex-direction: column; background-color: #020617; border: 1px solid rgba(16,185,129,0.3); padding: 15px; border-radius: 12px; margin-top: 15px;">
                     <div style="display: flex; justify-content: space-between; width: 100%;">
                         <div>
-                            <div style="font-size: 10px; color: #94a3b8; font-weight: bold; text-transform: uppercase;">Total pago pelo Cliente</div>
+                            <div style="font-size: 10px; color: #94a3b8; font-weight: bold; text-transform: uppercase;">Total cobrado do Passageiro</div>
                             <div id="valTotal" style="font-size: 16px; font-weight: 900; color: #ffffff;">R$ 0,00</div>
                         </div>
                         <div style="text-align: right;">
-                            <div style="font-size: 10px; color: #10b981; font-weight: bold; text-transform: uppercase;">Sua Retenção (10%)</div>
+                            <div style="font-size: 10px; color: #10b981; font-weight: bold; text-transform: uppercase;">Sua Taxa (10% Retida no Pagamento)</div>
                             <div id="valTaxa" style="font-size: 16px; font-weight: 900; color: #10b981;">R$ 0,00</div>
                         </div>
                     </div>
                     
-                    <button type="button" onclick="enviarSolicitacaoWeb()" class="btn-chamar">
-                        🚀 Confirmar Pedido e Solicitar Prestador via Web
+                    <button type="button" onclick="confirmarCorridaKm()" class="btn-chamar">
+                        🚀 Confirmar Viagem / Solicitar Serviço via Web
                     </button>
                 </div>
             </div>
@@ -136,19 +126,36 @@
             document.getElementById('mod_caminhao').className = mod === 'Caminhao' ? "ativo" : "";
         }
 
-        // Sistema de Localização direta focado no seu território
-        function activarLocalizacaoNatal() {
-            document.getElementById('partida').value = "Nossa Senhora da Apresentação, Natal - RN";
-            // Reposiciona o mapa livre diretamente nas coordenadas de Nossa Senhora da Apresentação
-            document.getElementById('iframeMapa').src = "https://openstreetmap.org";
-        }
-
-        function gerarTrajetoEValores() {
+        function calcularTarifaKm() {
             const partida = document.getElementById('partida').value;
             const destino = document.getElementById('destino').value;
-            if(!partida || !destino) { alert('Por favor, informe os endereços de partida e destino.'); return; }
+            const kmInput = document.getElementById('distancia_km').value;
 
-            const fator = modalidadeAtiva === 'Caminhao' ? 3.8 : 1.2;
-            const totalSimulado = (Math.random() * (55 - 20) + 20) * fator;
-            const taxaAdmin = totalSimulado * 0.10;
+            if(!partida || !destino || !kmInput) { 
+                alert('Por favor, preencha todos os campos de endereço e a quilometragem da viagem.'); 
+                return; 
+            }
 
+            const km = parseFloat(kmInput);
+            let valorTotalPassageiro = 0;
+
+            if (modalidadeAtiva === 'Uber') {
+                // Regra rígida estipulada de R$ 2,00 por quilômetro para passageiros
+                valorTotalPassageiro = km * 2.00;
+            } else {
+                // Tarifa diferenciada comercial para fretes e frotas de caminhão pesados (Ex: R$ 5,50 o km)
+                valorTotalPassageiro = km * 5.50;
+            }
+
+            // Sua taxa de 10% aplicada diretamente em cima do pagamento bruto da corrida
+            const suaTaxaRetida = valorTotalPassageiro * 0.10;
+
+            document.getElementById('valTotal').innerText = "R$ " + valorTotalPassageiro.toFixed(2);
+            document.getElementById('valTaxa').innerText = "R$ " + suaTaxaRetida.toFixed(2);
+            document.getElementById('reciboFinancas').style.display = 'flex';
+        }
+
+        function confirmarCorridaKm() {
+            const origem = document.getElementById('partida').value;
+            const destino = document.getElementById('destino').value;
+            const km = document.getElementById('distancia_km').value;
