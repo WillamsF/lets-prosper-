@@ -82,7 +82,7 @@
                 </div>
             </div>
 
-            <!-- Central de Logística (Onde o Passageiro Pede) -->
+            <!-- Central de Logística -->
             <div class="card-custom">
                 <div style="margin-bottom: 15px;">
                     <h5 style="font-weight: bold; margin: 0 0 3px 0; font-size: 1.2rem;">Central de Logística Urbana Robótica (Painel Passageiro)</h5>
@@ -123,25 +123,23 @@
 
     </div>
 
-    <!-- Script de Persistência de Dados Corrigido -->
+    <!-- Script de Persistência de Dados -->
     <script>
         const matrizDistancias = {
             "natal": { "joao pessoa": 185, "recife": 295, "parnamirim": 15 },
             "joao pessoa": { "natal": 185, "recife": 120, "campina grande": 130 }
         };
 
-        // Variáveis de controle numérico puro para evitar erros de conversão de string de texto
         let saldoPrestadoresGlobal = 0.00;
         let saldoAdminGlobal = 0.00;
 
         document.addEventListener("DOMContentLoaded", function() {
             renderizarRadarMotorista();
             renderizarMuralServicos();
+            
+            // Ouvintes para calcular em tempo real enquanto digita
+            document.getElementById('endereco-partida').addEventListener('input', calcularPreviaRota);
+            document.getElementById('endereco-destino').addEventListener('input', calcularPreviaRota);
         });
 
         function normalizarEntrada(texto) {
-            return texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\b(rn|pb|pe|brasil|br)\b/g, "").trim();
-        }
-
-        function cadastrarNoMural() {
-            const nome = document.getElementById('cad-nome').value;
