@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Let's Prosper - Sistema de Transporte & Serviços</title>
+    <title>Let's Prosper - Sistema Automatizado de Transporte</title>
     <style>
         body { background-color: #0f172a; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; padding: 20px; margin: 0; }
         nav { background-color: #020617; border-bottom: 1px solid #334155; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
@@ -11,7 +11,7 @@
         .logo span { color: #10b981; }
         .grid-principal { max-w: 1200px; margin: 30px auto; display: grid; grid-template-columns: 1fr; gap: 30px; }
         @media (min-width: 992px) { .grid-principal { grid-template-columns: 1fr 2fr; } }
-        .bloco-card { background-color: #020617; border: 1px solid #1e293b; padding: 24px; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); }
+        .bloco-card { background-color: #020617; border: 1px solid #1e293b; padding: 24px; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); position: relative; }
         .subbloco { background-color: #0f172a; border: 1px solid #1e293b; padding: 15px; border-radius: 12px; margin-top: 15px; }
         .titulo-secao { font-size: 16px; font-weight: bold; margin-top: 0; margin-bottom: 10px; border-bottom: 1px solid #1e293b; padding-bottom: 8px; color: #ffffff; }
         .subtitulo { font-size: 12px; color: #94a3b8; margin: -5px 0 15px 0; }
@@ -26,15 +26,21 @@
         .flex-botoes { display: flex; gap: 8px; margin-bottom: 15px; }
         .flex-botoes button { margin-bottom: 0; padding: 6px 12px; background-color: #1e293b; border: 1px solid #334155; color: #94a3b8; width: auto; }
         .flex-botoes button.ativo { background-color: #10b981; color: #020617; font-weight: bold; border-color: #10b981; }
+        
+        /* PAINEL DO ROBÔ DE ALERTAS MÓVEL */
+        .alerta-robo { background: #1e1b4b; border: 2px solid #6366f1; border-radius: 12px; padding: 15px; margin-top: 15px; display: none; }
+        .status-motorista { display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 8px 12px; border-radius: 8px; margin-top: 8px; border: 1px solid #312e81; font-size: 12px; }
+        .pulse { display: inline-block; width: 8px; height: 8px; background: #10b981; border-radius: 50%; margin-right: 5px; animation: blink 1s infinite; }
+        @keyframes blink { 0% { opacity: 0.2; } 50% { opacity: 1; } 100% { opacity: 0.2; } }
     </style>
-</nav>
+</head>
 <body>
 
     <!-- BARRA DE NAVEGAÇÃO -->
     <nav>
         <div class="logo">LP <span>Let's Prosper</span> Global</div>
         <div style="font-size: 12px; background-color: #1e293b; border: 1px solid #334155; padding: 6px 14px; border-radius: 10px; font-weight: bold; color: #10b981;">
-            Taxa Administrativa: 10% aplicada no pagamento
+            Taxa do Administrador: 10% Retida de Forma Automática
         </div>
     </nav>
 
@@ -45,18 +51,18 @@
             <div class="titulo-secao">Mão de Obra & Vagas</div>
             <div class="subtitulo">Anúncios estilo iWork com taxa de 10%</div>
             <form onsubmit="event.preventDefault(); alert('Oportunidade publicada no painel local!');">
-                <input type="text" id="vaga_nome" placeholder="Seu Nome / Razão Social" required>
-                <input type="text" id="vaga_titulo" placeholder="Tipo de Serviço (Ex: Pintor, Carreto)" required>
-                <select id="vaga_opcao">
+                <input type="text" placeholder="Seu Nome / Razão Social" required>
+                <input type="text" placeholder="Tipo de Serviço (Ex: Pintor, Carreto)" required>
+                <select>
                     <option value="contratar">Quero Contratar Mão de Obra</option>
                     <option value="oferecer">Quero Oferecer meus Serviços</option>
                 </select>
-                <input type="number" id="vaga_valor" placeholder="Valor Estimado (R$)" required>
+                <input type="number" placeholder="Valor Estimado (R$)" required>
                 <button type="submit" class="btn-secundario">Publicar Oportunidade</button>
             </form>
         </div>
 
-        <!-- COLUNA DIREITA: CARTEIRA E CENTRAL DE PREÇOS -->
+        <!-- COLUNA DIREITA: CARTEIRA E CENTRAL DE LOGÍSTICA DO ROBÔ -->
         <div style="display: flex; flex-direction: column; gap: 30px;">
             
             <!-- CARTEIRA DIGITAL -->
@@ -74,14 +80,13 @@
                 </div>
             </div>
 
-            <!-- CENTRAL DE LOGÍSTICA BASEADA EM KM -->
+            <!-- CENTRAL DE LOGÍSTICA COM CÁLCULO ROBÓTICO AUTOMÁTICO -->
             <div class="bloco-card">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
                     <div>
-                        <div class="titulo-secao" style="margin-bottom:0; border-bottom:0; padding-bottom:0;">Central de Logística Urbana e Cargas</div>
-                        <div class="subtitulo" style="margin-top:4px; margin-bottom:0;">Cálculo de tarifas preciso por distância</div>
+                        <div class="titulo-secao" style="margin-bottom:0; border-bottom:0; padding-bottom:0;">Central de Logística Urbana Robótica</div>
+                        <div class="subtitulo" style="margin-top:4px; margin-bottom:0;">Cálculo automático de KM e disparo automático para motoristas</div>
                     </div>
-                    <!-- MODALIDADE -->
                     <div class="flex-botoes" style="margin-bottom:0;">
                         <button type="button" onclick="mudarModalidade('Uber')" id="mod_uber" class="ativo">Passageiros (R$2/km)</button>
                         <button type="button" onclick="mudarModalidade('Caminhao')" id="mod_caminhao">Frotas/Fretes (Tarifa Carga)</button>
@@ -89,73 +94,44 @@
                 </div>
 
                 <div style="display: flex; flex-direction: column; gap: 5px;">
-                    <input type="text" id="partida" placeholder="Endereço de Partida (Ex: São Gonçalo)">
-                    <input type="text" id="destino" placeholder="Endereço de Destino (Ex: Centro, Natal)">
-                    <input type="number" id="distancia_km" placeholder="Distância estimada da viagem em Quilômetros (KM)" min="1" required>
+                    <input type="text" id="partida" placeholder="Endereço de Partida (Ex: Natal)">
+                    <input type="text" id="destino" placeholder="Endereço de Destino (Ex: João Pessoa)">
                 </div>
                 
-                <button type="button" onclick="calcularTarifaKm()" class="btn-principal">Processar Valores e Aplicar Taxa (10%)</button>
+                <!-- BOTÃO QUE DISPARA O CÁLCULO DE KM AUTOMÁTICO DO ROBÔ -->
+                <button type="button" onclick="roboCalcularDistanciaAutomatica()" class="btn-principal">🤖 Calcular Rota e Taxas Automaticamente</button>
 
-                <!-- RECIBO E SOLICITAÇÃO REAL VIA WEB -->
+                <!-- RECIBO DE DIVISÃO DO DINHEIRO -->
                 <div id="reciboFinancas" style="display: none; flex-direction: column; background-color: #020617; border: 1px solid rgba(16,185,129,0.3); padding: 15px; border-radius: 12px; margin-top: 15px;">
+                    <div style="display: flex; justify-content: space-between; width: 100%; border-b: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 8px;">
+                        <div style="font-size: 11px; color: #38bdf8; font-weight: bold;">Distância Calculada pelo Robô:</div>
+                        <div id="txt_distanciaCalculada" style="font-size: 12px; font-weight: bold; color: #fff;">0 KM</div>
+                    </div>
                     <div style="display: flex; justify-content: space-between; width: 100%;">
                         <div>
-                            <div style="font-size: 10px; color: #94a3b8; font-weight: bold; text-transform: uppercase;">Total cobrado do Passageiro</div>
+                            <div style="font-size: 10px; color: #94a3b8; font-weight: bold; text-transform: uppercase;">Total cobrado do Cliente</div>
                             <div id="valTotal" style="font-size: 16px; font-weight: 900; color: #ffffff;">R$ 0,00</div>
                         </div>
                         <div style="text-align: right;">
-                            <div style="font-size: 10px; color: #10b981; font-weight: bold; text-transform: uppercase;">Sua Taxa (10% Retida no Pagamento)</div>
+                            <div style="font-size: 10px; color: #10b981; font-weight: bold; text-transform: uppercase;">Sua Margem (10% Retido)</div>
                             <div id="valTaxa" style="font-size: 16px; font-weight: 900; color: #10b981;">R$ 0,00</div>
                         </div>
                     </div>
                     
-                    <button type="button" onclick="confirmarCorridaKm()" class="btn-chamar">
-                        🚀 Confirmar Viagem / Solicitar Serviço via Web
+                    <!-- BOTÃO QUE ACIONA A TRANSMISSÃO DO ALERTA DOS MOTORISTAS -->
+                    <button type="button" onclick="dispararAlertaRoboMotoristas()" class="btn-chamar">
+                        ⚡ Confirmar Viagem e Disparar Alerta para Motoristas
                     </button>
                 </div>
-            </div>
-        </div>
-    </div>
 
-    <script>
-        let modalidadeAtiva = 'Uber';
-
-        function mudarModalidade(mod) {
-            modalidadeAtiva = mod;
-            document.getElementById('mod_uber').className = mod === 'Uber' ? "ativo" : "";
-            document.getElementById('mod_caminhao').className = mod === 'Caminhao' ? "ativo" : "";
-        }
-
-        function calcularTarifaKm() {
-            const partida = document.getElementById('partida').value;
-            const destino = document.getElementById('destino').value;
-            const kmInput = document.getElementById('distancia_km').value;
-
-            if(!partida || !destino || !kmInput) { 
-                alert('Por favor, preencha todos os campos de endereço e a quilometragem da viagem.'); 
-                return; 
-            }
-
-            const km = parseFloat(kmInput);
-            let valorTotalPassageiro = 0;
-
-            if (modalidadeAtiva === 'Uber') {
-                // Regra rígida estipulada de R$ 2,00 por quilômetro para passageiros
-                valorTotalPassageiro = km * 2.00;
-            } else {
-                // Tarifa diferenciada comercial para fretes e frotas de caminhão pesados (Ex: R$ 5,50 o km)
-                valorTotalPassageiro = km * 5.50;
-            }
-
-            // Sua taxa de 10% aplicada diretamente em cima do pagamento bruto da corrida
-            const suaTaxaRetida = valorTotalPassageiro * 0.10;
-
-            document.getElementById('valTotal').innerText = "R$ " + valorTotalPassageiro.toFixed(2);
-            document.getElementById('valTaxa').innerText = "R$ " + suaTaxaRetida.toFixed(2);
-            document.getElementById('reciboFinancas').style.display = 'flex';
-        }
-
-        function confirmarCorridaKm() {
-            const origem = document.getElementById('partida').value;
-            const destino = document.getElementById('destino').value;
-            const km = document.getElementById('distancia_km').value;
+                <!-- PAINEL INTERATIVO DO ROBÔ TRANSMISSOR DE CHAMADOS -->
+                <div id="painelRoboMotoristas" class="alerta-robo">
+                    <div style="font-size: 12px; font-weight: bold; color: #6366f1; border-bottom: 1px solid #312e81; padding-bottom: 5px; margin-bottom: 10px; display: flex; justify-content: space-between;">
+                        <span>📡 ROBÔ DE TRANSMISSÃO LET'S PROPER</span>
+                        <span style="color: #a5b4fc;" id="txt_cronometro">Buscando...</span>
+                    </div>
+                    <div style="font-size: 11px; color: #94a3b8; margin-bottom: 10px;" id="txt_statusAlerta">Disparando sinal de viagem para frotas ativas no raio do território...</div>
+                    
+                    <div id="lista_motoristas">
+                        <!-- Injetado em tempo real pelo loop do robô -->
+                    </div>
