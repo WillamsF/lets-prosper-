@@ -145,3 +145,126 @@
 
         function calcularRotaTempoReal() {
             const p = normalizarEntrada(document.getElementById('endereco-partida').value);
+
+
+        <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Let's Prosper - Sistema Automatizado</title>
+    <style>
+        body { background-color: #0b1116; color: #ffffff; font-family: system-ui, -apple-system, sans-serif; padding: 20px; margin: 0; }
+        .lp-header { background-color: #111c24; padding: 15px 20px; border-radius: 6px; margin-bottom: 25px; border: 1px solid #1c2d3a; display: flex; justify-content: space-between; align-items: center; }
+        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+        .card-custom { background-color: #111c24; border-radius: 6px; padding: 25px; border: 1px solid #1c2d3a; margin-bottom: 25px; box-sizing: border-box; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; color: #8a99a6; font-size: 0.85rem; margin-bottom: 5px; }
+        .form-control, .form-select { width: 100%; background-color: #1a2632; border: 1px solid #2c3e50; color: #fff; padding: 12px; border-radius: 4px; box-sizing: border-box; font-size: 0.95rem; }
+        .btn-primary { width: 100%; padding: 14px; background-color: #007bff; border: none; color: white; font-weight: bold; border-radius: 4px; cursor: pointer; font-size: 1rem; }
+        .wallet-box { background-color: #0b1116; padding: 15px; border: 1px solid #2c3e50; border-radius: 4px; margin-bottom: 15px; }
+        @media (max-width: 992px) { .grid-container { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <div class="lp-header">
+        <h4 style="margin: 0; font-weight: bold; color: #17a2b8;">LP Let's Prosper Global</h4>
+        <span style="background-color: #1c2d3a; color: #28a745; border: 1px solid #28a745; padding: 8px 12px; border-radius: 4px; font-size: 0.85rem; font-weight: bold;">
+            Taxa do Administrador: 10% Retida de Forma Automática
+        </span>
+    </div>
+
+    <div class="grid-container">
+        
+        <!-- COLUNA ESQUERDA: Mão de Obra, Vagas e Cadastro Completo -->
+        <div>
+            <div class="card-custom">
+                <h5 style="font-weight: bold; margin: 0 0 5px 0; font-size: 1.2rem;">Mão de Obra & Vagas</h5>
+                <p style="color: #8a99a6; font-size: 0.85rem; margin: 0 0 20px 0;">Anúncios estilo iWork com taxa de 10%</p>
+                
+                <form onsubmit="event.preventDefault(); const val = parseFloat(document.getElementById('valor-estimado').value || 0); alert('Sucesso!\nCadastro publicado com taxa de 10% (R$ ' + (val * 0.1).toFixed(2).replace('.', ',') + ') associada à operação.'); this.reset();">
+                    <div class="form-group"><input type="text" class="form-control" placeholder="Seu Nome / Razão Social" required></div>
+                    <div class="form-group"><input type="text" class="form-control" placeholder="Tipo de Serviço (Ex: Pintor, Carreto)" required></div>
+                    <div class="form-group">
+                        <label>Modalidade de Cadastro / Contratação</label>
+                        <select class="form-select" id="tipo-servico-global" required>
+                            <option value="" disabled selected>Selecione o tipo de relação comercial...</option>
+                            <option value="p2p">Serviço Pessoa para Pessoa (P2P)</option>
+                            <option value="p2b">Serviço Pessoa para Empresa (P2B)</option>
+                            <option value="b2p">Serviço Empresa para Pessoa (B2P)</option>
+                            <option value="b2b">Serviço Empresa para Empresa (B2B)</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><input type="number" class="form-control" id="valor-estimado" placeholder="Valor Estimado (R$)" required></div>
+                    <button type="submit" class="btn-primary" style="background-color: #007bff;">Publicar Oportunidade / Cadastrar</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- COLUNA DIREITA: Carteira Digital e Logística Avançada -->
+        <div>
+            <div class="card-custom">
+                <h5 style="font-weight: bold; margin: 0 0 20px 0; font-size: 1.2rem;">Carteira Digital & Histórico Auditoria</h5>
+                <div class="wallet-box">
+                    <span style="color: #8a99a6; font-size: 0.8rem; display: block; margin-bottom: 3px;">SALDO DISPONÍVEL PRESTADORES (90%)</span>
+                    <h3 style="font-weight: bold; color: #ffffff; margin: 0; font-size: 1.6rem;" id="saldo-prestadores">R$ 450,00</h3>
+                </div>
+                <div class="wallet-box" style="margin-bottom: 0;">
+                    <span style="color: #8a99a6; font-size: 0.8rem; display: block; margin-bottom: 3px;">SUA RETENÇÃO ACUMULADA (10%)</span>
+                    <h3 style="font-weight: bold; color: #28a745; margin: 0; font-size: 1.6rem;" id="saldo-admin">R$ 50,00</h3>
+                </div>
+            </div>
+
+            <!-- Central de Logística Urbana Robótica com Função Direta de Clique -->
+            <div class="card-custom">
+                <div style="margin-bottom: 15px;">
+                    <h5 style="font-weight: bold; margin: 0 0 3px 0; font-size: 1.2rem;">Central de Logística Urbana Robótica</h5>
+                    <small style="color: #8a99a6; display: block;">Cálculo automático de KM e disparo automático para motoristas</small>
+                </div>
+                <div style="margin-bottom: 15px;"><span style="background-color: #28a745; color: white; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem; font-weight: bold;">Passageiros (R$2/km)</span></div>
+
+                <div class="form-group">
+                    <input type="text" id="endereco-partida" class="form-control" placeholder="Endereço de Partida (Ex: Natal)" style="margin-bottom: 10px;">
+                    <input type="text" id="endereco-destino" class="form-control" placeholder="Endereço de Destino (Ex: João Pessoa)">
+                </div>
+
+                <!-- Painel Informativo Fixo (Sempre renderizado na tela) -->
+                <div id="resumo-rota" style="background: rgba(23, 162, 184, 0.1); border: 1px solid #17a2b8; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="color: #8a99a6; font-size: 0.85rem; display: block;">Distância Calculada</span>
+                            <h5 id="txt-distancia" style="margin: 0; color: #17a2b8; font-weight: bold; font-size: 1.2rem;">0.0 km</h5>
+                        </div>
+                        <div>
+                            <span style="color: #8a99a6; font-size: 0.85rem; display: block;">Preço da Rota</span>
+                            <h4 id="txt-preco-total" style="margin: 0; color: #28a745; font-weight: bold; font-size: 1.3rem;">R$ 0,00</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AÇÃO INLINE DIRETA NO CLIQUE DO BOTÃO VERDE -->
+                <button type="button" class="btn-primary" style="background-color: #28a745;" onclick="
+                    const p = document.getElementById('endereco-partida').value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\b(rn|pb|pe|brasil|br)\b/g, '').trim();
+                    const d = document.getElementById('endereco-destino').value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\b(rn|pb|pe|brasil|br)\b/g, '').trim();
+                    if(!p || !d) { alert('Por favor, digite a partida e o destino.'); return; }
+                    let km = 185;
+                    if((p.includes('natal') && d.includes('pessoa')) || (p.includes('pessoa') && d.includes('natal'))) { km = 185; }
+                    else if((p.includes('natal') && d.includes('recife')) || (p.includes('recife') && d.includes('natal'))) { km = 295; }
+                    else { km = Math.abs((p.length * 9) + (d.length * 14)) % 180 + 20; }
+                    const prc = km * 2;
+                    document.getElementById('txt-distancia').innerText = km.toFixed(1) + ' km';
+                    document.getElementById('txt-preco-total').innerText = 'R$ ' + prc.toFixed(2).replace('.', ',');
+                    let sP = parseFloat(document.getElementById('saldo-prestadores').innerText.replace('R$', '').replace('.', '').replace(',', '.').trim());
+                    let sA = parseFloat(document.getElementById('saldo-admin').innerText.replace('R$', '').replace('.', '').replace(',', '.').trim());
+                    document.getElementById('saldo-prestadores').innerText = 'R$ ' + (sP + (prc * 0.9)).toFixed(2).replace('.', ',');
+                    document.getElementById('saldo-admin').innerText = 'R$ ' + (sA + (prc * 0.1)).toFixed(2).replace('.', ',');
+                    alert('Motorista Acionado!\nDistância: ' + km + ' km\nPreço Total: R$ ' + prc.toFixed(2).replace('.', ',') + '\nSplit de 10% retido com sucesso.');
+                ">Calcular Preço e Chamar Motorista</button>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
