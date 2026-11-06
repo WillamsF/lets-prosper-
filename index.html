@@ -51,10 +51,10 @@
                     const container = document.getElementById('container-mural-servicos');
                     container.innerHTML = '';
                     m.forEach(p => {
-                        container.innerHTML += `<div class='card-mural'><div style='font-weight:bold; color:#007bff; margin-bottom:5px;'>\${p.modalidade}</div><div class='small'><strong>Nome:</strong> \${p.nome}</div><div class='small'><strong>Serviço:</strong> \${p.servico}</div><div class='small' style='margin-top:5px; color:#28a745; font-weight:bold;'>Orçamento: R$ \${p.valor.toFixed(2).replace('.', ',')}</div></div>`;
+                        container.innerHTML += `<div class='card-mural'><div style='font-weight:bold; color:#007bff; margin-bottom:5px;'>\begin{small}\${p.modalidade}\end{small}</div><div class='small'><strong>Nome:</strong> \${p.nome}</div><div class='small'><strong>Serviço:</strong> \${p.servico}</div><div class='small' style='margin-top:5px; color:#28a745; font-weight:bold;'>Orçamento: R$ \${p.valor.toFixed(2).replace('.', ',')}</div></div>`;
                     });
                     
-                    alert('Sucesso!\nCadastro publicado no mural com taxa de 10% (R$ ' + (val * 0.1).toFixed(2).replace('.', ',') + ') vinculada à operação.');
+                    alert('Sucesso!\nCadastro publicado no mural com taxa de 10% (R$ ' + (val * 0.1).toFixed(2).replace('.', ',') + ') vinculada à operation.');
                     this.reset();
                 ">
                     <div class="form-group"><input type="text" id="cad-nome" class="form-control" placeholder="Seu Nome / Razão Social" required></div>
@@ -90,17 +90,15 @@
                 <h5 style="font-weight: bold; margin: 0 0 20px 0; font-size: 1.2rem;">Carteira Digital & Histórico Auditoria</h5>
                 <div class="wallet-box">
                     <span style="color: #8a99a6; font-size: 0.8rem; display: block; margin-bottom: 3px;">SALDO DISPONÍVEL PRESTADORES (90%)</span>
-                    <!-- VALOR FIXO ZERADO NO TEXTO DO LAYOUT -->
                     <h3 style="font-weight: bold; color: #ffffff; margin: 0; font-size: 1.6rem;" id="saldo-prestadores">R$ 0,00</h3>
                 </div>
                 <div class="wallet-box" style="margin-bottom: 0;">
                     <span style="color: #8a99a6; font-size: 0.8rem; display: block; margin-bottom: 3px;">SUA RETENÇÃO ACUMULADA (10%)</span>
-                    <!-- VALOR FIXO ZERADO NO TEXTO DO LAYOUT -->
                     <h3 style="font-weight: bold; color: #28a745; margin: 0; font-size: 1.6rem;" id="saldo-admin">R$ 0,00</h3>
                 </div>
             </div>
 
-            <!-- Central de Logística Urbana Robótica -->
+            <!-- Central de Logística Urbana Robótica com Execução Simultânea por Digitação -->
             <div class="card-custom">
                 <div style="margin-bottom: 15px;">
                     <h5 style="font-weight: bold; margin: 0 0 3px 0; font-size: 1.2rem;">Central de Logística Urbana Robótica</h5>
@@ -108,9 +106,10 @@
                 </div>
                 <div style="margin-bottom: 15px;"><span style="background-color: #28a745; color: white; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem; font-weight: bold;">Passageiros (R$2/km)</span></div>
 
+                <!-- ADICIONADO ATUALIZADOR EM TEMPO REAL ONINPUT ENQUANTO DIGITA -->
                 <div class="form-group">
-                    <input type="text" id="endereco-partida" class="form-control" placeholder="Endereço de Partida (Ex: Natal)" style="margin-bottom: 10px;">
-                    <input type="text" id="endereco-destino" class="form-control" placeholder="Endereço de Destino (Ex: João Pessoa)">
+                    <input type="text" id="endereco-partida" class="form-control" placeholder="Endereço de Partida (Ex: Natal)" style="margin-bottom: 10px;" oninput="executarCalculoImediato();">
+                    <input type="text" id="endereco-destino" class="form-control" placeholder="Endereço de Destino (Ex: João Pessoa)" oninput="executarCalculoImediato();">
                 </div>
 
                 <!-- Painel Informativo Fixo -->
@@ -127,4 +126,3 @@
                     </div>
                 </div>
 
-                <button type="button" class="btn-primary" style="background-color: #28a745;" onclick="
