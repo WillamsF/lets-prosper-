@@ -123,12 +123,16 @@
 
     </div>
 
-    <!-- Script de Persistência de Dados -->
+    <!-- Script de Persistência de Dados Corrigido -->
     <script>
         const matrizDistancias = {
             "natal": { "joao pessoa": 185, "recife": 295, "parnamirim": 15 },
             "joao pessoa": { "natal": 185, "recife": 120, "campina grande": 130 }
         };
+
+        // Variáveis de controle numérico puro para evitar erros de conversão de string de texto
+        let saldoPrestadoresGlobal = 0.00;
+        let saldoAdminGlobal = 0.00;
 
         document.addEventListener("DOMContentLoaded", function() {
             renderizarRadarMotorista();
@@ -141,5 +145,3 @@
 
         function cadastrarNoMural() {
             const nome = document.getElementById('cad-nome').value;
-            const servico = document.getElementById('cad-servico').value;
-            const modalidade = document.getElementById('tipo-servico-global').value;
