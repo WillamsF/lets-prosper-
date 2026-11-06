@@ -1,19 +1,72 @@
+<!-- ========================================== -->
+<!-- BLOCO DA CENTRAL DE LOGÍSTICA (HTML)       -->
+<!-- ========================================== -->
+<div class="card-logistica" style="background: #111c24; border-radius: 8px; padding: 20px; color: #fff; margin-bottom: 20px;">
+    <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 15px;">
+        <div>
+            <h3 style="margin: 0; font-size: 1.25rem;">Central de Logística Urbana Robótica</h3>
+            <small style="color: #6c757d;">Cálculo automático de KM e disparo automático para motoristas</small>
+        </div>
+        <div>
+            <span id="btn-passageiros" style="background: #28a745; color: white; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem; font-weight: bold; cursor: pointer;">Passageiros (R$2/km)</span>
+            <span id="btn-frotas" style="background: #6c757d; color: white; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem; font-weight: bold; margin-left: 8px; opacity: 0.6; cursor: pointer;">Frotas/Fretes</span>
+        </div>
+    </div>
+    
+    <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+        <div style="flex: 1;">
+            <label style="color: #6c757d; font-size: 0.85rem; display: block; margin-bottom: 5px;">Endereço de Partida</label>
+            <input type="text" id="endereco-partida" style="width: 100%; padding: 10px; background: #1a2632; border: 1px border #2c3e50; color: white; border-radius: 4px;" placeholder="Digite o local de início (Ex: Natal)">
+        </div>
+        <div style="flex: 1;">
+            <label style="color: #6c757d; font-size: 0.85rem; display: block; margin-bottom: 5px;">Endereço de Destino</label>
+            <input type="text" id="endereco-destino" style="width: 100%; padding: 10px; background: #1a2632; border: 1px border #2c3e50; color: white; border-radius: 4px;" placeholder="Digite o destino final (Ex: João Pessoa)">
+        </div>
+    </div>
+    
+    <!-- Painel de resumo da rota dinâmico -->
+    <div id="resumo-rota" style="display: none; background: rgba(0,0,0,0.3); border: 1px solid #2c3e50; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <p style="margin: 0 0 5px 0; color: #6c757d; font-size: 0.85rem;">Distância Calculada</p>
+                <h5 id="txt-distancia" style="margin: 0; color: #17a2b8; font-size: 1.2rem;">0.0 km</h5>
+            </div>
+            <div>
+                <p style="margin: 0 0 5px 0; color: #6c757d; font-size: 0.85rem;">Valor da Corrida</p>
+                <h4 id="txt-preco-total" style="margin: 0; color: #28a745; font-size: 1.4rem;">R$ 0,00</h4>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" id="btn-solicitar-rota" style="width: 100%; padding: 12px; background: #007bff; border: none; color: white; font-weight: bold; border-radius: 4px; cursor: pointer;">
+        Confirmar e Chamar Motorista
+    </button>
+</div>
+
+<!-- ========================================== -->
+<!-- SCRIPTS DE EXECUÇÃO (GOOGLE MAPS E LÓGICA) -->
+<!-- ========================================== -->
+<script src="https://googleapis.com" async defer></script>
+
 <script>
-// Variáveis Globais de Controle da Aplicação
 let autocompletePartida, autocompleteDestino;
-let directionsService, directionsRenderer;
+let directionsService;
 let distanciaKm = 0;
 let precoCorrida = 0;
 const TARIFA_POR_KM = 2.00;
 
-// Inicialização disparada pelo callback do script do Google Maps
 function initLogistica() {
+    // Verifica se a API do Google carregou corretamente
+    if (typeof google === 'undefined' || !google.maps) {
+        console.error("Erro: API do Google Maps não pôde ser carregada.");
+        return;
+    }
+
     directionsService = new google.maps.DirectionsService();
     
-    // Configura o Autocomplete para sugerir locais com foco no Brasil
     const options = {
         componentRestrictions: { country: "br" },
-        fields: ["address_components", "geometry", "icon", "name"]
+        fields: ["geometry", "name", "formatted_address"]
     };
 
     const inputPartida = document.getElementById('endereco-partida');
@@ -23,13 +76,11 @@ function initLogistica() {
         autocompletePartida = new google.maps.places.Autocomplete(inputPartida, options);
         autocompleteDestino = new google.maps.places.Autocomplete(inputDestino, options);
 
-        // Escuta as mudanças de seleção para recalcular dinamicamente
         autocompletePartida.addListener('place_changed', calcularRotaTempoReal);
         autocompleteDestino.addListener('place_changed', calcularRotaTempoReal);
     }
 }
 
-// Executa o cálculo de rota dinâmica
 function calcularRotaTempoReal() {
     const partidaText = document.getElementById('endereco-partida').value;
     const destinoText = document.getElementById('endereco-destino').value;
@@ -44,10 +95,8 @@ function calcularRotaTempoReal() {
         if (status === 'OK') {
             const distanciaMetros = response.routes[0].legs[0].distance.value;
             distanciaKm = distanciaMetros / 1000;
-            
             precoCorrida = distanciaKm * TARIFA_POR_KM;
 
-            // Atualiza os elementos visuais na tela
             const txtDistancia = document.getElementById('txt-distancia');
             const txtPrecoTotal = document.getElementById('txt-preco-total');
             const resumoRota = document.getElementById('resumo-rota');
@@ -56,19 +105,20 @@ function calcularRotaTempoReal() {
             if (txtPrecoTotal) txtPrecoTotal.innerText = `R$ ${precoCorrida.toFixed(2).replace('.', ',')}`;
             if (resumoRota) resumoRota.style.display = 'block';
         } else {
-            console.error('Falha na requisição de rota: ' + status);
+            console.error('Falha ao calcular rota: ' + status);
         }
     });
 }
 
-// Processa a confirmação do pedido
-document.getElementById('btn-solicitar-rota')?.addEventListener('click', function() {
-    if (precoCorrida === 0) {
-        alert("Por favor, selecione uma rota válida primeiro.");
-        return;
-    }
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('btn-solicitar-rota').addEventListener('click', function() {
+        if (precoCorrida === 0) {
+            alert("Por favor, digite e selecione uma rota válida primeiro.");
+            return;
+        }
 
-    const taxaAdministrador = precoCorrida * 0.10;
-    alert(`Rota Confirmada com Sucesso!\nDistância: ${distanciaKm.toFixed(1)} km\nValor Total: R$ ${precoCorrida.toFixed(2)}\nTaxa Admin (10%): R$ ${taxaAdministrador.toFixed(2)} retida automaticamente.`);
+        const taxaAdministrador = precoCorrida * 0.10;
+        alert(`Rota Confirmada com Sucesso!\nDistância: ${distanciaKm.toFixed(1)} km\nValor Total: R$ ${precoCorrida.toFixed(2).replace('.', ',')}\nTaxa Admin Retida (10%): R$ ${taxaAdministrador.toFixed(2).replace('.', ',')}`);
+    });
 });
 </script>
