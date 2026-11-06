@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Let's Prosper - Marketplace de Multisserviços</title>
+    <script src="https://jsdelivr.net"></script>
+    <link rel="stylesheet" href="https://cloudflare.com">
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans antialiased min-h-screen">
+
+    <!-- BARRA DE NAVEGAÇÃO -->
+    <nav class="bg-slate-950 border-b border-slate-800 px-6 py-4 flex flex-wrap justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <div class="bg-emerald-500 text-slate-950 p-2 rounded-xl font-black text-xl shadow-lg shadow-emerald-500/20 tracking-wider">LP</div>
+            <span class="text-xl font-bold tracking-tight text-white">Let's <span class="text-emerald-400">Prosper</span></span>
+        </div>
+        <div class="flex items-center gap-4 mt-2 sm:mt-0">
+            <span class="bg-slate-800 text-xs px-3 py-1.5 rounded-full border border-slate-700 text-emerald-400 font-medium">
+                <i class="fa-solid fa-percent mr-1"></i> Taxa do Site: 10% Retida na Fonte
+            </span>
+            <div class="text-xs text-slate-400">Painel Administrativo: <span class="text-white font-bold">WilliamsF</span></div>
+        </div>
+    </nav>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="max-w-7xl mx-auto p-4 md:p-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- COLUNA ESQUERDA: CADASTRO COM SEGURANÇA MÁXIMA -->
+        <div class="bg-slate-950 rounded-2xl border border-slate-800 p-6 shadow-xl h-fit">
+            <div class="flex items-center gap-3 mb-6 border-b border-slate-800 pb-4">
+                <div class="text-emerald-400 text-xl"><i class="fa-solid fa-shield-halved"></i></div>
+                <div>
+                    <h2 class="font-bold text-lg text-white">Portal de Entrada Seguro</h2>
+                    <p class="text-xs text-slate-400">Validação antifraude de novos usuários</p>
+                </div>
+            </div>
+
+            <form id="formSeguro" class="space-y-4" onsubmit="processarCadastro(event)">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Perfil de Atuação</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <label class="flex items-center justify-center p-2.5 border border-emerald-500/30 bg-emerald-500/5 text-emerald-400 rounded-xl cursor-pointer text-xs font-medium" id="btnAutonomo">
+                            <input type="radio" name="tipo" value="CPF" checked class="sr-only" onchange="alternarSeguranca('CPF')"> Profissional / CPF
+                        </label>
+                        <label class="flex items-center justify-center p-2.5 border border-slate-800 bg-slate-900 text-slate-400 rounded-xl cursor-pointer text-xs font-medium" id="btnEmpresa">
+                            <input type="radio" name="tipo" value="CNPJ" class="sr-only" onchange="alternarSeguranca('CNPJ')"> Empresa / B2B
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <label id="lblNome" class="block text-xs font-medium text-slate-300 mb-1">Nome Completo</label>
+                    <input type="text" id="nome" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-white">
+                </div>
+
+                <div>
+                    <label id="lblDoc" class="block text-xs font-medium text-slate-300 mb-1">CPF Obrigatório</label>
+                    <input type="text" id="documento" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-white">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">Setor principal de atividade</label>
+                    <select id="setor" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-500 text-white">
+                        <option value="Mão de Obra Operacional">Mão de Obra (Estilo iWork)</option>
+                        <option value="Serviços Corporativos B2B">Serviços Corporativos (B2B)</option>
+                        <option value="Transporte de Cargas Terrestre">Transporte de Cargas (Frete)</option>
+                        <option value="Transporte de Passageiros">Transporte de Passageiros</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">WhatsApp de Contato</label>
+                    <input type="tel" id="whats" required placeholder="(00) 90000-0000" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-500 text-white">
+                </div>
+
+                <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-3 rounded-xl transition transform active:scale-95 flex items-center justify-center gap-2 mt-4 text-sm shadow-lg shadow-emerald-500/10">
+                    <i class="fa-solid fa-user-check"></i> Validar e Ativar Cadastro
+                </button>
+            </form>
+        </div>
+
+        <!-- COLUNA CENTRAL E DIREITA: MÓDULOS DE NEGÓCIO & LOGÍSTICA DE MAPAS -->
+        <div class="lg:col-span-2 space-y-6">
+            
+            <!-- ABAS DE NEGÓCIOS -->
+            <div class="bg-slate-950 rounded-2xl border border-slate-800 p-6 shadow-xl">
+                <h3 class="font-bold text-white mb-4 flex items-center gap-2 text-base">
+                    <i class="fa-solid fa-layer-group text-emerald-400"></i> Vitrine de Oportunidades Monetizadas
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 text-center">
+                        <div class="text-blue-400 text-xl mb-1"><i class="fa-solid fa-hammer"></i></div>
+                        <div class="text-xs font-bold text-white">Mão de Obra (iWork)</div>
+                        <div class="text-[10px] text-slate-400 mt-1">10% retidos na diária</div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 text-center">
+                        <div class="text-purple-400 text-xl mb-1"><i class="fa-solid fa-handshake"></i></div>
+                        <div class="text-xs font-bold text-white">Parcerias B2B</div>
+                        <div class="text-[10px] text-slate-400 mt-1">Taxa sobre contratos</div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 text-center col-span-2 md:col-span-1">
+                        <div class="text-amber-400 text-xl mb-1"><i class="fa-solid fa-truck-ramp-box"></i></div>
+                        <div class="text-xs font-bold text-white">Fretes e Logística</div>
+                        <div class="text-[10px] text-slate-400 mt-1">Split antes do descarrego</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SIMULADOR E MÓDULO DO GOOGLE MAPS (UBER / 99 SEM CALOTE) -->
+            <div class="bg-slate-950 rounded-2xl border border-slate-800 p-6 shadow-xl">
+                <div class="flex flex-wrap justify-between items-center border-b border-slate-800 pb-4 mb-4 gap-2">
+                    <div class="flex items-center gap-3">
+                        <div class="text-emerald-400 text-xl"><i class="fa-solid fa-route"></i></div>
+                        <div>
+                            <h3 class="font-bold text-white text-base">Central de Logística Urbana e Cargas</h3>
+                            <p class="text-xs text-slate-400">Cálculo de corrida e proteção de saldo via Google Maps API</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Local de Partida (Endereço Inicial)</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-location-dot absolute left-3 top-3.5 text-emerald-400 text-xs"></i>
+                            <input type="text" id="partida" placeholder="Ex: Av. Paulista, 1000" class="w-full bg-slate-900 border border-slate-800 rounded-xl pl-9 pr-4 py-2.5 text-xs text-white focus:outline-none">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Destino Final (Entrega/Passageiro)</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-flag-checkered absolute left-3 top-3.5 text-rose-500 text-xs"></i>
+                            <input type="text" id="destino" placeholder="Ex: Aeroporto de Guarulhos" class="w-full bg-slate-900 border border-slate-800 rounded-xl pl-9 pr-4 py-2.5 text-xs text-white focus:outline-none">
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="calcularRota()" class="w-full bg-slate-900 border border-slate-700 hover:border-emerald-500 text-white font-medium py-2.5 rounded-xl transition text-xs flex items-center justify-center gap-2 mb-4">
+                    <i class="fa-solid fa-calculator"></i> Processar Rota Segura e Calcular Taxa 10%
+                </button>
+
