@@ -35,19 +35,12 @@
 </head>
 <body>
 
-    <!-- BARRA DE NAVEGAÇÃO -->
+    <!-- BARRA DE NAVEGAÇÃO BRASIL -->
     <nav>
         <div class="logo">LP <span>Let's Prosper</span> Global</div>
-        
-        <!-- SELETORES INTERATIVOS REFORÇADOS (AÇÃO DIRETA INLINE) -->
         <div style="display: flex; gap: 15px; align-items: center;">
-            <div class="flex-botoes" style="margin-bottom: 0;">
-                <button type="button" onclick="window.mudarIdioma('pt')" id="lang_pt" class="ativo">PT</button>
-                <button type="button" onclick="window.mudarIdioma('en')" id="lang_en">EN</button>
-            </div>
-            <div class="flex-botoes" style="margin-bottom: 0;">
-                <button type="button" onclick="window.mudarMoeda('BRL')" id="curr_brl" class="ativo">R$ (BRL)</button>
-                <button type="button" onclick="window.mudarMoeda('USD')" id="curr_usd">$ (USD)</button>
+            <div style="font-size: 12px; background-color: #1e293b; border: 1px solid #334155; padding: 6px 14px; border-radius: 10px; font-weight: bold; color: #10b981;">
+                Moeda Ativa: BRL (R$)
             </div>
         </div>
     </nav>
@@ -57,34 +50,34 @@
         
         <!-- COLUNA ESQUERDA: MÃO DE OBRA E VAGAS (ESTILO IWORK) -->
         <div class="bloco-card">
-            <div id="lbl_titiWork" class="titulo-secao">Mão de Obra & Vagas</div>
-            <div id="lbl_subiWork" class="subtitulo">Anúncios estilo iWork com taxa de 10%</div>
+            <div class="titulo-secao">Mão de Obra & Vagas</div>
+            <div class="subtitulo">Anúncios estilo iWork com taxa de 10%</div>
 
-            <form onsubmit="event.preventDefault(); alert('Published globally!');">
-                <input type="text" id="vaga_titulo" placeholder="Ex: Eletricista, Motorista, Dev..." required>
+            <form onsubmit="event.preventDefault(); alert('Oportunidade publicada no painel local!');">
+                <input type="text" id="vaga_titulo" placeholder="Ex: Eletricista, Motorista, Técnico..." required>
                 <select id="vaga_tipo">
-                    <option value="contratar" id="opt_contratar">Quero Contratar Mão de Obra</option>
-                    <option value="oferecer" id="opt_oferecer">Quero Oferecer meus Serviços</option>
+                    <option value="contratar">Quero Contratar Mão de Obra</option>
+                    <option value="oferecer">Quero Oferecer meus Serviços</option>
                 </select>
-                <input type="number" id="vaga_valor" placeholder="Valor da Diária / Projeto" required>
-                <button type="submit" id="lbl_btnVaga" class="btn-secundario">Publicar Oportunidade</button>
+                <input type="number" id="vaga_valor" placeholder="Valor da Diária / Projeto (R$)" required>
+                <button type="submit" class="btn-secundario">Publicar Oportunidade</button>
             </form>
         </div>
 
-        <!-- COLUNA DIREITA: CARTEIRA, AUDITORIA E GOOGLE MAPS -->
+        <!-- COLUNA DIREITA: CARTEIRA E CENTRAL LOGÍSTICA -->
         <div style="display: flex; flex-direction: column; gap: 30px;">
             
-            <!-- CARTEIRA DIGITAL -->
+            <!-- CARTEIRA DIGITAL BRASIL -->
             <div class="bloco-card">
-                <div id="lbl_titCarteira" class="titulo-secao">Carteira Digital & Histórico Auditoria</div>
+                <div class="titulo-secao">Carteira Digital & Histórico Auditoria</div>
                 <div class="grid-carteira">
                     <div class="subbloco">
-                        <div id="lbl_saldoDisp" style="font-size: 10px; color: #94a3b8; font-weight: bold; text-transform: uppercase;">Saldo Disponível Prestadores (90%)</div>
-                        <div id="val_saldo" style="font-size: 24px; font-weight: 900; margin-top: 5px;">R$ 450,00</div>
+                        <div style="font-size: 10px; color: #94a3b8; font-weight: bold; text-transform: uppercase;">Saldo Disponível Prestadores (90%)</div>
+                        <div style="font-size: 24px; font-weight: 900; margin-top: 5px; color: #ffffff;">R$ 450,00</div>
                     </div>
                     <div class="subbloco">
-                        <div id="lbl_taxaAcum" style="font-size: 10px; color: #10b981; font-weight: bold; text-transform: uppercase;">Sua Retenção Acumulada (10%)</div>
-                        <div id="val_taxaAcum" style="font-size: 24px; font-weight: 900; color: #10b981; margin-top: 5px;">R$ 50,00</div>
+                        <div style="font-size: 10px; color: #10b981; font-weight: bold; text-transform: uppercase;">Sua Retenção Acumulada (10%)</div>
+                        <div style="font-size: 24px; font-weight: 900; color: #10b981; margin-top: 5px;">R$ 50,00</div>
                     </div>
                 </div>
 
@@ -94,52 +87,61 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th id="th_servico">Serviço/Setor</th>
-                                <th id="th_bruto">Bruto</th>
-                                <th id="th_taxa">Sua Taxa (10%)</th>
+                                <th>Serviço/Setor</th>
+                                <th>Bruto</th>
+                                <th>Sua Taxa (10%)</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
-                        <tbody id="tabela_corpo">
-                            <!-- Injetado via JS -->
+                        <tbody>
+                            <tr>
+                                <td style="font-family:monospace; color:#94a3b8;">#1092</td>
+                                <td style="font-weight:500; color:#fff;">Transporte Passageiro (Natal)</td>
+                                <td style="font-weight:bold;">R$ 50,00</td>
+                                <td style="color:#10b981; font-weight:bold;">R$ 5,00</td>
+                                <td><span class="badge">Liquidado</span></td>
+                            </tr>
+                            <tr>
+                                <td style="font-family:monospace; color:#94a3b8;">#1091</td>
+                                <td style="font-weight:500; color:#fff;">Frete Caminhão (Mudança)</td>
+                                <td style="font-weight:bold;">R$ 250,00</td>
+                                <td style="color:#10b981; font-weight:bold;">R$ 25,00</td>
+                                <td><span class="badge">Liquidado</span></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- LOGÍSTICA GOOGLE MAPS -->
+            <!-- LOGÍSTICA GOOGLE MAPS ESTÁVEL -->
             <div class="bloco-card">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
                     <div>
-                        <div id="lbl_titLogistica" class="titulo-secao" style="margin-bottom:0; border-bottom:0; padding-bottom:0;">Central de Logística Urbana (Google Maps)</div>
-                        <div id="lbl_subLogistica" class="subtitulo" style="margin-top:4px; margin-bottom:0;">Rastreamento global terrestre de frotas e pessoas</div>
+                        <div class="titulo-secao" style="margin-bottom:0; border-bottom:0; padding-bottom:0;">Central de Logística Urbana (Google Maps)</div>
+                        <div class="subtitulo" style="margin-top:4px; margin-bottom:0;">Rastreamento terrestre de frotas e pessoas</div>
                     </div>
-                    <!-- MODALIDADE -->
                     <div class="flex-botoes" style="margin-bottom:0;">
-                        <button type="button" onclick="window.mudarModalidade('Uber')" id="mod_uber" class="ativo">Passageiros</button>
-                        <button type="button" onclick="window.mudarModalidade('Caminhao')" id="mod_caminhao">Frotas/Fretes</button>
+                        <button type="button" onclick="mudarModalidade('Uber')" id="mod_uber" class="ativo">Passageiros</button>
+                        <button type="button" onclick="mudarModalidade('Caminhao')" id="mod_caminhao">Frotas/Fretes</button>
                     </div>
                 </div>
 
                 <div style="display: flex; gap: 15px; margin-bottom: 12px;">
-                    <input type="text" id="partida" placeholder="Origem / Start" style="margin-bottom:0;">
-                    <input type="text" id="destino" placeholder="Destino / Destination" style="margin-bottom:0;">
+                    <input type="text" id="partida" placeholder="Local de Partida (Ex: São Gonçalo)">
+                    <input type="text" id="destino" placeholder="Destino Final (Ex: Midway Natal)">
                 </div>
-                <button type="button" onclick="window.calcularRotaGlobal()" id="lbl_btnCalc" class="btn-principal">Processar Rota Segura e Calcular Taxa 10%</button>
+                <button type="button" onclick="executarCalculoRota()" class="btn-principal">Processar Rota Segura e Calcular Taxa 10%</button>
 
-                <!-- MAPA EMBUTIDO -->
+                <!-- MAPA FIXO SEGURO -->
                 <div style="width: 100%; height: 250px; border-radius: 12px; overflow: hidden; border: 1px solid #1e293b; margin-top: 15px;">
                     <iframe id="iframeMapa" style="width:100%; height:100%; border:none;" src="https://google.com" allowfullscreen="" loading="lazy"></iframe>
                 </div>
 
                 <div id="reciboFinancas" style="display: none; justify-content: space-between; align-items: center; background-color: #020617; border: 1px solid rgba(16,185,129,0.3); padding: 15px; border-radius: 12px; margin-top: 15px;">
                     <div>
-                        <div id="lbl_recCli" style="font-size: 10px; color: #94a3b8; font-weight: bold; text-transform: uppercase;">Total pago pelo Cliente</div>
-                        <div id="valTotal" style="font-size: 16px; font-weight: 900; color: #ffffff;">0,00</div>
+                        <div style="font-size: 10px; color: #94a3b8; font-weight: bold; text-transform: uppercase;">Total pago pelo Cliente</div>
+                        <div id="valTotal" style="font-size: 16px; font-weight: 900; color: #ffffff;">R$ 0,00</div>
                     </div>
                     <div style="text-align: right;">
-                        <div id="lbl_recTax" style="font-size: 10px; color: #10b981; font-weight: bold; text-transform: uppercase;">Sua Retenção (10%)</div>
-                        <div id="valTaxa" style="font-size: 16px; font-weight: 900; color: #10b981;">0,00</div>
-                    </div>
-                </div>
-            </div>
+                        <div style="font-size: 10px; color: #10b981; font-weight: bold; text-transform: uppercase;">Sua Retenção (10% Protegido)</div>
+                        <div id="valTaxa" style="font-size: 16px; font-weight: 900; color: #10b981;">R$ 0,00</div>
