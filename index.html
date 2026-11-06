@@ -1,139 +1,172 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Let's Prosper - Sistema Automatizado</title>
-    <style>
-        body { background-color: #0b1116; color: #ffffff; font-family: system-ui, -apple-system, sans-serif; padding: 15px; margin: 0; }
-        .lp-header { background-color: #111c24; padding: 12px 15px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #1c2d3a; display: flex; justify-content: space-between; align-items: center; }
-        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .card-custom { background-color: #111c24; border-radius: 6px; padding: 15px; border: 1px solid #1c2d3a; margin-bottom: 15px; box-sizing: border-box; }
-        .form-group { margin-bottom: 10px; }
-        .form-group label { display: block; color: #8a99a6; font-size: 0.8rem; margin-bottom: 3px; }
-        .form-control, .form-select { width: 100%; background-color: #1a2632; border: 1px solid #2c3e50; color: #fff; padding: 10px; border-radius: 4px; box-sizing: border-box; font-size: 0.9rem; }
-        .btn-primary { width: 100%; padding: 10px; background-color: #007bff; border: none; color: white; font-weight: bold; border-radius: 4px; cursor: pointer; font-size: 0.9rem; }
-        .wallet-box { background-color: #0b1116; padding: 10px; border: 1px solid #2c3e50; border-radius: 4px; margin-bottom: 10px; }
-        .card-vaga { background-color: #1a2632; border: 1px solid #007bff; padding: 10px; border-radius: 4px; margin-top: 10px; }
-        @media (max-width: 992px) { .grid-container { grid-template-columns: 1fr; } }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Let's Prosper - Sistema Automatizado</title>
+<style>
+:root{--bg:#0b0f17;--card:#111823;--line:#1f2b3b;--txt:#eaf0f7;--mut:#8a98ab;--blue:#0a6cff;--green:#22b34c;--teal:#14a3b8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:Segoe UI,Arial,sans-serif;padding:14px}
+header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:14px}
+header b{color:var(--teal)}
+.tag{border:1px solid var(--green);color:var(--green);padding:6px 12px;border-radius:4px;font-size:13px;font-weight:600}
+main{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:800px){main{grid-template-columns:1fr}}
+section{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px;margin-bottom:14px}
+h2{margin:0 0 4px;font-size:18px}
+small,.sub{color:var(--mut);font-size:12px}
+input,select{width:100%;padding:11px;margin-top:10px;background:#18212e;border:1px solid var(--line);border-radius:6px;color:var(--txt);font-size:14px}
+button{width:100%;margin-top:10px;padding:11px;border:0;border-radius:6px;background:var(--blue);color:#fff;font-weight:700;font-size:14px;cursor:pointer}
+button:hover{filter:brightness(1.1)}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--teal)}
+button.sec{background:#243246}button.sm{width:auto;margin:0;padding:7px 12px}
+button:disabled{opacity:.5;cursor:not-allowed}
+.box{background:#0a0f16;border:1px solid var(--line);border-radius:6px;padding:12px;margin-top:10px}
+.big{font-size:24px;font-weight:700}.g{color:var(--green)}
+.mural{border-color:var(--blue)}.mural h2{color:var(--blue)}
+.item{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#18212e;border-radius:6px;padding:10px;margin-top:10px}
+.item p{margin:2px 0 0}
+.badge{display:inline-block;background:var(--green);color:#fff;font-size:12px;font-weight:700;padding:4px 9px;border-radius:4px}
+.route{display:flex;justify-content:space-between;background:#0d1c24;border:1px solid var(--teal);border-radius:6px;padding:12px;margin-top:10px}
+.hist{max-height:170px;overflow:auto;font-size:13px;margin-top:10px}
+.hist div{padding:6px 0;border-bottom:1px solid var(--line)}
+.empty{text-align:center;color:var(--mut);font-style:italic;padding:14px}
+#msg{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:#243246;padding:10px 16px;border-radius:6px;display:none}
+</style>
 </head>
 <body>
+<header><b>LP Let's Prosper Global</b><span class="tag">Taxa do Administrador: 10% retida de forma automática</span></header>
 
-    <div class="lp-header">
-        <h4 style="margin: 0; font-weight: bold; color: #17a2b8;">LP Let's Prosper Global</h4>
-        <span style="background-color: #1c2d3a; color: #28a745; border: 1px solid #28a745; padding: 6px 12px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">
-            Taxa do Administrador: 10% Retida de Forma Automática
-        </span>
-    </div>
+<main>
+<div>
+  <section>
+    <h2>Mão de Obra &amp; Vagas (Modelo iWork)</h2>
+    <small>Anúncios com taxa de intermediação de 10% protegida</small>
+    <input id="nome" placeholder="Seu nome / Razão social">
+    <input id="servico" placeholder="Tipo de serviço ou cargo (ex: Eletricista)">
+    <select id="tipo">
+      <option value="">Selecione o tipo de relação comercial...</option>
+      <option>Serviço pontual (autônomo)</option>
+      <option>Contrato PJ</option>
+      <option>Vaga CLT</option>
+      <option>Projeto fechado</option>
+    </select>
+    <input id="valor" type="number" min="1" step="0.01" placeholder="Valor estimado do projeto (R$)">
+    <button id="btnPub">Publicar oportunidade</button>
+  </section>
 
-    <div class="grid-container">
-        
-        <!-- COLUNA ESQUERDA: Mão de Obra, Vagas e Cadastro iWork -->
-        <div>
-            <div class="card-custom">
-                <h5 style="font-weight: bold; margin: 0 0 5px 0; font-size: 1.1rem;">Mão de Obra & Vagas (Modelo iWork)</h5>
-                <p style="color: #8a99a6; font-size: 0.8rem; margin: 0 0 10px 0;">Anúncios com taxa de intermediação de 10% protegida</p>
-                
-                <form id="form-oportunidade" onsubmit="event.preventDefault();
-                    const nome = document.getElementById('cad-nome').value;
-                    const servico = document.getElementById('cad-servico').value;
-                    const mod = document.getElementById('tipo-servico-global').value;
-                    const val = parseFloat(document.getElementById('valor-estimado').value || 0);
-                    
-                    const novaVaga = { id: Date.now(), nome: nome, servico: servico, modalidade: mod, valor: val };
-                    let m = JSON.parse(localStorage.getItem('banco_iwork_mural') || '[]');
-                    m.push(novaVaga);
-                    localStorage.setItem('banco_iwork_mural', JSON.stringify(m));
-                    
-                    const container = document.getElementById('container-mural-vagas');
-                    container.innerHTML = '';
-                    m.forEach(p => {
-                        container.innerHTML += `<div class='card-vaga'>
-                            <div style='font-weight:bold; color:#007bff; margin-bottom:5px;'>\${p.modalidade}</div>
-                            <div class='small' style='font-size:0.85rem;'><strong>Contratante:</strong> \${p.nome}</div>
-                            <div class='small' style='font-size:0.85rem;'><strong>Oportunidade:</strong> \${p.servico}</div>
-                            <div class='small' style='margin-top:5px; color:#28a745; font-weight:bold;'>Orçamento Base: R$ \${p.valor.toFixed(2).replace('.', ',')}</div>
-                        </div>`;
-                    });
-                    
-                    alert('Sucesso!\nVaga publicada com taxa de 10% vinculada à operação.');
-                    this.reset();
-                ">
-                    <div class="form-group"><input type="text" id="cad-nome" class="form-control" placeholder="Seu Nome / Razão Social" required></div>
-                    <div class="form-group"><input type="text" id="cad-servico" class="form-control" placeholder="Tipo de Serviço ou Cargo (Ex: Eletricista)" required></div>
-                    <div class="form-group">
-                        <select class="form-select" id="tipo-servico-global" required>
-                            <option value="" disabled selected>Selecione o tipo de relação comercial...</option>
-                            <option value="Serviço Pessoa para Pessoa (P2P)">Serviço Pessoa para Pessoa (P2P)</option>
-                            <option value="Serviço Pessoa para Empresa (P2B)">Serviço Pessoa para Empresa (P2B)</option>
-                            <option value="Serviço Empresa para Pessoa (B2P)">Serviço Empresa para Pessoa (B2P)</option>
-                            <option value="Serviço Empresa para Empresa (B2B)">Serviço Empresa para Empresa (B2B)</option>
-                        </select>
-                    </div>
-                    <div class="form-group"><input type="number" class="form-control" id="valor-estimado" placeholder="Valor Estimado do Projeto (R$)" required></div>
-                    <button type="submit" class="btn-primary">Publicar Oportunidade / Cadastrar</button>
-                </form>
-            </div>
+  <section class="mural">
+    <h2>Mural de oportunidades ativas</h2>
+    <div id="mural"></div>
+  </section>
+</div>
 
-            <!-- Mural Visível de Oportunidades Cadastradas -->
-            <div class="card-custom" style="border-color: #007bff;">
-                <h5 style="font-weight: bold; margin: 0 0 5px 0; font-size: 1.1rem; color: #007bff;">Mural de Oportunidades Ativas</h5>
-                <div id="container-mural-vagas">
-                    <p style="color: #8a99a6; font-style: italic; text-align: center; padding: 10px 0; font-size: 0.85rem;">Nenhuma oportunidade listada no momento...</p>
-                </div>
-            </div>
-        </div>
+<div>
+  <section>
+    <h2>Carteira digital &amp; histórico de auditoria</h2>
+    <div class="box"><small>SALDO DISPONÍVEL PRESTADORES (90%)</small><div class="big" id="saldo">R$ 0,00</div></div>
+    <div class="box"><small>SUA RETENÇÃO ACUMULADA (10%)</small><div class="big g" id="ret">R$ 0,00</div></div>
+    <div class="hist" id="hist"></div>
+    <button class="sec" id="btnReset">Apagar todos os dados deste navegador</button>
+  </section>
 
-        <!-- COLUNA DIREITA: Carteira Digital Zerada e Central de Logística Automatizada -->
-        <div>
-            <div class="card-custom">
-                <h5 style="font-weight: bold; margin: 0 0 10px 0; font-size: 1.1rem;">Carteira Digital & Histórico Auditoria</h5>
-                <div class="wallet-box">
-                    <span style="color: #8a99a6; font-size: 0.75rem; display: block; margin-bottom: 2px;">SALDO DISPONÍVEL PRESTADORES (90%)</span>
-                    <h3 style="font-weight: bold; color: #ffffff; margin: 0; font-size: 1.4rem;" id="saldo-prestadores">R$ 0,00</h3>
-                </div>
-                <div class="wallet-box" style="margin-bottom: 0;">
-                    <span style="color: #8a99a6; font-size: 0.75rem; display: block; margin-bottom: 2px;">SUA RETENÇÃO ACUMULADA (10%)</span>
-                    <h3 style="font-weight: bold; color: #28a745; margin: 0; font-size: 1.4rem;" id="saldo-admin">R$ 0,00</h3>
-                </div>
-            </div>
+  <section>
+    <h2>Central de logística urbana</h2>
+    <span class="badge">Passageiros (R$ 2/km)</span>
+    <input id="origem" placeholder="Endereço de partida (ex: Natal, RN)">
+    <input id="destino" placeholder="Endereço de destino (ex: João Pessoa, PB)">
+    <button id="btnRota">Calcular rota</button>
+    <div class="route"><div><small>Distância</small><div class="big" style="color:var(--teal)" id="km">0.0 km</div></div>
+    <div style="text-align:right"><small>Preço da rota</small><div class="big g" id="preco">R$ 0,00</div></div></div>
+    <button id="btnCorrida" class="sec" disabled>Solicitar corrida</button>
+  </section>
+</div>
+</main>
+<div id="msg" role="status"></div>
 
-            <!-- Central de Logística Urbana Robótica Sem Botão (Tempo Real por Digitação) -->
-            <div class="card-custom">
-                <div style="margin-bottom: 10px;">
-                    <h5 style="font-weight: bold; margin: 0 0 20px 0; font-size: 1.1rem;">Central de Logística Urbana Robótica</h5>
-                </div>
-                <div style="margin-bottom: 10px;"><span style="background-color: #28a745; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">Passageiros (R$2/km)</span></div>
+<script>
+const TAXA = 0.10, PRECO_KM = 2;
+const KEY = 'lp_dados_v1';
+const brl = n => n.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-                <!-- Adicionado o evento oninput que monitora a escrita e calcula sozinho -->
-                <div class="form-group">
-                    <input type="text" id="endereco-partida" class="form-control" placeholder="Endereço de Partida (Ex: Natal)" style="margin-bottom: 8px;" oninput="calcularRotaAutomatica();">
-                    <input type="text" id="endereco-destino" class="form-control" placeholder="Endereço de Destino (Ex: João Pessoa)" oninput="calcularRotaAutomatica();">
-                </div>
+let db = {vagas:[], saldo:0, retencao:0, hist:[]};
+try { db = Object.assign(db, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch(e){}
+const salvar = () => { try { localStorage.setItem(KEY, JSON.stringify(db)); } catch(e){} };
 
-                <div id="resumo-rota" style="background: rgba(23, 162, 184, 0.1); border: 1px solid #17a2b8; padding: 10px; border-radius: 4px; margin-bottom: 0px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <span style="color: #8a99a6; font-size: 0.8rem; display: block;">Distância</span>
-                            <h5 id="txt-distancia" style="margin: 0; color: #17a2b8; font-weight: bold; font-size: 1.1rem;">0.0 km</h5>
-                        </div>
-                        <div>
-                            <span style="color: #8a99a6; font-size: 0.8rem; display: block;">Preço da Rota</span>
-                            <h4 id="txt-preco-total" style="margin: 0; color: #28a745; font-weight: bold; font-size: 1.2rem;">R$ 0,00</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+function aviso(t){ const m=$('msg'); m.textContent=t; m.style.display='block'; clearTimeout(m._t); m._t=setTimeout(()=>m.style.display='none',3000); }
 
-    <!-- Motor Lógico Inteligente de Atualização Simultânea -->
-    <script>
-        // Mantém o controle de estados numéricos fixos para não travar na matemática
-        let jaSometiEstaRota = false;
-        let ultimaPartida = "";
-        let ultimaDestino = "";
+function registrar(descricao, total){
+  const taxa = +(total*TAXA).toFixed(2), prest = +(total-taxa).toFixed(2);
+  db.saldo += prest; db.retencao += taxa;
+  db.hist.unshift(`${new Date().toLocaleString('pt-BR')} — ${descricao}: ${brl(total)} (prestador ${brl(prest)} | taxa ${brl(taxa)})`);
+  salvar(); render();
+}
 
-        function calcularRotaAutomatica() {
-            const p = document.getElementById('endereco-partida').value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\b(rn|pb|pe|brasil|br)\b/g, '').trim();
+function render(){
+  $('saldo').textContent = brl(db.saldo);
+  $('ret').textContent = brl(db.retencao);
+  $('hist').innerHTML = db.hist.slice(0,50).map(h=>`<div>${esc(h)}</div>`).join('') || '<div class="empty">Nenhuma transação ainda.</div>';
+  $('mural').innerHTML = db.vagas.length ? db.vagas.map(v=>`
+    <div class="item"><div><b>${esc(v.servico)}</b><p class="sub">${esc(v.nome)} · ${esc(v.tipo)}</p>
+    <p>${brl(v.valor)} <span class="sub">(taxa ${brl(v.valor*TAXA)})</span></p></div>
+    <button class="sm" data-id="${v.id}">Contratar</button></div>`).join('')
+    : '<div class="empty">Nenhuma oportunidade listada no momento...</div>';
+}
+
+$('btnPub').onclick = () => {
+  const nome=$('nome').value.trim(), servico=$('servico').value.trim(), tipo=$('tipo').value, valor=parseFloat($('valor').value);
+  if(!nome||!servico||!tipo||!(valor>0)) return aviso('Preencha todos os campos com um valor maior que zero.');
+  db.vagas.unshift({id:Date.now(),nome,servico,tipo,valor}); salvar(); render();
+  ['nome','servico','valor'].forEach(i=>$(i).value=''); $('tipo').value='';
+  aviso('Oportunidade publicada.');
+};
+
+$('mural').onclick = e => {
+  const id = e.target.dataset && e.target.dataset.id; if(!id) return;
+  const v = db.vagas.find(x=>String(x.id)===id); if(!v) return;
+  if(!confirm(`Contratar "${v.servico}" por ${brl(v.valor)}?\n(Simulação: o pagamento real exige gateway.)`)) return;
+  registrar(`Contratação: ${v.servico}`, v.valor);
+  db.vagas = db.vagas.filter(x=>x.id!==v.id); salvar(); render();
+  aviso('Contratação registrada. 10% retidos.');
+};
+
+$('btnReset').onclick = () => {
+  if(!confirm('Apagar todos os dados salvos neste navegador?')) return;
+  db={vagas:[],saldo:0,retencao:0,hist:[]}; salvar(); render();
+};
+
+/* Logística: geocodificação (Nominatim) + rota por estrada (OSRM), gratuitos */
+let rotaAtual = null;
+async function geocode(q){
+  const r = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=br&q='+encodeURIComponent(q));
+  const j = await r.json();
+  if(!j.length) throw new Error('Endereço não encontrado: '+q);
+  return {lat:j[0].lat, lon:j[0].lon};
+}
+$('btnRota').onclick = async () => {
+  const o=$('origem').value.trim(), d=$('destino').value.trim();
+  if(!o||!d) return aviso('Informe partida e destino.');
+  $('btnRota').textContent='Calculando...'; $('btnRota').disabled=true;
+  try{
+    const [a,b] = [await geocode(o), await geocode(d)];
+    const r = await fetch(`https://router.project-osrm.org/route/v1/driving/${a.lon},${a.lat};${b.lon},${b.lat}?overview=false`);
+    const j = await r.json();
+    if(!j.routes||!j.routes.length) throw new Error('Rota não encontrada.');
+    const km = j.routes[0].distance/1000, preco = +(km*PRECO_KM).toFixed(2);
+    $('km').textContent = km.toFixed(1)+' km'; $('preco').textContent = brl(preco);
+    rotaAtual = {o,d,km,preco}; $('btnCorrida').disabled=false;
+  }catch(err){ aviso(err.message||'Erro ao calcular a rota.'); }
+  $('btnRota').textContent='Calcular rota'; $('btnRota').disabled=false;
+};
+$('btnCorrida').onclick = () => {
+  if(!rotaAtual) return;
+  registrar(`Corrida ${rotaAtual.o} → ${rotaAtual.d} (${rotaAtual.km.toFixed(1)} km)`, rotaAtual.preco);
+  aviso('Corrida solicitada. 10% retidos.'); rotaAtual=null; $('btnCorrida').disabled=true;
+};
+
+render();
+</script>
+</body>
+</html>
