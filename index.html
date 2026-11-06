@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Let's Prosper - Sistema Automatizado</title>
+    <title>Let's Prosper - Ecossistema Global Automatizado</title>
     <style>
         body { background-color: #0b1116; color: #ffffff; font-family: system-ui, -apple-system, sans-serif; padding: 20px; margin: 0; }
         .lp-header { background-color: #111c24; padding: 15px 20px; border-radius: 6px; margin-bottom: 25px; border: 1px solid #1c2d3a; display: flex; justify-content: space-between; align-items: center; }
@@ -14,64 +14,79 @@
         .form-control, .form-select { width: 100%; background-color: #1a2632; border: 1px solid #2c3e50; color: #fff; padding: 12px; border-radius: 4px; box-sizing: border-box; font-size: 0.95rem; }
         .btn-primary { width: 100%; padding: 14px; background-color: #007bff; border: none; color: white; font-weight: bold; border-radius: 4px; cursor: pointer; font-size: 1rem; }
         .wallet-box { background-color: #0b1116; padding: 15px; border: 1px solid #2c3e50; border-radius: 4px; margin-bottom: 15px; }
+        .card-mural { background-color: #1a2632; border: 1px solid #007bff; padding: 15px; border-radius: 4px; margin-top: 15px; }
+        .card-corrida { background-color: #1a2632; border: 1px solid #28a745; padding: 15px; border-radius: 4px; margin-top: 15px; }
+        .btn-aceitar { background-color: #28a745; color: white; border: none; padding: 10px; font-weight: bold; border-radius: 4px; cursor: pointer; width: 100%; margin-top: 10px; }
         @media (max-width: 992px) { .grid-container { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
+    <!-- Topbar Global -->
     <div class="lp-header">
         <h4 style="margin: 0; font-weight: bold; color: #17a2b8;">LP Let's Prosper Global</h4>
         <span style="background-color: #1c2d3a; color: #28a745; border: 1px solid #28a745; padding: 8px 12px; border-radius: 4px; font-size: 0.85rem; font-weight: bold;">
-            Taxa do Administrador: 10% Retida de Forma Automática
+            Taxa do Administrador: 10% Retida na Fonte (Anti-Calote)
         </span>
     </div>
 
     <div class="grid-container">
         
-        <!-- COLUNA ESQUERDA: Mão de Obra, Vagas e Cadastro Completo -->
+        <!-- COLUNA ESQUERDA: Cadastro de Mão de Obra e Mural Visível -->
         <div>
+            <!-- Cadastro Oportunidades -->
             <div class="card-custom">
                 <h5 style="font-weight: bold; margin: 0 0 5px 0; font-size: 1.2rem;">Mão de Obra & Vagas</h5>
-                <p style="color: #8a99a6; font-size: 0.85rem; margin: 0 0 20px 0;">Anúncios estilo iWork com taxa de 10%</p>
+                <p style="color: #8a99a6; font-size: 0.85rem; margin: 0 0 20px 0;">Anúncios estilo iWork com taxa de 10% retida automaticamente</p>
                 
-                <form onsubmit="event.preventDefault(); const val = parseFloat(document.getElementById('valor-estimado').value || 0); alert('Sucesso!\nCadastro publicado com taxa de 10% (R$ ' + (val * 0.1).toFixed(2).replace('.', ',') + ') associada à operação.'); this.reset();">
-                    <div class="form-group"><input type="text" class="form-control" placeholder="Seu Nome / Razão Social" required></div>
-                    <div class="form-group"><input type="text" class="form-control" placeholder="Tipo de Serviço (Ex: Pintor, Carreto)" required></div>
+                <form id="form-oportunidade" onsubmit="event.preventDefault(); cadastrarNoMural();">
+                    <div class="form-group"><input type="text" id="cad-nome" class="form-control" placeholder="Seu Nome / Razão Social" required></div>
+                    <div class="form-group"><input type="text" id="cad-servico" class="form-control" placeholder="Tipo de Serviço (Ex: Pintor, Carreto)" required></div>
                     <div class="form-group">
                         <label>Modalidade de Cadastro / Contratação</label>
                         <select class="form-select" id="tipo-servico-global" required>
                             <option value="" disabled selected>Selecione o tipo de relação comercial...</option>
-                            <option value="p2p">Serviço Pessoa para Pessoa (P2P)</option>
-                            <option value="p2b">Serviço Pessoa para Empresa (P2B)</option>
-                            <option value="b2p">Serviço Empresa para Pessoa (B2P)</option>
-                            <option value="b2b">Serviço Empresa para Empresa (B2B)</option>
+                            <option value="Serviço Pessoa para Pessoa (P2P)">Serviço Pessoa para Pessoa (P2P)</option>
+                            <option value="Serviço Pessoa para Empresa (P2B)">Serviço Pessoa para Empresa (P2B)</option>
+                            <option value="Serviço Empresa para Pessoa (B2P)">Serviço Empresa para Pessoa (B2P)</option>
+                            <option value="Serviço Empresa para Empresa (B2B)">Serviço Empresa para Empresa (B2B)</option>
                         </select>
                     </div>
                     <div class="form-group"><input type="number" class="form-control" id="valor-estimado" placeholder="Valor Estimado (R$)" required></div>
-                    <button type="submit" class="btn-primary" style="background-color: #007bff;">Publicar Oportunidade / Cadastrar</button>
+                    <button type="submit" class="btn-primary">Publicar Oportunidade / Cadastrar</button>
                 </form>
+            </div>
+
+            <!-- Mural de Profissionais Cadastrados -->
+            <div class="card-custom" style="border-color: #007bff;">
+                <h5 style="font-weight: bold; margin: 0 0 5px 0; font-size: 1.2rem; color: #007bff;">Mural de Profissionais & Vagas Cadastradas</h5>
+                <p style="color: #8a99a6; font-size: 0.85rem; margin: 0 0 15px 0;">Lista em tempo real dos serviços disponíveis no ecossistema</p>
+                <div id="container-mural-servicos">
+                    <p style="color: #8a99a6; font-style: italic; text-align: center; padding: 20px 0;">Nenhum profissional cadastrado no mural ainda...</p>
+                </div>
             </div>
         </div>
 
-        <!-- COLUNA DIREITA: Carteira Digital e Logística Avançada -->
+        <!-- COLUNA DIREITA: Carteira Digital Zerada e Central de Logística -->
         <div>
+            <!-- Carteira Digital Auditada -->
             <div class="card-custom">
                 <h5 style="font-weight: bold; margin: 0 0 20px 0; font-size: 1.2rem;">Carteira Digital & Histórico Auditoria</h5>
                 <div class="wallet-box">
                     <span style="color: #8a99a6; font-size: 0.8rem; display: block; margin-bottom: 3px;">SALDO DISPONÍVEL PRESTADORES (90%)</span>
-                    <h3 style="font-weight: bold; color: #ffffff; margin: 0; font-size: 1.6rem;" id="saldo-prestadores">R$ 450,00</h3>
+                    <h3 style="font-weight: bold; color: #ffffff; margin: 0; font-size: 1.6rem;" id="saldo-prestadores">R$ 0,00</h3>
                 </div>
                 <div class="wallet-box" style="margin-bottom: 0;">
                     <span style="color: #8a99a6; font-size: 0.8rem; display: block; margin-bottom: 3px;">SUA RETENÇÃO ACUMULADA (10%)</span>
-                    <h3 style="font-weight: bold; color: #28a745; margin: 0; font-size: 1.6rem;" id="saldo-admin">R$ 50,00</h3>
+                    <h3 style="font-weight: bold; color: #28a745; margin: 0; font-size: 1.6rem;" id="saldo-admin">R$ 0,00</h3>
                 </div>
             </div>
 
-            <!-- Central de Logística Urbana Robótica com Função Direta de Clique -->
+            <!-- Central de Logística (Painel Passageiro) -->
             <div class="card-custom">
                 <div style="margin-bottom: 15px;">
-                    <h5 style="font-weight: bold; margin: 0 0 3px 0; font-size: 1.2rem;">Central de Logística Urbana Robótica</h5>
-                    <small style="color: #8a99a6; display: block;">Cálculo automático de KM e disparo automático para motoristas</small>
+                    <h5 style="font-weight: bold; margin: 0 0 3px 0; font-size: 1.2rem;">Central de Logística Urbana Robótica (Painel Passageiro)</h5>
+                    <small style="color: #8a99a6; display: block;">Digite as cidades para calcular a rota automaticamente</small>
                 </div>
                 <div style="margin-bottom: 15px;"><span style="background-color: #28a745; color: white; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem; font-weight: bold;">Passageiros (R$2/km)</span></div>
 
@@ -80,7 +95,6 @@
                     <input type="text" id="endereco-destino" class="form-control" placeholder="Endereço de Destino (Ex: João Pessoa)">
                 </div>
 
-                <!-- Painel Informativo Fixo (Sempre renderizado na tela) -->
                 <div id="resumo-rota" style="background: rgba(23, 162, 184, 0.1); border: 1px solid #17a2b8; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div>
@@ -94,13 +108,36 @@
                     </div>
                 </div>
 
-                <!-- AÇÃO INLINE DIRETA NO CLIQUE DO BOTÃO VERDE -->
-                <button type="button" class="btn-primary" style="background-color: #28a745;" onclick="
-                    const p = document.getElementById('endereco-partida').value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\b(rn|pb|pe|brasil|br)\b/g, '').trim();
-                    const d = document.getElementById('endereco-destino').value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\b(rn|pb|pe|brasil|br)\b/g, '').trim();
-                    if(!p || !d) { alert('Por favor, digite a partida e o destino.'); return; }
-                    let km = 185;
-                    if((p.includes('natal') && d.includes('pessoa')) || (p.includes('pessoa') && d.includes('natal'))) { km = 185; }
-                    else if((p.includes('natal') && d.includes('recife')) || (p.includes('recife') && d.includes('natal'))) { km = 295; }
-                    else { km = Math.abs((p.length * 9) + (d.length * 14)) % 180 + 20; }
-                    const prc = km * 2;
+                <button type="button" class="btn-primary" style="background-color: #28a745;" id="btn-chamar-motorista" onclick="chamarMotoristaEGravar();">Confirmar e Chamar Motorista</button>
+            </div>
+
+            <!-- Radar do Motorista -->
+            <div class="card-custom" style="border-color: #28a745;">
+                <h5 style="font-weight: bold; margin: 0 0 5px 0; font-size: 1.2rem; color: #28a745;">Radar de Corridas (Painel do Motorista)</h5>
+                <p style="color: #8a99a6; font-size: 0.85rem; margin: 0 0 15px 0;">Pedidos pendentes armazenados no banco de dados local</p>
+                <div id="container-radar-motorista">
+                    <p style="color: #8a99a6; font-style: italic; text-align: center; padding: 20px 0;">Nenhuma corrida pendente no radar no momento...</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Script de Inteligência Operacional de Alta Performance -->
+    <script>
+        const matrizDistancias = {
+            "natal": { "joao pessoa": 185, "recife": 295, "parnamirim": 15 },
+            "joao pessoa": { "natal": 185, "recife": 120, "campina grande": 130 }
+        };
+
+        let saldoPrestadoresGlobal = 0.00;
+        let saldoAdminGlobal = 0.00;
+        let kmAtualCalculado = 0;
+        let precoAtualCalculado = 0;
+
+        document.addEventListener("DOMContentLoaded", function() {
+            renderRadarMotorista();
+            renderMuralServicos();
+            
+            // Ouvintes de digitação em tempo real para cálculo preditivo instantâneo
+            document.getElementById('endereco-partida').addEventListener('input', calcularRotaTempoReal);
