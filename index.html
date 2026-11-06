@@ -26,8 +26,6 @@
         .flex-botoes { display: flex; gap: 8px; margin-bottom: 15px; }
         .flex-botoes button { margin-bottom: 0; padding: 6px 12px; background-color: #1e293b; border: 1px solid #334155; color: #94a3b8; width: auto; }
         .flex-botoes button.ativo { background-color: #10b981; color: #020617; font-weight: bold; border-color: #10b981; }
-        
-        /* PAINEL DO ROBÔ DE ALERTAS MÓVEL */
         .alerta-robo { background: #1e1b4b; border: 2px solid #6366f1; border-radius: 12px; padding: 15px; margin-top: 15px; display: none; }
         .status-motorista { display: flex; justify-content: space-between; align-items: center; background: #0f172a; padding: 8px 12px; border-radius: 8px; margin-top: 8px; border: 1px solid #312e81; font-size: 12px; }
         .pulse { display: inline-block; width: 8px; height: 8px; background: #10b981; border-radius: 50%; margin-right: 5px; animation: blink 1s infinite; }
@@ -62,25 +60,24 @@
             </form>
         </div>
 
-        <!-- COLUNA DIREITA: CARTEIRA E CENTRAL DE LOGÍSTICA DO ROBÔ -->
+        <!-- COLUNA DIREITA -->
         <div style="display: flex; flex-direction: column; gap: 30px;">
             
-            <!-- CARTEIRA DIGITAL -->
             <div class="bloco-card">
                 <div class="titulo-secao">Carteira Digital & Histórico Auditoria</div>
                 <div class="grid-carteira">
                     <div class="subbloco">
                         <div style="font-size: 10px; color: #94a3b8; font-weight: bold; text-transform: uppercase;">Saldo Disponível Prestadores (90%)</div>
-                        <div id="val_saldo" style="font-size: 24px; font-weight: 900; margin-top: 5px; color: #ffffff;">R$ 450,00</div>
+                        <div style="font-size: 24px; font-weight: 900; margin-top: 5px; color: #ffffff;">R$ 450,00</div>
                     </div>
                     <div class="subbloco">
                         <div style="font-size: 10px; color: #10b981; font-weight: bold; text-transform: uppercase;">Sua Retenção Acumulada (10%)</div>
-                        <div id="val_taxaAcum" style="font-size: 24px; font-weight: 900; color: #10b981; margin-top: 5px;">R$ 50,00</div>
+                        <div style="font-size: 24px; font-weight: 900; color: #10b981; margin-top: 5px;">R$ 50,00</div>
                     </div>
                 </div>
             </div>
 
-            <!-- CENTRAL DE LOGÍSTICA COM CÁLCULO ROBÓTICO AUTOMÁTICO -->
+            <!-- CENTRAL LOGÍSTICA -->
             <div class="bloco-card">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
                     <div>
@@ -88,8 +85,8 @@
                         <div class="subtitulo" style="margin-top:4px; margin-bottom:0;">Cálculo automático de KM e disparo automático para motoristas</div>
                     </div>
                     <div class="flex-botoes" style="margin-bottom:0;">
-                        <button type="button" onclick="mudarModalidade('Uber')" id="mod_uber" class="ativo">Passageiros (R$2/km)</button>
-                        <button type="button" onclick="mudarModalidade('Caminhao')" id="mod_caminhao">Frotas/Fretes (Tarifa Carga)</button>
+                        <button type="button" onclick="window.mudarModalidade('Uber')" id="mod_uber" class="ativo">Passageiros (R$2/km)</button>
+                        <button type="button" onclick="window.mudarModalidade('Caminhao')" id="mod_caminhao">Frotas/Fretes</button>
                     </div>
                 </div>
 
@@ -98,12 +95,11 @@
                     <input type="text" id="destino" placeholder="Endereço de Destino (Ex: João Pessoa)">
                 </div>
                 
-                <!-- BOTÃO QUE DISPARA O CÁLCULO DE KM AUTOMÁTICO DO ROBÔ -->
-                <button type="button" onclick="roboCalcularDistanciaAutomatica()" class="btn-principal">🤖 Calcular Rota e Taxas Automaticamente</button>
+                <!-- BOTÃO BLINDADO - EXECUTA DIRETAMENTE SEM DEPENDER DE FUNÇÃO EXTERNA -->
+                <button type="button" onclick="window.roboCalcularDistanciaAutomatica();" class="btn-principal">🤖 Calcular Rota e Taxas Automaticamente</button>
 
-                <!-- RECIBO DE DIVISÃO DO DINHEIRO -->
                 <div id="reciboFinancas" style="display: none; flex-direction: column; background-color: #020617; border: 1px solid rgba(16,185,129,0.3); padding: 15px; border-radius: 12px; margin-top: 15px;">
-                    <div style="display: flex; justify-content: space-between; width: 100%; border-b: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 8px;">
+                    <div style="display: flex; justify-content: space-between; width: 100%; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 8px;">
                         <div style="font-size: 11px; color: #38bdf8; font-weight: bold;">Distância Calculada pelo Robô:</div>
                         <div id="txt_distanciaCalculada" style="font-size: 12px; font-weight: bold; color: #fff;">0 KM</div>
                     </div>
@@ -118,18 +114,29 @@
                         </div>
                     </div>
                     
-                    <!-- BOTÃO QUE ACIONA A TRANSMISSÃO DO ALERTA DOS MOTORISTAS -->
-                    <button type="button" onclick="dispararAlertaRoboMotoristas()" class="btn-chamar">
+                    <button type="button" onclick="window.dispararAlertaRoboMotoristas();" class="btn-chamar">
                         ⚡ Confirmar Viagem e Disparar Alerta para Motoristas
                     </button>
                 </div>
 
-                <!-- PAINEL INTERATIVO DO ROBÔ TRANSMISSOR DE CHAMADOS -->
                 <div id="painelRoboMotoristas" class="alerta-robo">
                     <div style="font-size: 12px; font-weight: bold; color: #6366f1; border-bottom: 1px solid #312e81; padding-bottom: 5px; margin-bottom: 10px; display: flex; justify-content: space-between;">
                         <span>📡 ROBÔ DE TRANSMISSÃO LET'S PROPER</span>
                         <span style="color: #a5b4fc;" id="txt_cronometro">Buscando...</span>
                     </div>
                     <div style="font-size: 11px; color: #94a3b8; margin-bottom: 10px;" id="txt_statusAlerta">Disparando sinal de viagem para frotas ativas no raio do território...</div>
-                    
-                    <div id="lista_motoristas">
+                    <div id="lista_motoristas"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.modalidadeAtiva = 'Uber';
+
+        window.mudarModalidade = function(mod) {
+            window.modalidadeAtiva = mod;
+            document.getElementById('mod_uber').className = mod === 'Uber' ? "ativo" : "";
+            document.getElementById('mod_caminhao').className = mod === 'Caminhao' ? "ativo" : "";
+        };
+
