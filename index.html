@@ -1,47 +1,4 @@
-<div class="card-logistica">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <div>
-            <h3>Central de Logística Urbana Robótica</h3>
-            <small>Cálculo automático de KM e disparo automático para motoristas</small>
-        </div>
-        <div>
-            <span class="badge bg-success text-white px-3 py-2" id="btn-passageiros">Passageiros (R$2/km)</span>
-            <span class="badge bg-secondary text-white px-3 py-2 ms-2" id="btn-frotas" style="opacity: 0.6; cursor: pointer;">Frotas/Fretes</span>
-        </div>
-    </div>
-    
-    <div class="card-body mt-3">
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label class="form-label text-muted small">Endereço de Partida</label>
-                <input type="text" id="endereco-partida" class="form-control bg-dark text-white border-secondary" placeholder="Digite o local de início (Ex: Natal)">
-            </div>
-            <div class="col-md-6">
-                <label class="form-label text-muted small">Endereço de Destino</label>
-                <input type="text" id="endereco-destino" class="form-control bg-dark text-white border-secondary" placeholder="Digite o destino final (Ex: João Pessoa)">
-            </div>
-        </div>
-        
-        <!-- Painel de resumo da rota calculado em tempo real -->
-        <div id="resumo-rota" class="mt-4 p-3 rounded bg-black-50 text-white border border-secondary" style="display: none; background-color: rgba(0,0,0,0.2);">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <p class="mb-1 text-muted small">Distância Calculada</p>
-                    <h5 class="mb-0 text-info" id="txt-distancia">0.0 km</h5>
-                </div>
-                <div>
-                    <p class="mb-1 text-muted small">Valor da Corrida</p>
-                    <h4 class="mb-0 text-success" id="txt-preco-total">R$ 0,00</h4>
-                </div>
-            </div>
-        </div>
-
-        <button type="button" id="btn-solicitar-rota" class="btn btn-primary w-100 mt-3 fw-bold py-2">
-            Confirmar e Chamar Motorista
-        </button>
-    </div>
-</div>
-
+<script>
 // Variáveis Globais de Controle da Aplicação
 let autocompletePartida, autocompleteDestino;
 let directionsService, directionsRenderer;
@@ -62,70 +19,56 @@ function initLogistica() {
     const inputPartida = document.getElementById('endereco-partida');
     const inputDestino = document.getElementById('endereco-destino');
 
-    autocompletePartida = new google.maps.places.Autocomplete(inputPartida, options);
-    autocompleteDestino = new google.maps.places.Autocomplete(inputDestino, options);
+    if (inputPartida && inputDestino) {
+        autocompletePartida = new google.maps.places.Autocomplete(inputPartida, options);
+        autocompleteDestino = new google.maps.places.Autocomplete(inputDestino, options);
 
-    // Escuta as mudanças de seleção para recalcular dinamicamente
-    autocompletePartida.addListener('place_changed', calcularRotaTempoReal);
-    autocompleteDestino.addListener('place_changed', calcularRotaTempoReal);
+        // Escuta as mudanças de seleção para recalcular dinamicamente
+        autocompletePartida.addListener('place_changed', calcularRotaTempoReal);
+        autocompleteDestino.addListener('place_changed', calcularRotaTempoReal);
+    }
 }
 
-// Executa o cálculo de rota dinâmica (Padrão de eficiência Uber/99)
+// Executa o cálculo de rota dinâmica
 function calcularRotaTempoReal() {
     const partidaText = document.getElementById('endereco-partida').value;
     const destinoText = document.getElementById('endereco-destino').value;
 
-    // Só calcula se ambos os pontos estiverem digitados/selecionados
     if (!partidaText || !destinoText) return;
 
     directionsService.route({
         origin: partidaText,
         destination: destinoText,
-        travelMode: google.maps.TravelMode.DRIVING // Baseado em tráfego de vias terrestres
+        travelMode: google.maps.TravelMode.DRIVING
     }, function(response, status) {
         if (status === 'OK') {
-            // Extrai a distância em metros da primeira rota gerada
             const distanciaMetros = response.routes[0].legs[0].distance.value;
             distanciaKm = distanciaMetros / 1000;
             
-            // Lógica financeira matemática do ecossistema LP
             precoCorrida = distanciaKm * TARIFA_POR_KM;
 
-            // Atualiza os elementos visuais na tela em tempo real
-            document.getElementById('txt-distancia').innerText = `${distanciaKm.toFixed(1)} km`;
-            document.getElementById('txt-preco-total').innerText = `R$ ${precoCorrida.toFixed(2).replace('.', ',')}`;
-            document.getElementById('resumo-rota').style.display = 'block';
+            // Atualiza os elementos visuais na tela
+            const txtDistancia = document.getElementById('txt-distancia');
+            const txtPrecoTotal = document.getElementById('txt-preco-total');
+            const resumoRota = document.getElementById('resumo-rota');
+
+            if (txtDistancia) txtDistancia.innerText = `${distanciaKm.toFixed(1)} km`;
+            if (txtPrecoTotal) txtPrecoTotal.innerText = `R$ ${precoCorrida.toFixed(2).replace('.', ',')}`;
+            if (resumoRota) resumoRota.style.display = 'block';
         } else {
-            console.error('Falha na requisição de rota devido a: ' + status);
+            console.error('Falha na requisição de rota: ' + status);
         }
     });
 }
 
-// Processa a confirmação do pedido, atualiza carteira digital e simula split
-document.getElementById('btn-solicitar-rota').addEventListener('click', function() {
+// Processa a confirmação do pedido
+document.getElementById('btn-solicitar-rota')?.addEventListener('click', function() {
     if (precoCorrida === 0) {
         alert("Por favor, selecione uma rota válida primeiro.");
         return;
     }
 
-    // Cálculo da divisão da taxa automatizada de 10%
     const taxaAdministrador = precoCorrida * 0.10;
-    const repassePrestador = precoCorrida * 0.90;
-
-    // Simulação da atualização dos saldos na Carteira Digital da Interface
-    // Captura os saldos atuais limpos de formatação
-    let saldoAtualPrestadores = parseFloat(document.getElementById('saldo-prestadores-num')?.innerText || "450.00");
-    let retencaoAtualAdmin = parseFloat(document.getElementById('retencao-admin-num')?.innerText || "50.00");
-
-    let novoSaldoPrestadores = saldoAtualPrestadores + repassePrestador;
-    let novaRetencaoAdmin = retencaoAtualAdmin + taxaAdministrador;
-
-    // Atualiza a árvore do DOM (Valores estáticos do painel superior)
-    // Nota: Garanta que sua carteira digital tenha IDs ou classes fáceis de injetar dinamicamente como abaixo
-    const containerSaldo = document.querySelector('h2:contains("R$")') || document.getElementById('carteira-saldo');
-    
     alert(`Rota Confirmada com Sucesso!\nDistância: ${distanciaKm.toFixed(1)} km\nValor Total: R$ ${precoCorrida.toFixed(2)}\nTaxa Admin (10%): R$ ${taxaAdministrador.toFixed(2)} retida automaticamente.`);
 });
-
-<!-- Script do Google Maps com bibliotecas de lugares e rotas -->
-<script src="https://googleapis.com" async defer></script>
+</script>
