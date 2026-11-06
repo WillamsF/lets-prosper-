@@ -8,12 +8,13 @@
         body { background-color: #0b1116; color: #ffffff; font-family: system-ui, -apple-system, sans-serif; padding: 20px; margin: 0; }
         .lp-header { background-color: #111c24; padding: 15px 20px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #1c2d3a; display: flex; justify-content: space-between; align-items: center; }
         
-        /* Menu de Navegação Interativo */
+        /* Menu de Navegação */
         .nav-tabs { display: flex; gap: 10px; background-color: #111c24; padding: 10px; border-radius: 6px; border: 1px solid #1c2d3a; margin-bottom: 25px; }
         .nav-btn { background: none; border: none; color: #8a99a6; padding: 10px 20px; font-weight: bold; border-radius: 4px; cursor: pointer; font-size: 0.95rem; transition: all 0.2s; }
         .nav-btn.active { background-color: #007bff; color: white; }
         .nav-btn:hover:not(.active) { background-color: #1a2632; color: #fff; }
         
+        /* Controle de Visibilidade das Telas */
         .panel-content { display: none; }
         .panel-content.active { display: block; }
         
@@ -34,34 +35,34 @@
 
     <!-- Topbar Superior -->
     <div class="lp-header">
-        <h4 style="margin: 0; font-weight: bold; color: #17a2b8;" id="plataforma-titulo">LP Let's Prosper - iWork Platform</h4>
+        <h4 style="margin: 0; font-weight: bold; color: #17a2b8;">LP Let's Prosper - iWork Platform</h4>
         <span style="background-color: #1c2d3a; color: #28a745; border: 1px solid #28a745; padding: 8px 12px; border-radius: 4px; font-size: 0.85rem; font-weight: bold;">
             Garantia Anti-Calote: 10% de Taxa Retida na Fonte
         </span>
     </div>
 
-    <!-- Abas de Controle de Perfil -->
+    <!-- Abas de Navegação com IDs Corrigidos -->
     <div class="nav-tabs">
-        <button class="nav-btn active" onclick="alternarPerfil('candidato', this)">Procurar Emprego / Vagas</button>
-        <button class="nav-btn" onclick="alternarPerfil('empresa', this)">Anunciar Vaga / Mão de Obra</button>
-        <button class="nav-btn" onclick="alternarPerfil('admin', this)" style="color: #ffc107;">Painel Administrador (Seu Controle)</button>
+        <button id="btn-tab-candidato" class="nav-btn active" onclick="alternarPerfil('candidato')">Procurar Emprego / Vagas</button>
+        <button id="btn-tab-empresa" class="nav-btn" onclick="alternarPerfil('empresa')">Anunciar Vaga / Mão de Obra</button>
+        <button id="btn-tab-admin" class="nav-btn" onclick="alternarPerfil('admin')" style="color: #ffc107;">Painel Administrador (Seu Controle)</button>
     </div>
 
     <!-- ========================================== -->
-    <!-- 1. INTERFACE DO CANDIDATO (PROCURAR EMPREGO)-->
+    <!-- 1. INTERFACE DO CANDIDATO -->
     <!-- ========================================== -->
     <div id="painel-candidato" class="panel-content active">
         <div class="card-custom" style="border-color: #007bff;">
             <h5 style="font-weight: bold; margin: 0 0 5px 0; font-size: 1.2rem; color: #007bff;">Radar iWork - Oportunidades de Trabalho Disponíveis</h5>
             <p style="color: #8a99a6; font-size: 0.85rem; margin: 0 0 20px 0;">Candidate-se a vagas de empresas e receba os pagamentos com segurança</p>
             <div id="feed-vagas-candidato">
-                <!-- Injeção via JavaScript -->
+                <!-- Preenchido via JS -->
             </div>
         </div>
     </div>
 
     <!-- ========================================== -->
-    <!-- 2. INTERFACE DA EMPRESA (PROCURAR MÃO DE OBRA)-->
+    <!-- 2. INTERFACE DA EMPRESA -->
     <!-- ========================================== -->
     <div id="painel-empresa" class="panel-content">
         <div class="card-custom">
@@ -88,11 +89,10 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- 3. INTERFACE DO ADMINISTRADOR (SEU PAINEL) -->
+    <!-- 3. INTERFACE DO ADMINISTRADOR -->
     <!-- ========================================== -->
     <div id="painel-admin" class="panel-content">
         <div class="grid-layout">
-            <!-- Carteiras Administrativas de Auditoria -->
             <div class="card-custom" style="border-color: #ffc107;">
                 <h5 style="font-weight: bold; margin: 0 0 20px 0; font-size: 1.2rem; color: #ffc107;">Métricas Gerais de Arrecadação Fiscal</h5>
                 
@@ -110,7 +110,6 @@
                 </div>
             </div>
 
-            <!-- Registro de Auditoria Contábil -->
             <div class="card-custom">
                 <h5 style="font-weight: bold; margin: 0 0 10px 0; font-size: 1.2rem;">Log de Transações Bancárias</h5>
                 <p style="color: #8a99a6; font-size: 0.85rem; margin: 0 0 15px 0;">Histórico em tempo real de retenções automatizadas</p>
@@ -121,9 +120,8 @@
         </div>
     </div>
 
-    <!-- Inteligência Operacional dos Painéis -->
+    <!-- Script de Navegação e Negócios Blindado -->
     <script>
-        // Inicialização de caixas numéricas puras de contabilidade
         let faturamentoBruto = 0.00;
         let provisaoPrestadores = 0.00;
         let receitaAdminLiquida = 0.00;
@@ -132,21 +130,22 @@
             rebuildMuralVagas();
         });
 
-        // Mecanismo de troca de tela fluido
-        function alternarPerfil(perfil, botao) {
-            document.querySelectorAll('.panel-content').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        // Corrigido: Alternância baseada em IDs individuais seguros
+        function alternarPerfil(perfil) {
+            // Esconde todos os painéis de conteúdo
+            document.getElementById('painel-candidato').style.display = 'none';
+            document.getElementById('painel-empresa').style.display = 'none';
+            document.getElementById('painel-admin').style.display = 'none';
             
-            botao.classList.add('active');
-            document.getElementById(`painel-${perfil}`).classList.add('active');
+            // Remove a classe ativa de todos os botões do menu
+            document.getElementById('btn-tab-candidato').classList.remove('active');
+            document.getElementById('btn-tab-empresa').classList.remove('active');
+            document.getElementById('btn-tab-admin').classList.remove('active');
+            
+            // Ativa apenas a tela e o botão selecionado
+            document.getElementById(`painel-${perfil}`).style.display = 'block';
+            document.getElementById(`btn-tab-${perfil}`).classList.add('active');
         }
 
-        // Função da Empresa: Cadastra e envia para o armazenamento persistente
         function publicarVagaNoSistema() {
             const empresa = document.getElementById('vaga-empresa').value;
-            const titulo = document.getElementById('vaga-titulo').value;
-            const modalidade = document.getElementById('vaga-modalidade').value;
-            const orcamento = parseFloat(document.getElementById('vaga-orcamento').value || 0);
-
-            const novaOportunidade = {
-                id: Date.now(),
