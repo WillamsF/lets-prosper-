@@ -33,7 +33,7 @@
         </span>
     </div>
 
-    <!-- Abas de Navegação Globais -->
+    <!-- Abas de Navegação -->
     <div class="nav-tabs">
         <button id="btn-tab-candidato" class="nav-btn active" onclick="alternarPerfil('candidato')">Procurar Emprego / Vagas</button>
         <button id="btn-tab-empresa" class="nav-btn" onclick="alternarPerfil('empresa')">Anunciar Vaga / Mão de Obra</button>
@@ -41,7 +41,7 @@
     </div>
 
     <!-- 1. PAINEL DO CANDIDATO -->
-    <div id="painel-candidato" class="panel-content active" style="display: block;">
+    <div id="painel-candidato" class="panel-content active">
         <div class="card-custom" style="border-color: #007bff;">
             <h5 style="font-weight: bold; margin: 0 0 5px 0; font-size: 1.2rem; color: #007bff;">Radar iWork - Oportunidades de Trabalho Disponíveis</h5>
             <p style="color: #8a99a6; font-size: 0.85rem; margin: 0 0 20px 0;">Candidate-se a vagas de empresas e receba os pagamentos com segurança</p>
@@ -55,7 +55,6 @@
             <h5 style="font-weight: bold; margin: 0 0 5px 0; font-size: 1.2rem;">Painel de Publicação de Vagas</h5>
             <p style="color: #8a99a6; font-size: 0.85rem; margin: 0 0 20px 0;">Abra novos postos de trabalho e aloque orçamentos garantidos no ecossistema</p>
             
-            <!-- FORMULÁRIO CORRIGIDO CHAMANDO A FUNÇÃO PUBLICAR VAGA CORRETA -->
             <form id="form-vaga" onsubmit="publicarVagaNoSistema(event)">
                 <div class="form-group"><input type="text" id="vaga-empresa" class="form-control" placeholder="Nome da sua Empresa ou Organização" required></div>
                 <div class="form-group"><input type="text" id="vaga-titulo" class="form-control" placeholder="Título do Cargo / Serviço Solicitado" required></div>
@@ -112,6 +111,7 @@
             desenharMural();
         });
 
+        // Função de alternância de abas corrigida com classList.add
         function alternarPerfil(perfil) {
             document.getElementById('painel-candidato').style.display = 'none';
             document.getElementById('painel-empresa').style.display = 'none';
@@ -122,9 +122,8 @@
             document.getElementById('btn-tab-admin').classList.remove('active');
             
             document.getElementById('painel-' + perfil).style.display = 'block';
-            document.getElementById('btn-tab-' + perfil).add('active');
+            document.getElementById('btn-tab-' + perfil).classList.add('active');
             
-            // Força a rediscagem do mural ao alternar para a aba do candidato
             if(perfil === 'candidato') {
                 desenharMural();
             }
@@ -147,6 +146,11 @@
             alert("Vaga publicada com sucesso no Radar iWork!");
             document.getElementById('form-vaga').reset();
             
-            // Move automaticamente para o feed do candidato para ver o card gerado
-            document.getElementById('painel-candidato').style.display = 'block';
-            document.getElementById('painel-empresa').style.display = 'none';
+            // Retorna ao feed de forma correta chamando a função ajustada
+            alternarPerfil('candidato');
+        }
+
+        function desenhosCardsHTML(vaga) {
+            return `
+                <div class="card-vaga">
+                    <div style="font-weight:bold; color:#007bff; font-size:0.9rem; margin-bottom:10px;">${vaga.modalidade}</div>
