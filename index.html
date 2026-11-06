@@ -13,7 +13,6 @@
         .form-group label { display: block; color: #8a99a6; font-size: 0.8rem; margin-bottom: 3px; }
         .form-control, .form-select { width: 100%; background-color: #1a2632; border: 1px solid #2c3e50; color: #fff; padding: 10px; border-radius: 4px; box-sizing: border-box; font-size: 0.9rem; }
         .btn-primary { width: 100%; padding: 10px; background-color: #007bff; border: none; color: white; font-weight: bold; border-radius: 4px; cursor: pointer; font-size: 0.9rem; }
-        .btn-green { width: 100%; padding: 10px; background-color: #28a745; border: none; color: white; font-weight: bold; border-radius: 4px; cursor: pointer; font-size: 0.9rem; margin-top: 5px; }
         .wallet-box { background-color: #0b1116; padding: 10px; border: 1px solid #2c3e50; border-radius: 4px; margin-bottom: 10px; }
         .card-vaga { background-color: #1a2632; border: 1px solid #007bff; padding: 10px; border-radius: 4px; margin-top: 10px; }
         @media (max-width: 992px) { .grid-container { grid-template-columns: 1fr; } }
@@ -54,7 +53,7 @@
                             <div style='font-weight:bold; color:#007bff; margin-bottom:5px;'>\${p.modalidade}</div>
                             <div class='small' style='font-size:0.85rem;'><strong>Contratante:</strong> \${p.nome}</div>
                             <div class='small' style='font-size:0.85rem;'><strong>Oportunidade:</strong> \${p.servico}</div>
-                            <div class='small' style='margin-top:5px; color:#28a745; font-weight:bold; font-size:0.9rem;'>Orçamento Base: R$ \${p.valor.toFixed(2).replace('.', ',')}</div>
+                            <div class='small' style='margin-top:5px; color:#28a745; font-weight:bold;'>Orçamento Base: R$ \${p.valor.toFixed(2).replace('.', ',')}</div>
                         </div>`;
                     });
                     
@@ -86,7 +85,7 @@
             </div>
         </div>
 
-        <!-- COLUNA DIREITA: Carteira Digital Zerada e Central de Logística -->
+        <!-- COLUNA DIREITA: Carteira Digital Zerada e Central de Logística Automatizada -->
         <div>
             <div class="card-custom">
                 <h5 style="font-weight: bold; margin: 0 0 10px 0; font-size: 1.1rem;">Carteira Digital & Histórico Auditoria</h5>
@@ -100,20 +99,20 @@
                 </div>
             </div>
 
-            <!-- Central de Logística Urbana Robótica Compactada -->
+            <!-- Central de Logística Urbana Robótica Sem Botão (Tempo Real por Digitação) -->
             <div class="card-custom">
                 <div style="margin-bottom: 10px;">
-                    <h5 style="font-weight: bold; margin: 0 0 2px 0; font-size: 1.1rem;">Central de Logística Urbana Robótica</h5>
-                    <small style="color: #8a99a6; display: block; font-size: 0.8rem;">Cálculo automático de KM e disparo para motoristas</small>
+                    <h5 style="font-weight: bold; margin: 0 0 20px 0; font-size: 1.1rem;">Central de Logística Urbana Robótica</h5>
                 </div>
                 <div style="margin-bottom: 10px;"><span style="background-color: #28a745; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">Passageiros (R$2/km)</span></div>
 
+                <!-- Adicionado o evento oninput que monitora a escrita e calcula sozinho -->
                 <div class="form-group">
-                    <input type="text" id="endereco-partida" class="form-control" placeholder="Endereço de Partida (Ex: Natal)" style="margin-bottom: 8px;">
-                    <input type="text" id="endereco-destino" class="form-control" placeholder="Endereço de Destino (Ex: João Pessoa)">
+                    <input type="text" id="endereco-partida" class="form-control" placeholder="Endereço de Partida (Ex: Natal)" style="margin-bottom: 8px;" oninput="calcularRotaAutomatica();">
+                    <input type="text" id="endereco-destino" class="form-control" placeholder="Endereço de Destino (Ex: João Pessoa)" oninput="calcularRotaAutomatica();">
                 </div>
 
-                <div id="resumo-rota" style="background: rgba(23, 162, 184, 0.1); border: 1px solid #17a2b8; padding: 10px; border-radius: 4px; margin-bottom: 10px;">
+                <div id="resumo-rota" style="background: rgba(23, 162, 184, 0.1); border: 1px solid #17a2b8; padding: 10px; border-radius: 4px; margin-bottom: 0px;">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div>
                             <span style="color: #8a99a6; font-size: 0.8rem; display: block;">Distância</span>
@@ -125,7 +124,16 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
 
-                <!-- BOTÃO VERDE POSICIONADO LOGO ABAIXO DA CAIXA DE TEXTO PARA NÃO SUMIR -->
-                <button type="button" class="btn-green" onclick="
-                    const p = document.getElementById('endereco-partida').value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\b(rn|pb|pe|brasil|br)\b/g, '').trim();
+    <!-- Motor Lógico Inteligente de Atualização Simultânea -->
+    <script>
+        // Mantém o controle de estados numéricos fixos para não travar na matemática
+        let jaSometiEstaRota = false;
+        let ultimaPartida = "";
+        let ultimaDestino = "";
+
+        function calcularRotaAutomatica() {
+            const p = document.getElementById('endereco-partida').value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\b(rn|pb|pe|brasil|br)\b/g, '').trim();
