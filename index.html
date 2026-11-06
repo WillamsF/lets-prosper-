@@ -8,13 +8,12 @@
         body { background-color: #0b1116; color: #ffffff; font-family: system-ui, -apple-system, sans-serif; padding: 20px; margin: 0; }
         .lp-header { background-color: #111c24; padding: 15px 20px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #1c2d3a; display: flex; justify-content: space-between; align-items: center; }
         
-        /* Menu de Navegação */
+        /* Menu de Navegação Superior */
         .nav-tabs { display: flex; gap: 10px; background-color: #111c24; padding: 10px; border-radius: 6px; border: 1px solid #1c2d3a; margin-bottom: 25px; }
-        .nav-btn { background: none; border: none; color: #8a99a6; padding: 10px 20px; font-weight: bold; border-radius: 4px; cursor: pointer; font-size: 0.95rem; transition: all 0.2s; }
+        .nav-btn { background: none; border: none; color: #8a99a6; padding: 10px 20px; font-weight: bold; border-radius: 4px; cursor: pointer; font-size: 0.95rem; }
         .nav-btn.active { background-color: #007bff; color: white; }
-        .nav-btn:hover:not(.active) { background-color: #1a2632; color: #fff; }
         
-        /* Controle de Visibilidade das Telas */
+        /* Controle Manual das Telas */
         .panel-content { display: none; }
         .panel-content.active { display: block; }
         
@@ -33,7 +32,7 @@
 </head>
 <body>
 
-    <!-- Topbar Superior -->
+    <!-- Header Principal -->
     <div class="lp-header">
         <h4 style="margin: 0; font-weight: bold; color: #17a2b8;">LP Let's Prosper - iWork Platform</h4>
         <span style="background-color: #1c2d3a; color: #28a745; border: 1px solid #28a745; padding: 8px 12px; border-radius: 4px; font-size: 0.85rem; font-weight: bold;">
@@ -41,28 +40,51 @@
         </span>
     </div>
 
-    <!-- Abas de Navegação -->
+    <!-- Abas de Navegação com Ações Executadas no Próprio Clique -->
     <div class="nav-tabs">
-        <button id="btn-tab-candidato" class="nav-btn active" onclick="alternarPerfil('candidato')">Procurar Emprego / Vagas</button>
-        <button id="btn-tab-empresa" class="nav-btn" onclick="alternarPerfil('empresa')">Anunciar Vaga / Mão de Obra</button>
-        <button id="btn-tab-admin" class="nav-btn" onclick="alternarPerfil('admin')" style="color: #ffc107;">Painel Administrador (Seu Controle)</button>
+        <button id="btn-tab-candidato" class="nav-btn active" onclick="
+            document.getElementById('painel-candidato').style.display = 'block';
+            document.getElementById('painel-empresa').style.display = 'none';
+            document.getElementById('painel-admin').style.display = 'none';
+            document.getElementById('btn-tab-candidato').classList.add('active');
+            document.getElementById('btn-tab-empresa').classList.remove('active');
+            document.getElementById('btn-tab-admin').classList.remove('active');
+        ">Procurar Emprego / Vagas</button>
+        
+        <button id="btn-tab-empresa" class="nav-btn" onclick="
+            document.getElementById('painel-candidato').style.display = 'none';
+            document.getElementById('painel-empresa').style.display = 'block';
+            document.getElementById('painel-admin').style.display = 'none';
+            document.getElementById('btn-tab-candidato').classList.remove('active');
+            document.getElementById('btn-tab-empresa').classList.add('active');
+            document.getElementById('btn-tab-admin').classList.remove('active');
+        ">Anunciar Vaga / Mão de Obra</button>
+        
+        <button id="btn-tab-admin" class="nav-btn" style="color: #ffc107;" onclick="
+            document.getElementById('painel-candidato').style.display = 'none';
+            document.getElementById('painel-empresa').style.display = 'none';
+            document.getElementById('painel-admin').style.display = 'block';
+            document.getElementById('btn-tab-candidato').classList.remove('active');
+            document.getElementById('btn-tab-empresa').classList.remove('active');
+            document.getElementById('btn-tab-admin').classList.add('active');
+        ">Painel Administrador (Seu Controle)</button>
     </div>
 
     <!-- ========================================== -->
-    <!-- 1. INTERFACE DO CANDIDATO -->
+    <!-- 1. PAINEL DO CANDIDATO -->
     <!-- ========================================== -->
-    <div id="painel-candidato" class="panel-content active">
+    <div id="painel-candidato" class="panel-content active" style="display: block;">
         <div class="card-custom" style="border-color: #007bff;">
             <h5 style="font-weight: bold; margin: 0 0 5px 0; font-size: 1.2rem; color: #007bff;">Radar iWork - Oportunidades de Trabalho Disponíveis</h5>
             <p style="color: #8a99a6; font-size: 0.85rem; margin: 0 0 20px 0;">Candidate-se a vagas de empresas e receba os pagamentos com segurança</p>
             <div id="feed-vagas-candidato">
-                <!-- Preenchido via JS -->
+                <!-- Vagas Injetadas -->
             </div>
         </div>
     </div>
 
     <!-- ========================================== -->
-    <!-- 2. INTERFACE DA EMPRESA -->
+    <!-- 2. PAINEL DA EMPRESA -->
     <!-- ========================================== -->
     <div id="painel-empresa" class="panel-content">
         <div class="card-custom">
@@ -89,7 +111,7 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- 3. INTERFACE DO ADMINISTRADOR -->
+    <!-- 3. PAINEL DO ADMINISTRADOR -->
     <!-- ========================================== -->
     <div id="painel-admin" class="panel-content">
         <div class="grid-layout">
@@ -120,32 +142,5 @@
         </div>
     </div>
 
-    <!-- Script de Navegação Otimizado e Corrigido -->
+    <!-- Script de Processamento e Sincronização -->
     <script>
-        let faturamentoBruto = 0.00;
-        let provisaoPrestadores = 0.00;
-        let receitaAdminLiquida = 0.00;
-
-        document.addEventListener("DOMContentLoaded", function() {
-            rebuildMuralVagas();
-        });
-
-        function alternarPerfil(perfil) {
-            // Desliga a exibição de todas as telas
-            document.getElementById('painel-candidato').style.display = 'none';
-            document.getElementById('painel-empresa').style.display = 'none';
-            document.getElementById('painel-admin').style.display = 'none';
-            
-            // Apaga a cor azul ativa de todos os botões
-            document.getElementById('btn-tab-candidato').classList.remove('active');
-            document.getElementById('btn-tab-empresa').classList.remove('active');
-            document.getElementById('btn-tab-admin').classList.remove('active');
-            
-            // Liga apenas o painel clicado e pinta o botão correspondente
-            document.getElementById('painel-' + perfil).style.display = 'block';
-            document.getElementById('btn-tab-' + perfil).classList.add('active');
-        }
-
-        function publicarVagaNoSistema() {
-            const empresa = document.getElementById('vaga-empresa').value;
-            const titulo = document.getElementById('vaga-titulo').value;
