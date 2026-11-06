@@ -41,7 +41,7 @@
         </span>
     </div>
 
-    <!-- Abas de Navegação com IDs Corrigidos -->
+    <!-- Abas de Navegação -->
     <div class="nav-tabs">
         <button id="btn-tab-candidato" class="nav-btn active" onclick="alternarPerfil('candidato')">Procurar Emprego / Vagas</button>
         <button id="btn-tab-empresa" class="nav-btn" onclick="alternarPerfil('empresa')">Anunciar Vaga / Mão de Obra</button>
@@ -120,7 +120,7 @@
         </div>
     </div>
 
-    <!-- Script de Navegação e Negócios Blindado -->
+    <!-- Script de Navegação Otimizado e Corrigido -->
     <script>
         let faturamentoBruto = 0.00;
         let provisaoPrestadores = 0.00;
@@ -130,22 +130,22 @@
             rebuildMuralVagas();
         });
 
-        // Corrigido: Alternância baseada em IDs individuais seguros
         function alternarPerfil(perfil) {
-            // Esconde todos os painéis de conteúdo
+            // Desliga a exibição de todas as telas
             document.getElementById('painel-candidato').style.display = 'none';
             document.getElementById('painel-empresa').style.display = 'none';
             document.getElementById('painel-admin').style.display = 'none';
             
-            // Remove a classe ativa de todos os botões do menu
+            // Apaga a cor azul ativa de todos os botões
             document.getElementById('btn-tab-candidato').classList.remove('active');
             document.getElementById('btn-tab-empresa').classList.remove('active');
             document.getElementById('btn-tab-admin').classList.remove('active');
             
-            // Ativa apenas a tela e o botão selecionado
-            document.getElementById(`painel-${perfil}`).style.display = 'block';
-            document.getElementById(`btn-tab-${perfil}`).classList.add('active');
+            // Liga apenas o painel clicado e pinta o botão correspondente
+            document.getElementById('painel-' + perfil).style.display = 'block';
+            document.getElementById('btn-tab-' + perfil).classList.add('active');
         }
 
         function publicarVagaNoSistema() {
             const empresa = document.getElementById('vaga-empresa').value;
+            const titulo = document.getElementById('vaga-titulo').value;
