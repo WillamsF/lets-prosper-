@@ -4,110 +4,130 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Let's Prosper - Global Multisserviços & Logística</title>
-    <!-- Correção de link de estilização estável -->
-    <link rel="stylesheet" href="https://jsdelivr.net">
-    <style>
-        body { background-color: #0f172a; color: #f8fafc; font-family: sans-serif; padding: 20px; }
-        .bloco { bg-color: #1e293b; border: 1px solid #334155; padding: 15px; margin-bottom: 15px; border-radius: 8px; }
-        input, select, button { padding: 8px; margin: 4px 0; border-radius: 6px; }
-        button { cursor: pointer; background-color: #10b981; color: #000; font-weight: bold; border: none; }
-        .flex { display: flex; gap: 10px; }
-    </style>
+    <script src="https://tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cloudflare.com">
 </head>
-<body>
+<body class="bg-slate-900 text-slate-100 font-sans antialiased min-h-screen">
 
-    <!-- BARRA GLOBAL -->
-    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155; padding-bottom:10px; margin-bottom:20px;">
-        <h2>Let's <span style="color:#10b981">Prosper</span> Global</h2>
-        <div>
-            <select id="selectIdioma" onchange="mudarIdiomaMoeda()">
-                <option value="pt">🇧🇷 Português</option>
-                <option value="en">🇺🇸 English</option>
-            </select>
-            <select id="selectMoeda" onchange="mudarIdiomaMoeda()">
-                <option value="BRL">BRL (R$)</option>
-                <option value="USD">USD ($)</option>
-                <option value="EUR">EUR (€)</option>
-            </select>
+    <!-- BARRA DE NAVEGAÇÃO -->
+    <nav class="bg-slate-950 border-b border-slate-800 px-6 py-4 flex flex-wrap justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <div class="bg-emerald-500 text-slate-950 p-2 rounded-xl font-black text-xl shadow-lg shadow-emerald-500/20 tracking-wider">LP</div>
+            <span class="text-xl font-bold tracking-tight text-white">Let's <span class="text-emerald-400">Prosper</span></span>
         </div>
-    </div>
-
-    <!-- CARTEIRA DIGITAL REFORÇADA -->
-    <div class="bloco" style="background:#020617;">
-        <h3 id="titCarteira">⚡ Carteira Digital Automatizada</h3>
-        <p><b id="lblSaldoDisp">Saldo Disponível (90%):</b> <span id="cardSaldo" style="font-size:18px; color:#fff; font-weight:bold;">R$ 450,00</span></p>
-        <p><b id="lblRetencaoAcum">Sua Taxa Retida (10%):</b> <span id="cardTaxaAcum" style="font-size:18px; color:#10b981; font-weight:bold;">R$ 50,00</span></p>
-    </div>
-
-    <!-- LOGÍSTICA MAPAS -->
-    <div class="bloco">
-        <h3 id="titLogistica">🗺️ Central de Logística Urbana (Google Maps)</h3>
-        <div class="flex">
-            <input type="text" id="partida" placeholder="Origem / Start" style="width:50%;">
-            <input type="text" id="destino" placeholder="Destino / Destination" style="width:50%;">
-        </div>
-        <button type="button" onclick="calcularRotaGlobal()" id="btnCalcular" style="margin-top:10px; width:100%;">Processar Rota e Reter 10%</button>
         
-        <div id="reciboFinancas" style="margin-top:15px; display:none; background:#020617; padding:10px; border-radius:6px;">
-            <p><span id="lblReciboTotal">Total do Cliente:</span> <span id="valTotal" style="font-weight:bold; color:#fff;"></span></p>
-            <p><span id="lblReciboTaxa">Sua Taxa (10% Protegido):</span> <span id="valTaxa" style="font-weight:bold; color:#10b981;"></span></p>
+        <!-- SELETORES EM BOTÕES INTERATIVOS (IMUTÁVEIS) -->
+        <div class="flex items-center gap-3 mt-2 sm:mt-0 flex-wrap">
+            <div class="flex bg-slate-900 border border-slate-800 rounded-xl p-1 gap-1 text-xs">
+                <button type="button" onclick="mudarIdioma('pt')" id="lang_pt" class="px-2 py-1 rounded-lg bg-emerald-500 text-slate-950 font-bold transition">PT</button>
+                <button type="button" onclick="mudarIdioma('en')" id="lang_en" class="px-2 py-1 rounded-lg text-slate-400 font-medium hover:text-white transition">EN</button>
+            </div>
+            <div class="flex bg-slate-900 border border-slate-800 rounded-xl p-1 gap-1 text-xs">
+                <button type="button" onclick="mudarMoeda('BRL')" id="curr_brl" class="px-2 py-1 rounded-lg bg-emerald-500 text-slate-950 font-bold transition">R$ (BRL)</button>
+                <button type="button" onclick="mudarMoeda('USD')" id="curr_usd" class="px-2 py-1 rounded-lg text-slate-400 font-medium hover:text-white transition">$ (USD)</button>
+            </div>
         </div>
-    </div>
+    </nav>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="max-w-7xl mx-auto p-4 md:p-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- PAINEL DE CADASTRO -->
+        <div class="bg-slate-950 rounded-2xl border border-slate-800 p-6 shadow-xl h-fit">
+            <div class="flex items-center gap-3 mb-6 border-b border-slate-800 pb-4">
+                <div class="text-emerald-400 text-xl"><i class="fa-solid fa-shield-halved"></i></div>
+                <div>
+                    <h2 id="lbl_titCadastro" class="font-bold text-lg text-white">Portal de Entrada Seguro</h2>
+                    <p id="lbl_subCadastro" class="text-xs text-slate-400">Validação automatizada antifraude</p>
+                </div>
+            </div>
+
+            <form class="space-y-4" onsubmit="event.preventDefault(); alert('Global Security Active');">
+                <div>
+                    <label id="lbl_perfil" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Perfil de Atuação</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button type="button" onclick="alternarDoc('CPF')" id="btn_cpf" class="flex items-center justify-center p-2.5 border-2 border-emerald-500 bg-emerald-500/10 text-emerald-400 rounded-xl text-xs font-bold w-full text-center">Individual</button>
+                        <button type="button" onclick="alternarDoc('CNPJ')" id="btn_cnpj" class="flex items-center justify-center p-2.5 border border-slate-800 bg-slate-900 text-slate-400 rounded-xl text-xs font-medium w-full text-center">Business</button>
+                    </div>
+                </div>
+                <div>
+                    <label id="lbl_nome" class="block text-xs font-medium text-slate-300 mb-1">Nome Completo</label>
+                    <input type="text" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                </div>
+                <div>
+                    <label id="lbl_doc" class="block text-xs font-medium text-slate-300 mb-1">Documento de Identidade (CPF)</label>
+                    <input type="text" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+                </div>
+                <button type="submit" id="lbl_btnReg" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-3 rounded-xl transition text-sm">Finalizar Registro Global</button>
+            </form>
+        </div>
+
+        <!-- PAINEL FINANCEIRO E MAPA -->
+        <div class="lg:col-span-2 space-y-6">
+            
+            <!-- CARTEIRA DIGITAL -->
+            <div class="bg-slate-950 rounded-2xl border border-slate-800 p-6 shadow-xl grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="md:col-span-2 border-b border-slate-800 pb-2">
+                    <h3 id="lbl_titCarteira" class="font-bold text-white text-base">Carteira Digital do Motorista</h3>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
+                    <div id="lbl_saldoDisp" class="text-[10px] text-slate-400 uppercase font-bold">Saldo Disponível (90%)</div>
+                    <div id="val_saldo" class="text-xl font-black text-white mt-1">R$ 450,00</div>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
+                    <div id="lbl_taxaAcum" class="text-[10px] text-emerald-400 uppercase font-bold">Sua Taxa Retida (10%)</div>
+                    <div id="val_taxaAcum" class="text-xl font-black text-emerald-400 mt-1">R$ 50,00</div>
+                </div>
+            </div>
+
+            <!-- CENTRAL LOGÍSTICA GOOGLE MAPS -->
+            <div class="bg-slate-950 rounded-2xl border border-slate-800 p-6 shadow-xl">
+                <h3 id="lbl_titLogistica" class="font-bold text-white text-base mb-4">Central de Logística Urbana (Google Maps)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <input type="text" id="partida" placeholder="Origem / Start" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none">
+                    <input type="text" id="destino" placeholder="Destino / Destination" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none">
+                </div>
+                <button type="button" onclick="calcularRotaGlobal()" id="lbl_btnCalc" class="w-full bg-slate-900 border border-slate-700 hover:border-emerald-500 text-white font-medium py-2.5 rounded-xl text-xs mb-4">Processar Rota Segura e Calcular Taxa 10?</button>
+
+                <div id="containerMapa" class="w-full h-64 rounded-xl overflow-hidden border border-slate-800 relative">
+                    <iframe id="iframeMapa" class="w-full h-full border-0" src="https://google.com" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+
+                <div id="reciboFinancas" class="hidden w-full bg-slate-900 border border-emerald-500/30 p-4 rounded-xl mt-4 flex justify-between items-center">
+                    <div>
+                        <div id="lbl_recCli" class="text-[10px] text-slate-400 uppercase font-bold">Total pago pelo Cliente</div>
+                        <div id="valTotal" class="text-sm font-black text-white">0,00</div>
+                    </div>
+                    <div class="text-right">
+                        <div id="lbl_recTax" class="text-[10px] text-emerald-400 uppercase font-bold">Sua Retenção (10%)</div>
+                        <div id="valTaxa" class="text-sm font-black text-emerald-400">0,00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <script>
-        const dadosConversao = {
-            BRL: { simb: "R$ ", tx: 1 },
-            USD: { simb: "$ ", tx: 0.18 },
-            EUR: { simb: "€ ", tx: 0.17 }
+        let idiomaAtivo = 'pt';
+        let moedaAtiva = 'BRL';
+        let docAtivo = 'CPF';
+
+        const tabelas = {
+            BRL: { simb: "R$ ", fac: 1 },
+            USD: { simb: "$ ", fac: 0.18 }
         };
 
         const textos = {
-            pt: { titC: "⚡ Carteira Digital Automatizada", sal: "Saldo Disponível (90%):", tax: "Sua Taxa Retida (10%):", log: "🗺️ Central de Logística Urbana (Google Maps)", btn: "Processar Rota e Reter 10%", tCli: "Total do Cliente:", tTax: "Sua Taxa (10% Protegido):" },
-            en: { titC: "⚡ Automated Digital Wallet", sal: "Available Balance (90%):", tax: "Your Retained Fee (10%):", log: "🗺️ Urban Logistics Center (Google Maps)", btn: "Process Route & Retain 10%", tCli: "Customer Total:", tTax: "Your Fee (10% Secured):" }
+            pt: {
+                titC: "Portal de Entrada Seguro", subC: "Validação automatizada antifraude", perf: "Perfil de Atuação", nom: "Nome Completo", docC: "Documento de Identidade (CPF)", docE: "Registro Corporativo (CNPJ)", btnR: "Finalizar Registro Global",
+                titW: "Carteira Digital do Motorista", sal: "Saldo Disponível (90%)", tax: "Sua Taxa Retida (10%)", log: "Central de Logística Urbana (Google Maps)", btnM: "Processar Rota Segura e Calcular Taxa 10%", rCli: "Total pago pelo Cliente", rTax: "Sua Retenção (10%)"
+            },
+            en: {
+                titC: "Secure Onboarding Portal", subC: "Automated anti-fraud validation", perf: "Account Profile", nom: "Full Name", docC: "Identity Document (SSN / Tax ID)", docE: "Corporate Registration (EIN)", btnR: "Complete Global Registration",
+                titW: "Driver's Digital Wallet", sal: "Available Balance (90%)", tax: "Your Retained Fee (10%)", log: "Urban Logistics Center (Google Maps)", btnM: "Process Secure Route & Compute 10% Fee", rCli: "Total Paid by Customer", rTax: "Your Automated Retention (10%)"
+            }
         };
 
-        function mudarIdiomaMoeda() {
-            const m = document.getElementById('selectMoeda').value;
-            const lang = document.getElementById('selectIdioma').value;
-            const s = dadosConversao[m].simb;
-            const f = dadosConversao[m].tx;
-
-            // Altera os valores fixos da carteira de forma direta e imutável pelas tags
-            document.getElementById('cardSaldo').innerText = s + (450 * f).toFixed(2);
-            document.getElementById('cardTaxaAcum').innerText = s + (50 * f).toFixed(2);
-
-            // Altera os idiomas sem depender dos textos do HTML antigo
-            if(textos[lang]) {
-                document.getElementById('titCarteira').innerText = textos[lang].titC;
-                document.getElementById('lblSaldoDisp').innerText = textos[lang].sal;
-                document.getElementById('lblRetencaoAcum').innerText = textos[lang].tax;
-                document.getElementById('titLogistica').innerText = textos[lang].log;
-                document.getElementById('btnCalcular').innerText = textos[lang].btn;
-                document.getElementById('lblReciboTotal').innerText = textos[lang].tCli;
-                document.getElementById('lblReciboTaxa').innerText = textos[lang].tTax;
-            }
-        }
-
-        function calcularRotaGlobal() {
-            const partida = document.getElementById('partida').value;
-            const destino = document.getElementById('destino').value;
-            if(!partida || !destino) { alert('Digite partida e destino.'); return; }
-
-            const m = document.getElementById('selectMoeda').value;
-            const s = dadosConversao[m].simb;
-            const f = dadosConversao[m].tx;
-
-            const baseBruta = (Math.random() * (80 - 30) + 30);
-            const total = baseBruta * f;
-            const taxa = total * 0.10;
-
-            document.getElementById('valTotal').innerText = s + total.toFixed(2);
-            document.getElementById('valTaxa').innerText = s + taxa.toFixed(2);
-            document.getElementById('reciboFinancas').style.display = 'block';
-        }
-
-        // Executa a inicialização limpa
-        mudarIdiomaMoeda();
-    </script>
-</body>
-</html>
+        function mudarIdioma(lang) {
+            idiomaAtivo = lang;
+            document.getElementById('lang_pt').className = lang === 'pt' ? "px-2 py-1 rounded-lg bg-emerald-500 text-slate-950 font-bold transition" : "px-2 py-1 rounded-lg text-slate-400 font-medium hover:text-white transition";
