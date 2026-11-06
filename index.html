@@ -1,106 +1,52 @@
-<script>
-    // Banco de dados geográfico otimizado (ignora acentos, espaços e estados)
-    const matrizDistancias = {
-        "natal": { "joao pessoa": 185, "recife": 295, "parnamirim": 15 },
-        "joao pessoa": { "natal": 185, "recife": 120, "campina grande": 130 }
-    };
+<!-- ========================================== -->
+<!-- PAINEL DA CARTEIRA DIGITAL                 -->
+<!-- ========================================== -->
+<div style="background-color: #111c24; border-radius: 6px; padding: 20px; border: 1px solid #1c2d3a; margin-bottom: 20px;">
+    <h5 style="font-weight: bold; margin-bottom: 15px;">Carteira Digital & Histórico Auditoria</h5>
+    
+    <div style="background: #0b1116; padding: 15px; border-radius: 4px; margin-bottom: 15px; border: 1px solid #2c3e50;">
+        <span style="color: #8a99a6; font-size: 0.85rem; display: block;">SALDO DISPONÍVEL PRESTADORES (90%)</span>
+        <h3 style="font-weight: bold; color: #fff; margin: 0;" id="saldo-prestadores">R$ 450,00</h3>
+    </div>
+    
+    <div style="background: #0b1116; padding: 15px; border-radius: 4px; border: 1px solid #2c3e50;">
+        <span style="color: #8a99a6; font-size: 0.85rem; display: block;">SUA RETENÇÃO ACUMULADA (10%)</span>
+        <h3 style="font-weight: bold; color: #28a745; margin: 0;" id="saldo-admin">R$ 50,00</h3>
+    </div>
+</div>
 
-    let precoGlobalCorrida = 0;
-    let kmGlobalCorrida = 0;
-    const VALOR_POR_KM = 2.00;
+<!-- ========================================== -->
+<!-- PAINEL DA CENTRAL DE LOGÍSTICA             -->
+<!-- ========================================== -->
+<div style="background-color: #111c24; border-radius: 6px; padding: 20px; border: 1px solid #1c2d3a;">
+    <div style="margin-bottom: 15px;">
+        <h5 style="font-weight: bold; margin: 0;">Central de Logística Urbana Robótica</h5>
+        <small style="color: #8a99a6;">Cálculo automático de KM e disparo automático para motoristas</small>
+    </div>
+    
+    <div style="margin-bottom: 15px; display: flex; gap: 8px;">
+        <span style="background-color: #28a745; color: white; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem; font-weight: bold;">Passageiros (R$2/km)</span>
+        <span style="background-color: #343a40; color: #8a99a6; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem; font-weight: bold; opacity: 0.6;">Frotas/Fretes</span>
+    </div>
 
-    // Função de tratamento de texto para aceitar variações (Ex: "Natal RN" -> "natal")
-    function normalizarEntrada(texto) {
-        return texto
-            .toLowerCase()
-            .normalize("NFD") // Remove acentos (Ex: João -> Joao)
-            .replace(/[\u0300-\u036f]/g, "")
-            .replace(/\b(rn|pb|pe|ce|brasil|br)\b/g, "") // Limpa siglas de estados comuns
-            .trim();
-    }
+    <div style="margin-bottom: 15px;">
+        <input type="text" id="endereco-partida" style="width: 100%; padding: 10px; background: #1a2632; border: 1px solid #2c3e50; color: white; border-radius: 4px; margin-bottom: 10px;" placeholder="Endereço de Partida (Ex: Natal)">
+        <input type="text" id="endereco-destino" style="width: 100%; padding: 10px; background: #1a2632; border: 1px solid #2c3e50; color: white; border-radius: 4px;" placeholder="Endereço de Destino (Ex: João Pessoa)">
+    </div>
 
-    function monitorarMudancaRota() {
-        let partidaRaw = document.getElementById('endereco-partida').value;
-        let destinoRaw = document.getElementById('endereco-destino').value;
-        
-        // Aplica o filtro inteligente nas duas entradas
-        const partida = normalizarEntrada(partidaRaw);
-        const destino = normalizarEntrada(destinoRaw);
-        
-        const painelResumo = document.getElementById('resumo-rota');
+    <!-- ESTA É A CAIXA QUE ESTAVA FALTANDO PARA CARREGAR OS PREÇOS E KM NA TELA -->
+    <div id="resumo-rota" style="display: none; background: rgba(23, 162, 184, 0.1); border: 1px solid #17a2b8; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <span style="color: #8a99a6; font-size: 0.85rem; display: block;">Distância Estimada</span>
+                <h5 id="txt-distancia" style="margin: 0; color: #17a2b8; font-weight: bold;">0.0 km</h5>
+            </div>
+            <div>
+                <span style="color: #8a99a6; font-size: 0.85rem; display: block;">Preço da Rota</span>
+                <h4 id="txt-preco-total" style="margin: 0; color: #28a745; font-weight: bold;">R$ 0,00</h4>
+            </div>
+        </div>
+    </div>
 
-        if (!partida || !destino) {
-            if(painelResumo) painelResumo.style.display = 'none';
-            precoGlobalCorrida = 0;
-            return;
-        }
-
-        let km = 0;
-        
-        // Tenta encontrar correspondência exata ou parcial na matriz geográfica
-        if (matrizDistancias[partida] && matrizDistancias[partida][destino]) {
-            km = matrizDistancias[partida][destino];
-        } else if (matrizDistancias[destino] && matrizDistancias[destino][partida]) {
-            km = matrizDistancias[destino][partida];
-        } else {
-            // Algoritmo matemático para rotas dinâmicas não mapeadas
-            km = Math.abs((partida.length * 9) + (destino.length * 14)) % 200 + 15;
-        }
-
-        kmGlobalCorrida = km;
-        precoGlobalCorrida = km * VALOR_POR_KM;
-
-        // Injeta e exibe o painel de resumo na tela na hora
-        const txtDistancia = document.getElementById('txt-distancia');
-        const txtPrecoTotal = document.getElementById('txt-preco-total');
-        
-        if(txtDistancia) txtDistancia.innerText = km.toFixed(1) + " km";
-        if(txtPrecoTotal) txtPrecoTotal.innerText = "R$ " + precoGlobalCorrida.toFixed(2).replace('.', ',');
-        if(painelResumo) painelResumo.style.display = 'block';
-    }
-
-    // Ouvintes de digitação em tempo real
-    document.getElementById('endereco-partida').addEventListener('input', monitorarMudancaRota);
-    document.getElementById('endereco-destino').addEventListener('input', monitorarMudancaRota);
-
-    // Processamento do clique de confirmação com Split de 10%
-    document.getElementById('btn-solicitar-rota').addEventListener('click', function() {
-        if (precoGlobalCorrida === 0) {
-            alert("Por favor, digite os endereços de partida e destino para calcular a rota.");
-            return;
-        }
-
-        const taxaAdmin = precoGlobalCorrida * 0.10;
-        const ganhoPrestador = precoGlobalCorrida * 0.90;
-
-        let saldoPrestadoresNum = parseFloat(document.getElementById('saldo-prestadores')?.innerText.replace('R$', '').replace('.', '').replace(',', '.').trim() || "450.00");
-        let saldoAdminNum = parseFloat(document.getElementById('saldo-admin')?.innerText.replace('R$', '').replace('.', '').replace(',', '.').trim() || "50.00");
-
-        let novoPrestador = saldoPrestadoresNum + ganhoPrestador;
-        let novoAdmin = saldoAdminNum + taxaAdmin;
-
-        if(document.getElementById('saldo-prestadores')) {
-            document.getElementById('saldo-prestadores').innerText = "R$ " + novoPrestador.toFixed(2).replace('.', ',');
-        }
-        if(document.getElementById('saldo-admin')) {
-            document.getElementById('saldo-admin').innerText = "R$ " + novoAdmin.toFixed(2).replace('.', ',');
-        }
-
-        alert(`Motorista Acionado!\n\nDistância: ${kmGlobalCorrida} km\nValor Total: R$ ${precoGlobalCorrida.toFixed(2).replace('.', ',')}\nSplit de Taxa (10%): R$ ${taxaAdmin.toFixed(2).replace('.', ',')} adicionado ao cofre admin.`);
-        
-        document.getElementById('endereco-partida').value = '';
-        document.getElementById('endereco-destino').value = '';
-        if(document.getElementById('resumo-rota')) document.getElementById('resumo-rota').style.display = 'none';
-        precoGlobalCorrida = 0;
-    });
-
-    document.getElementById('form-oportunidade')?.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const modalidade = document.getElementById('tipo-servico-global').value;
-        const valorInput = parseFloat(document.getElementById('valor-estimado').value);
-        const taxaAdminOportunidade = valorInput * 0.10;
-
-        alert(`Cadastro de Oportunidade Publicado!\nModalidade: ${modalidade.toUpperCase()}\nTaxa de 10% vinculada (R$ ${taxaAdminOportunidade.toFixed(2).replace('.', ',')}) calculada sobre a operação.`);
-        this.reset();
-    });
-</script>
+    <button type="button" id="btn-solicitar-rota" style="width: 100%; padding: 12px; background: #007bff; border: none; color: white; font-weight: bold; border-radius: 4px; cursor: pointer;">Confirmar e Chamar Motorista</button>
+</div>
