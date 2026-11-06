@@ -31,32 +31,13 @@
 
     <div class="grid-container">
         
-        <!-- COLUNA ESQUERDA: Mão de Obra, Vagas e Cadastro Completo -->
+        <!-- COLUNA ESQUERDA: Mão de Obra e Mural -->
         <div>
             <div class="card-custom">
                 <h5 style="font-weight: bold; margin: 0 0 5px 0; font-size: 1.2rem;">Mão de Obra & Vagas</h5>
                 <p style="color: #8a99a6; font-size: 0.85rem; margin: 0 0 20px 0;">Anúncios estilo iWork com taxa de 10%</p>
                 
-                <form id="form-oportunidade" onsubmit="event.preventDefault();
-                    const nome = document.getElementById('cad-nome').value;
-                    const servico = document.getElementById('cad-servico').value;
-                    const mod = document.getElementById('tipo-servico-global').value;
-                    const val = parseFloat(document.getElementById('valor-estimado').value || 0);
-                    
-                    const novoProf = { id: Date.now(), nome: nome, servico: servico, modalidade: mod, valor: val };
-                    let m = JSON.parse(localStorage.getItem('tabela_mural') || '[]');
-                    m.push(novoProf);
-                    localStorage.setItem('tabela_mural', JSON.stringify(m));
-                    
-                    const container = document.getElementById('container-mural-servicos');
-                    container.innerHTML = '';
-                    m.forEach(p => {
-                        container.innerHTML += `<div class='card-mural'><div style='font-weight:bold; color:#007bff; margin-bottom:5px;'>\begin{small}\${p.modalidade}\end{small}</div><div class='small'><strong>Nome:</strong> \${p.nome}</div><div class='small'><strong>Serviço:</strong> \${p.servico}</div><div class='small' style='margin-top:5px; color:#28a745; font-weight:bold;'>Orçamento: R$ \${p.valor.toFixed(2).replace('.', ',')}</div></div>`;
-                    });
-                    
-                    alert('Sucesso!\nCadastro publicado no mural com taxa de 10% (R$ ' + (val * 0.1).toFixed(2).replace('.', ',') + ') vinculada à operation.');
-                    this.reset();
-                ">
+                <form id="form-oportunidade" onsubmit="event.preventDefault(); cadastrarNoMural();">
                     <div class="form-group"><input type="text" id="cad-nome" class="form-control" placeholder="Seu Nome / Razão Social" required></div>
                     <div class="form-group"><input type="text" id="cad-servico" class="form-control" placeholder="Tipo de Serviço (Ex: Pintor, Carreto)" required></div>
                     <div class="form-group">
@@ -74,7 +55,6 @@
                 </form>
             </div>
 
-            <!-- Mural de Profissionais Cadastrados -->
             <div class="card-custom" style="border-color: #007bff;">
                 <h5 style="font-weight: bold; margin: 0 0 5px 0; font-size: 1.2rem; color: #007bff;">Mural de Profissionais & Vagas Cadastradas</h5>
                 <p style="color: #8a99a6; font-size: 0.85rem; margin: 0 0 15px 0;">Lista em tempo real dos serviços disponíveis no ecossistema</p>
@@ -84,7 +64,7 @@
             </div>
         </div>
 
-        <!-- COLUNA DIREITA: Carteira Digital Zerada e Logística Avançada -->
+        <!-- COLUNA DIREITA: Carteira e Logística -->
         <div>
             <div class="card-custom">
                 <h5 style="font-weight: bold; margin: 0 0 20px 0; font-size: 1.2rem;">Carteira Digital & Histórico Auditoria</h5>
@@ -98,7 +78,6 @@
                 </div>
             </div>
 
-            <!-- Central de Logística Urbana Robótica com Execução Simultânea por Digitação -->
             <div class="card-custom">
                 <div style="margin-bottom: 15px;">
                     <h5 style="font-weight: bold; margin: 0 0 3px 0; font-size: 1.2rem;">Central de Logística Urbana Robótica</h5>
@@ -106,13 +85,11 @@
                 </div>
                 <div style="margin-bottom: 15px;"><span style="background-color: #28a745; color: white; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem; font-weight: bold;">Passageiros (R$2/km)</span></div>
 
-                <!-- ADICIONADO ATUALIZADOR EM TEMPO REAL ONINPUT ENQUANTO DIGITA -->
                 <div class="form-group">
                     <input type="text" id="endereco-partida" class="form-control" placeholder="Endereço de Partida (Ex: Natal)" style="margin-bottom: 10px;" oninput="executarCalculoImediato();">
                     <input type="text" id="endereco-destino" class="form-control" placeholder="Endereço de Destino (Ex: João Pessoa)" oninput="executarCalculoImediato();">
                 </div>
 
-                <!-- Painel Informativo Fixo -->
                 <div id="resumo-rota" style="background: rgba(23, 162, 184, 0.1); border: 1px solid #17a2b8; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div>
@@ -126,3 +103,39 @@
                     </div>
                 </div>
 
+                <button type="button" id="btn-chamar-motorista-principal" class="btn-primary" style="background-color: #28a745;" onclick="despacharParaORadar();">Confirmar e Chamar Motorista</button>
+            </div>
+
+            <div class="card-custom" style="border-color: #28a745;">
+                <h5 style="font-weight: bold; margin: 0 0 5px 0; font-size: 1.2rem; color: #28a745;">Radar de Corridas (Painel do Motorista)</h5>
+                <p style="color: #8a99a6; font-size: 0.85rem; margin: 0 0 15px 0;">Pedidos pendentes armazenados no banco de dados local</p>
+                <div id="container-radar-motorista">
+                    <p style="color: #8a99a6; font-style: italic; text-align: center; padding: 20px 0;">Nenhuma corrida pendente no radar no momento...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let kmGlobal = 0;
+        let precoGlobal = 0;
+        let saldoPrestadoresGlobal = 0.00;
+        let saldoAdminGlobal = 0.00;
+
+        function normalizarEntrada(texto) {
+            return texto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\b(rn|pb|pe|brasil|br)\b/g, '').trim();
+        }
+
+        function executarCalculoImediato() {
+            const p = normalizarEntrada(document.getElementById('endereco-partida').value);
+            const d = normalizarEntrada(document.getElementById('endereco-destino').value);
+            
+            if(!p || !d) {
+                document.getElementById('txt-distancia').innerText = '0.0 km';
+                document.getElementById('txt-preco-total').innerText = 'R$ 0,00';
+                kmGlobal = 0; precoGlobal = 0;
+                return;
+            }
+            
+            let km = 185;
+            if((p.includes('natal') && d.includes('pessoa')) || (p.includes('pessoa') && d.includes('natal'))) { km = 185; }
