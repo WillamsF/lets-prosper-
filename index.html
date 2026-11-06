@@ -20,8 +20,9 @@
         button { cursor: pointer; border: none; font-weight: bold; transition: all 0.2s; }
         .btn-principal { background-color: #10b981; color: #020617; }
         .btn-principal:hover { background-color: #059669; }
+        .btn-gps { background-color: #1e293b; color: #38bdf8; border: 1px solid #38bdf8; margin-bottom: 12px; }
+        .btn-gps:hover { background-color: rgba(56, 189, 248, 0.1); }
         .btn-secundario { background-color: #2563eb; color: #ffffff; }
-        .btn-secundario:hover { background-color: #1d4ed8; }
         .flex-botoes { display: flex; gap: 8px; margin-bottom: 15px; }
         .flex-botoes button { margin-bottom: 0; padding: 6px 12px; background-color: #1e293b; border: 1px solid #334155; color: #94a3b8; width: auto; }
         .flex-botoes button.ativo { background-color: #10b981; color: #020617; font-weight: bold; border-color: #10b981; }
@@ -35,39 +36,35 @@
 </head>
 <body>
 
-    <!-- BARRA DE NAVEGAÇÃO BRASIL -->
+    <!-- BARRA DE NAVEGAÇÃO -->
     <nav>
         <div class="logo">LP <span>Let's Prosper</span> Global</div>
-        <div style="display: flex; gap: 15px; align-items: center;">
-            <div style="font-size: 12px; background-color: #1e293b; border: 1px solid #334155; padding: 6px 14px; border-radius: 10px; font-weight: bold; color: #10b981;">
-                Moeda Ativa: BRL (R$)
-            </div>
+        <div style="font-size: 12px; background-color: #1e293b; border: 1px solid #334155; padding: 6px 14px; border-radius: 10px; font-weight: bold; color: #10b981;">
+            Moeda Ativa: BRL (R$)
         </div>
     </nav>
 
-    <!-- CONTEÚDO PRINCIPAL -->
     <div class="grid-principal">
         
-        <!-- COLUNA ESQUERDA: MÃO DE OBRA E VAGAS (ESTILO IWORK) -->
+        <!-- COLUNA ESQUERDA: MÃO DE OBRA -->
         <div class="bloco-card">
             <div class="titulo-secao">Mão de Obra & Vagas</div>
             <div class="subtitulo">Anúncios estilo iWork com taxa de 10%</div>
-
-            <form onsubmit="event.preventDefault(); alert('Oportunidade publicada no painel local!');">
-                <input type="text" id="vaga_titulo" placeholder="Ex: Eletricista, Motorista, Técnico..." required>
-                <select id="vaga_tipo">
+            <form onsubmit="event.preventDefault(); alert('Oportunidade publicada no painel!');">
+                <input type="text" placeholder="Ex: Eletricista, Motorista, Técnico..." required>
+                <select>
                     <option value="contratar">Quero Contratar Mão de Obra</option>
                     <option value="oferecer">Quero Oferecer meus Serviços</option>
                 </select>
-                <input type="number" id="vaga_valor" placeholder="Valor da Diária / Projeto (R$)" required>
+                <input type="number" placeholder="Valor da Diária / Projeto (R$)" required>
                 <button type="submit" class="btn-secundario">Publicar Oportunidade</button>
             </form>
         </div>
 
-        <!-- COLUNA DIREITA: CARTEIRA E CENTRAL LOGÍSTICA -->
+        <!-- COLUNA DIREITA: CARTEIRA E LOGÍSTICA COM MAPAS -->
         <div style="display: flex; flex-direction: column; gap: 30px;">
             
-            <!-- CARTEIRA DIGITAL BRASIL -->
+            <!-- CARTEIRA DIGITAL -->
             <div class="bloco-card">
                 <div class="titulo-secao">Carteira Digital & Histórico Auditoria</div>
                 <div class="grid-carteira">
@@ -80,40 +77,9 @@
                         <div style="font-size: 24px; font-weight: 900; color: #10b981; margin-top: 5px;">R$ 50,00</div>
                     </div>
                 </div>
-
-                <!-- TABELA DE AUDITORIA -->
-                <div style="overflow-x: auto; margin-top: 15px;">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Serviço/Setor</th>
-                                <th>Bruto</th>
-                                <th>Sua Taxa (10%)</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td style="font-family:monospace; color:#94a3b8;">#1092</td>
-                                <td style="font-weight:500; color:#fff;">Transporte Passageiro (Natal)</td>
-                                <td style="font-weight:bold;">R$ 50,00</td>
-                                <td style="color:#10b981; font-weight:bold;">R$ 5,00</td>
-                                <td><span class="badge">Liquidado</span></td>
-                            </tr>
-                            <tr>
-                                <td style="font-family:monospace; color:#94a3b8;">#1091</td>
-                                <td style="font-weight:500; color:#fff;">Frete Caminhão (Mudança)</td>
-                                <td style="font-weight:bold;">R$ 250,00</td>
-                                <td style="color:#10b981; font-weight:bold;">R$ 25,00</td>
-                                <td><span class="badge">Liquidado</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
             </div>
 
-            <!-- LOGÍSTICA GOOGLE MAPS ESTÁVEL -->
+            <!-- LOGÍSTICA GOOGLE MAPS + GPS NATIVO -->
             <div class="bloco-card">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
                     <div>
@@ -126,16 +92,20 @@
                     </div>
                 </div>
 
+                <!-- BOTÃO DE CAPTURA DO GPS DO USUÁRIO -->
+                <button type="button" onclick="capturarLocalizacaoGPS()" class="btn-gps">
+                    📍 Ativar Minha Localização Atual (GPS)
+                </button>
+
                 <div style="display: flex; gap: 15px; margin-bottom: 12px;">
-                    <input type="text" id="partida" placeholder="Local de Partida (Ex: São Gonçalo)">
+                    <input type="text" id="partida" placeholder="Local de Partida / Origem">
                     <input type="text" id="destino" placeholder="Destino Final (Ex: Midway Natal)">
                 </div>
                 
-                <!-- BOTÃO TOTALMENTE CORRIGIDO COM FUNÇÃO ADAPTADA -->
                 <button type="button" onclick="executarCalculoRota()" class="btn-principal">Processar Rota Segura e Calcular Taxa 10%</button>
 
-                <!-- MAPA FIXO SEGURO COM MAPAS PADRÃO DO GOOGLE EMBUTIDO -->
-                <div style="w-content: 100%; height: 250px; border-radius: 12px; overflow: hidden; border: 1px solid #1e293b; margin-top: 15px;">
+                <!-- CAIXA DO GOOGLE MAPS TOTALMENTE CORRIGIDA E ADAPTADA -->
+                <div style="width:100%; height:260px; border-radius:12px; overflow:hidden; border:1px solid #334155; margin-top:15px; background-color:#1e293b;">
                     <iframe id="iframeMapa" style="width:100%; height:100%; border:none;" src="https://google.com" allowfullscreen="" loading="lazy"></iframe>
                 </div>
 
@@ -146,3 +116,32 @@
                     </div>
                     <div style="text-align: right;">
                         <div style="font-size: 10px; color: #10b981; font-weight: bold; text-transform: uppercase;">Sua Retenção (10% Protegido)</div>
+                        <div id="valTaxa" style="font-size: 16px; font-weight: 900; color: #10b981;">R$ 0,00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let modalidadeAtiva = 'Uber';
+
+        function mudarModalidade(mod) {
+            modalidadeAtiva = mod;
+            document.getElementById('mod_uber').className = mod === 'Uber' ? "ativo" : "";
+            document.getElementById('mod_caminhao').className = mod === 'Caminhao' ? "ativo" : "";
+        }
+
+        // Função de captura do GPS Real do dispositivo do usuário
+        function capturarLocalizacaoGPS() {
+            if (navigator.geolocation) {
+                document.getElementById('partida').value = "Buscando localização via GPS...";
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    // Insere as coordenadas reais no campo de texto de partida
+                    document.getElementById('partida').value = lat.toFixed(5) + ", " + lon.toFixed(5) + " (Minha Localização)";
+                    // Atualiza o mapa focado na posição atual do GPS do usuário
+                    document.getElementById('iframeMapa').src = "https://google.com" + lat + "," + lon + "&z=15&output=embed";
+                }, function(error) {
+                    document.getElementById('partida').value = "";
