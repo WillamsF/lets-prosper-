@@ -48,7 +48,6 @@
                     m.push(novoProf);
                     localStorage.setItem('tabela_mural', JSON.stringify(m));
                     
-                    // Renderização imediata inline do mural
                     const container = document.getElementById('container-mural-servicos');
                     container.innerHTML = '';
                     m.forEach(p => {
@@ -91,10 +90,12 @@
                 <h5 style="font-weight: bold; margin: 0 0 20px 0; font-size: 1.2rem;">Carteira Digital & Histórico Auditoria</h5>
                 <div class="wallet-box">
                     <span style="color: #8a99a6; font-size: 0.8rem; display: block; margin-bottom: 3px;">SALDO DISPONÍVEL PRESTADORES (90%)</span>
+                    <!-- VALOR FIXO ZERADO NO TEXTO DO LAYOUT -->
                     <h3 style="font-weight: bold; color: #ffffff; margin: 0; font-size: 1.6rem;" id="saldo-prestadores">R$ 0,00</h3>
                 </div>
                 <div class="wallet-box" style="margin-bottom: 0;">
                     <span style="color: #8a99a6; font-size: 0.8rem; display: block; margin-bottom: 3px;">SUA RETENÇÃO ACUMULADA (10%)</span>
+                    <!-- VALOR FIXO ZERADO NO TEXTO DO LAYOUT -->
                     <h3 style="font-weight: bold; color: #28a745; margin: 0; font-size: 1.6rem;" id="saldo-admin">R$ 0,00</h3>
                 </div>
             </div>
@@ -126,5 +127,4 @@
                     </div>
                 </div>
 
-                <!-- SEU CÓDIGO DA AÇÃO INLINE COMPLETADO E INTEGRADO AO RADAR -->
                 <button type="button" class="btn-primary" style="background-color: #28a745;" onclick="
